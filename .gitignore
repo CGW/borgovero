@@ -1,7 +1,13 @@
 __pycache__/
 *.pyc
 cache/
-data/
+# data/ is regenerable EXCEPT the ID anchors, which are hours of Wayback
+# harvesting that cannot be reconstructed if archive.org access changes.
+# Note: `data/*` rather than `data/` — git will not descend into an ignored
+# directory, so the negation below only works if the contents are ignored
+# rather than the directory itself.
+**/data/*
+!**/data/id_anchors.json
 *.sqlite
 *.sqlite-journal
 phase0_results.csv

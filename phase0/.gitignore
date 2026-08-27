@@ -1,7 +1,10 @@
 __pycache__/
 *.pyc
 cache/
-data/
+# Everything in data/ is regenerable except id_anchors.json — see the
+# root .gitignore for why this is `data/*` and not `data/`.
+data/*
+!data/id_anchors.json
 *.sqlite
 *.sqlite-journal
 phase0_results.csv
