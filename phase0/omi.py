@@ -20,23 +20,45 @@ import db
 
 
 def sniff(path):
-    """Return (delimiter, fieldnames) without assuming either."""
+    """Return (delimiter, fieldnames, skip) without assuming any of them.
+
+    `skip` is how many preamble lines sit above the real header. The AdE
+    export opens with a caption line —
+
+        Quotazioni Immobiliari : Valori di Mercato - Semestre 2025/2 - ...
+
+    — which carries no delimiters. Feeding that to DictReader makes the
+    caption the fieldnames, every lookup returns None, and the loader
+    reports zero matching rows as though the file were for the wrong
+    province. Callers must skip it; see rows().
+    """
     with open(path, encoding="latin-1", errors="replace") as f:
         sample = f.read(8192)
         f.seek(0)
         delim = ";" if sample.count(";") > sample.count(",") else ","
         reader = csv.reader(f, delimiter=delim)
+        skip = 0
         header = next(reader)
-        # AdE files sometimes carry a preamble line before the real header.
         if len(header) < 5:
             header = next(reader)
-        return delim, [h.strip() for h in header]
+            skip = 1
+        return delim, [h.strip() for h in header], skip
+
+
+def rows(path):
+    """DictReader positioned past the preamble. The only correct way in."""
+    delim, cols, skip = sniff(path)
+    f = open(path, encoding="latin-1", errors="replace")
+    for _ in range(skip):
+        next(f)
+    return csv.DictReader(f, delimiter=delim), cols
 
 
 def inspect(path):
-    delim, cols = sniff(path)
+    delim, cols, skip = sniff(path)
     print(f"File:      {path}")
     print(f"Delimiter: {delim!r}")
+    print(f"Preamble:  {skip} line(s) above the header")
     print(f"Columns:   {len(cols)}\n")
     for c in cols:
         print(f"  {c}")
@@ -66,11 +88,9 @@ def inspect(path):
         print(f'    "{k}":{" " * (12 - len(k))}{v!r},{mark}')
     print("}")
 
-    with open(path, encoding="latin-1", errors="replace") as f:
-        r = csv.DictReader(f, delimiter=delim)
-        rows = [next(r) for _ in range(3)]
+    reader, _ = rows(path)
     print("\n--- First rows ---")
-    for row in rows:
+    for row, _i in zip(reader, range(3)):
         print({k: v for k, v in list(row.items())[:10]})
 
 
@@ -85,37 +105,44 @@ def _num(v):
 
 
 def load(path, comuni, semester):
-    delim, cols = sniff(path)
     m = config.OMI_COLUMNS
     # OMI writes 'SAN SEPOLCRO'; we write 'sansepolcro'. Compare on the
     # normalised key or every Sansepolcro band is skipped without a word.
     wanted = {config.norm_comune(c) for c in comuni}
-    rows = []
+    zona_labels = zone_labels(zone_path_for(path))
+    out = []
     seen = set()
 
-    with open(path, encoding="latin-1", errors="replace") as f:
-        for rec in csv.DictReader(f, delimiter=delim):
-            comune = (rec.get(m["comune"]) or "").strip()
-            if comune:
-                seen.add(comune)
-            if config.norm_comune(comune) not in wanted:
-                continue
-            lo = _num(rec.get(m["min_eur_m2"]))
-            hi = _num(rec.get(m["max_eur_m2"]))
-            if lo is None or hi is None:
-                continue
-            rows.append((
-                config.norm_comune(comune),
-                (rec.get(m["zona_code"]) or "").strip(),
-                (rec.get(m["zona"]) or "").strip(),
-                (rec.get(m["tipologia"]) or "").strip(),
-                (rec.get(m["stato"]) or "").strip(),
-                lo, hi,
-                (rec.get(m.get("surface_basis", "")) or "").strip().upper(),
-                semester,
-            ))
+    reader, _cols = rows(path)
+    for rec in reader:
+        comune = (rec.get(m["comune"]) or "").strip()
+        if comune:
+            seen.add(comune)
+        if config.norm_comune(comune) not in wanted:
+            continue
+        lo = _num(rec.get(m["min_eur_m2"]))
+        hi = _num(rec.get(m["max_eur_m2"]))
+        if lo is None or hi is None:
+            continue
+        link = (rec.get("LinkZona") or "").strip()
+        # Zona_Descr lives in the ZONE file, joined on LinkZona. Without
+        # it, centro-storico detection falls back to the B-prefix
+        # heuristic — good enough to split a distribution, not to publish.
+        descr = zona_labels.get(link) or (
+            (rec.get(m["zona"]) or "").strip() if m.get("zona") else "")
+        out.append((
+            config.norm_comune(comune),
+            (rec.get(m["zona_code"]) or "").strip(),
+            descr,
+            (rec.get(m["tipologia"]) or "").strip(),
+            (rec.get(m["stato"]) or "").strip(),
+            lo, hi,
+            (rec.get(m.get("surface_basis", "")) or "").strip().upper(),
+            semester,
+        ))
+    rows_ = out
 
-    if not rows:
+    if not rows_:
         near = sorted(c for c in seen
                       if any(config.norm_comune(c)[:4] == w[:4] for w in wanted))
         print(f"\n  !! No bands matched {sorted(wanted)}.")
@@ -127,7 +154,44 @@ def load(path, comuni, semester):
             print(f"     The file holds {len(seen)} distinct comuni and none")
             print("     resemble the ones requested. Wrong file, or the")
             print("     'comune' column mapping is wrong.")
-    return rows
+    return rows_
+
+
+def zone_path_for(valori_path):
+    """The ZONE file that pairs with a VALORI file, if it is beside it.
+
+    AdE ships them together as QIP_<id>_1_<semester>_VALORI.csv and
+    ..._ZONE.csv. The zone file carries Zona_Descr, which valori does not.
+    """
+    from pathlib import Path
+    p = Path(valori_path)
+    for cand in (p.with_name(p.name.replace("VALORI", "ZONE")),
+                 p.with_name("omi_zone.csv"),
+                 p.with_name("zone.csv")):
+        if cand.exists() and cand != p:
+            return str(cand)
+    return None
+
+
+def zone_labels(zone_path):
+    """LinkZona -> Zona_Descr. Empty dict if no zone file is present.
+
+    Descriptions arrive wrapped in single quotes ('CENTRO STORICO - ...'),
+    which are stripped here rather than left to surprise a downstream
+    string match.
+    """
+    if not zone_path:
+        return {}
+    reader, cols = rows(zone_path)
+    if "Zona_Descr" not in cols or "LinkZona" not in cols:
+        return {}
+    out = {}
+    for rec in reader:
+        link = (rec.get("LinkZona") or "").strip()
+        descr = (rec.get("Zona_Descr") or "").strip().strip("'").strip()
+        if link and descr:
+            out[link] = descr
+    return out
 
 
 def report_surface_basis(rows):

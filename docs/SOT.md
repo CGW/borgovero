@@ -96,13 +96,14 @@ precious is `id_anchors.json` — see §6.
 |---|---|
 | Ingest | Working, verified live 2026-08-27 |
 | Database | **Not present.** Needs a fresh run — ~12 requests |
-| OMI bands | **Not loaded.** File not yet downloaded. All published percentages are provisional |
+| OMI bands | **Downloaded and verified.** Arezzo 2025-2 and 2021-1, valori + zone + KML, in `data/QIP…/`. Loader tested: 53 rows across both comuni, sanity anchors pass. Not yet loaded into a database, because there is no database |
 | ID curve | 23 measured anchors, 2021-03 to 2026-08 |
 | Site generator | Preview pages only, demo + real sample |
 | Idealista adapter | Written S002, **selectors unverified** — see §9 |
 
-**Every percentage in §5 rests on placeholder bands.** They move when the
-real OMI file loads.
+**Every percentage in §5 still rests on placeholder bands** — they were
+computed in S001 and have not been recomputed. §8 records what the real
+bands say about them, and it is not flattering.
 
 ---
 
@@ -275,15 +276,62 @@ one was picked; showing both makes the gap itself the finding.
 S001 found +52% (elsewhere) vs +13% (centro storico). **That comparison is
 weaker than it looks:** it is a single cell of the DOM × zone table — the
 1–2 year row — so it rests on *both* the invented rural bands (approximated
-at 0,72× centro) *and* the ID curve S001 declared unpublishable. Fixing the
-bands alone will not settle it.
+at 0,72× centro) *and* the ID curve S001 declared unpublishable.
 
-The comparison that survives on bands alone is rural +23% vs urban +13%
-(n=92/169), which uses no dates at all. **Re-run that first.**
+**S002 loaded the real bands, and the premise was wrong twice over.**
 
-If it holds against real bands, repoint the site: zone becomes a first-class
-page, ranked lists sort by percent over band, and the centro-storico framing
-goes.
+First, the centro storico is not the premium zone. Sansepolcro 2025-2,
+*Abitazioni civili*:
+
+| Zone | | Band |
+|---|---|---|
+| B1 | centro storico | 1000–1400 |
+| **C1** | **hillside north of the centro** | **1200–1700** |
+| D1 | expansion south/west | 1000–1400 |
+| E1 | industrial Santa Fiora | 850–1100 |
+| R2 | frazioni, south | 850–1100 |
+| R3 | frazioni, north | 750–1000 |
+
+C1 is the most expensive residential zone by 20–30%, and *Ville e Villini*
+in C1 runs 1500–1900 — the highest band in either comune. Anghiari has only
+B1 and R1, so the comparison there is coarser.
+
+Second, the invented rural bands were far too low. 0,72× centro gave
+720–1008; real rural ceilings are 1000, 1100, and for *Ville e Villini*
+1200, 1400 and 1450. Rural listings were measured against a ceiling **9–44%
+too low**, which mechanically manufactured the rural overpricing.
+
+**Still unresolved**, because it needs a re-run against real listings, and
+the database does not exist yet. What can be said now is that the S001
+finding should be treated as an artifact until reproduced.
+
+### How much of the rural answer is our own classification?
+
+OMI has **no category for a stone farmhouse** — the region's characteristic
+property. The 92 rustici must be filed under one of OMI's four residential
+tiers, and the choice decides the answer:
+
+```
+rural median EUR1.381/m2, R zones only
+  as Ville e Villini (published)    950-1400  ->   -1,4%
+  as Abitazioni di tipo economico   650- 950  ->  +45,4%
+```
+
+Same properties, same prices, same file, 47 percentage points apart.
+
+**Decision (S002): file rustici under Ville e Villini — the most generous
+band — and report the span alongside.** If overpricing survives the most
+favourable classification available, no agent can dismiss it as a chosen
+denominator. If it only appears under the harshest, we would be doing
+exactly what this project accuses agencies of. Same principle as
+`SURFACE_BASIS="both"`.
+
+`analyze._rustico_span()` prints both readings and states whether the
+verdict depends on the choice. **Revisit per-listing** once the ingest
+reports yield on `condition`: restored → Ville e Villini, to-renovate →
+economico. Unpopulated ones need the default regardless.
+
+That OMI has no farmhouse category is itself worth publishing.
 
 ### Is the market relisting to reset the clock?
 
@@ -386,14 +434,14 @@ Remaining notes:
 cd phase0
 pip install requests beautifulsoup4
 
-python selftest.py                  # verify the pipeline offline first
-python -m adapters.immobiliare --probe
-python run.py                       # ~12 requests, under a minute
-python omi.py --inspect             # then fix OMI_COLUMNS in config.py
-python omi.py                       # loads + sanity-checks
-python id_curve.py --backfill
-python id_curve.py --report
-python analyze.py
+python3 selftest.py                  # verify the pipeline offline first
+python3 -m adapters.immobiliare --probe
+python3 run.py                       # ~12 requests, under a minute
+python3 omi.py --inspect             # then fix OMI_COLUMNS in config.py
+python3 omi.py                       # loads + sanity-checks
+python3 id_curve.py --backfill
+python3 id_curve.py --report
+python3 analyze.py
 ```
 
 `config.CONTACT_URL` must be set before anything runs — the script refuses
@@ -473,6 +521,7 @@ building before writing a page of it.
 | Session | Date | What changed |
 |---|---|---|
 | S001 | 2026-08-27 | Spec, Phase 0 ingest, site generator, cross-portal test, first real-data run on placeholder bands. Wayback anchor harvest started, interrupted mid-run on Sansepolcro. No wrap written. |
+| S002 | 2026-08-27 | Real bands loaded and inspected. Fixed a second load-breaking bug: `sniff()` skipped the AdE preamble line but `load()` did not, so `DictReader` took the caption as its header and matched zero rows. Added `rows()` as the single correct entry point, plus `zone_labels()` joining `Zona_Descr` from the ZONE file on `LinkZona`. `band_for()` filtered by zone only for centro storico — everything else collapsed across all zones, handing a rural farmhouse a 1900 ceiling set by C1 villas; now filtered via `config.ZONA_TO_FASCIA` on OMI's own B/C/D/E/R letter. Its no-match fallback also spanned Capannoni to Ville (280–1900); now residential only. Rustici filed under Ville e Villini with the span reported (§8). README/SOT commands corrected to `python3`. |
 | S002 | 2026-08-27 | OMI: found `Comune_descrizione` is `SAN SEPOLCRO` with a space — the loader's exact-match filter would have dropped every Sansepolcro band and then all 178 Sansepolcro listings, silently. Added `config.norm_comune` on both write and lookup. Corrected `stato`→`Stato`, `zona`→None (Zona_Descr is in the zone file), semester→2025-2, sanity anchor→1000–1400, all verified against the OMI web consultation. Confirmed basis is **L (lorda)** — neither surface column matches it (§7). Seismic-suspension list checked: Arezzo never appears. Bulk files requested (Arezzo, 2025-2 and 2021-1, with zone perimeters). Built `adapters/idealista.py` with offline `--selftest`; added `price_previous`, `price_cut_pct`, `eur_m2_stated` and a migration. |
 | S002 | 2026-08-27 | Anchor harvest completed (23 anchors, 2021-03→2026-08). Confirmed 69% issuance spread — piecewise only, no seasonal dip. `id_curve.py`: extrapolation past outer anchors replaced with floor/ceiling bounds. `analyze.py`: now reads the confidence flag it was always given — confidence mix in data quality, containment-based bucketing for bounds, ambiguous bounds excluded from DOM splits. `config.DOM_MIN_CONFIDENCE` added. `selftest.py` extended to cover both bound paths. This file created. |
 

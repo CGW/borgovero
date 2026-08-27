@@ -103,8 +103,49 @@ OMI_COLUMNS = {
 OMI_TIPOLOGIA_MAP = {
     "Abitazioni civili":            ["appartamento", "terratetto", "cielo_terra"],
     "Abitazioni di tipo economico": ["appartamento", "terratetto", "cielo_terra"],
-    "Ville e Villini":              ["villa"],
+    # 'rustico' is deliberately here and not under economico. OMI has NO
+    # category for a stone farmhouse, which is the region's characteristic
+    # property, so the classification is ours to make and it decides the
+    # answer: the same 92 rural listings come out at -1% over ceiling as
+    # Ville e Villini and +45% as economico. Same properties, same prices.
+    #
+    # Conservative on purpose. If overpricing survives the most GENEROUS
+    # band available, no agent can dispute it. If it only appears under
+    # the harshest band, we have done exactly what this project accuses
+    # agencies of — choosing the denominator that flatters the number.
+    "Ville e Villini":              ["villa", "rustico"],
     "Abitazioni signorili":         ["appartamento", "villa"],
+}
+
+# The other defensible reading of a rustico, reported as a span alongside
+# the headline rather than chosen. Same principle as SURFACE_BASIS="both":
+# publish both or neither. The gap between them is itself a finding — it
+# measures how much the verdict depends on a judgement OMI forced on us.
+#
+# Revisit per-listing once ingest reports the yield on `condition`:
+# restored -> Ville e Villini, to-renovate -> economico. Until then the
+# unpopulated ones would need this default anyway.
+RUSTICO_ALT_TIPOLOGIA = "Abitazioni di tipo economico"
+
+# OMI's zone codes carry their class in the first letter — B1, C1, D1,
+# E1, R2 — following the standard fascia taxonomy:
+#
+#   B  centrale        C  semicentrale    D  periferica
+#   E  suburbana       R  rurale
+#
+# Our coarser zona_guess maps onto it as below. This matters more than it
+# looks: without it, band_for() takes the min and max across EVERY zone in
+# the comune, so a rural farmhouse is measured against a ceiling set by
+# hillside villas in C1 (1900 in Sansepolcro 2025-2) and nothing rural can
+# ever read as overpriced.
+#
+# Note what the real data says about C1 — 'zona collinare a nord del
+# centro storico' runs 1200-1700 for abitazioni civili against the centro
+# storico's 1000-1400. The premium zone is NOT the historic centre.
+ZONA_TO_FASCIA = {
+    "centro_storico": ("B",),
+    "periferia":      ("C", "D", "E"),
+    "campagna":       ("R",),
 }
 
 # Known anchors, for sanity-checking the loaded file.

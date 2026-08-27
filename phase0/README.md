@@ -60,7 +60,7 @@ Python 3.9+. Everything else is stdlib — SQLite, no pandas, no build step.
 ## Verify the pipeline before touching the network
 
 ```bash
-python selftest.py
+python3 selftest.py
 ```
 
 Seeds a throwaway database with **invented** listings shaped like a market with a stale tail, runs the analysis, and should print a `STALE TAIL IS THE STORY` verdict. If that works, the stats and gate logic are sound and anything that goes wrong afterwards is ingest, not analysis.
@@ -80,7 +80,7 @@ An identifiable user agent is the cheapest protection available: it turns "unkno
 ### 2. Probe the adapter
 
 ```bash
-python -m adapters.immobiliare --probe
+python3 -m adapters.immobiliare --probe
 ```
 
 Fetches one search page and reports per-field yield across all 25 listings on it, plus any typologies it couldn't map.
@@ -92,7 +92,7 @@ Also note what the probe says about `robots.txt`. The script **reports and does 
 ### 3. Ingest
 
 ```bash
-python run.py
+python3 run.py
 ```
 
 ~4s per request, single-threaded, every response cached to disk. **~12 requests, under a minute** for Sansepolcro + Anghiari. Add `--comuni` with the full list from `config.ALL_VALTIBERINA` for all eight (~27 requests).
@@ -106,8 +106,8 @@ Ends with a field-yield report. Below-threshold yields mean stop and fix the par
 Download the semestral *Quotazioni immobiliari* export from the [Agenzia delle Entrate](https://www1.agenziaentrate.gov.it/servizi/Consultazione/ricerca.htm). You want the **valori** file, not the **zone** file. Free, bulk, no scraping.
 
 ```bash
-python omi.py --inspect     # prints real columns + suggested mapping
-python omi.py               # loads, then sanity-checks
+python3 omi.py --inspect     # prints real columns + suggested mapping
+python3 omi.py               # loads, then sanity-checks
 ```
 
 Column names shift between releases, so nothing is assumed. `--inspect` prints a ready-to-paste `OMI_COLUMNS` block.
@@ -117,8 +117,8 @@ The sanity check compares loaded bands against your known anchors — Sansepolcr
 ### 5. Listing dates (Job B)
 
 ```bash
-python id_curve.py --backfill
-python id_curve.py --report
+python3 id_curve.py --backfill
+python3 id_curve.py --report
 ```
 
 Seeded with your two known anchors (~47M ≈ 2018–19, ~116M ≈ 2024–25). Two points is a straight line, and ID issuance isn't linear — volume grew, so the curve bends. **Mid-range estimates are the weakest, and the Valtiberina stale tail sits exactly there.**
@@ -126,7 +126,7 @@ Seeded with your two known anchors (~47M ≈ 2018–19, ~116M ≈ 2024–25). Tw
 Add pairs as you find them:
 
 ```bash
-python id_curve.py --add 78500000 2021-06-15 --method wayback
+python3 id_curve.py --add 78500000 2021-06-15 --method wayback
 ```
 
 Cheapest sources: Wayback CDX first-capture for any listing URL, listings that state their own publication date, agency pages that date their listings.
@@ -136,7 +136,7 @@ Cheapest sources: Wayback CDX first-capture for any listing URL, listings that s
 ### 6. The answer
 
 ```bash
-python analyze.py
+python3 analyze.py
 ```
 
 Prints data quality, the distribution against band ceiling and midpoint, splits by DOM / comune / typology, and the decision gate. Writes `phase0_results.csv` sorted worst-offender first.

@@ -41,24 +41,50 @@ def fmt_pct(v):
     return "  n/a" if v is None else f"{v:+6.1f}%"
 
 
-def band_for(omi_rows, typology, zona):
-    """Return (min, max, how) for a listing, or None."""
-    tipi = [t for t, ours in config.OMI_TIPOLOGIA_MAP.items()
-            if typology in ours]
-    rows = [r for r in omi_rows if r["tipologia"] in tipi] or list(omi_rows)
+def band_for(omi_rows, typology, zona, force_tipologia=None):
+    """Return (min, max, how) for a listing, or None.
+
+    `force_tipologia` overrides the mapping, used to price the same
+    listing against an alternative OMI category — see the rustico span in
+    config.RUSTICO_ALT_TIPOLOGIA.
+
+    The fallback here used to be `or list(omi_rows)` — every row for the
+    comune. That is catastrophic on a real OMI file, because a comune's
+    rows include Capannoni industriali, Magazzini, Box and Negozi. For
+    Sansepolcro 2025-2 that fallback spans 280 to 1900 EUR/m2, so an
+    unmapped typology gets compared against a band running from an
+    industrial shed to a hillside villa, and essentially nothing can
+    register as overpriced. Restricted to residential typologies only.
+    """
+    if force_tipologia:
+        tipi = [force_tipologia]
+    else:
+        tipi = [t for t, ours in config.OMI_TIPOLOGIA_MAP.items()
+                if typology in ours]
+    rows = [r for r in omi_rows if r["tipologia"] in tipi]
+    how = "typology"
+    if not rows:
+        residential = set(config.OMI_TIPOLOGIA_MAP)
+        rows = [r for r in omi_rows if r["tipologia"] in residential]
+        how = "residential-fallback"
     if not rows:
         return None
 
-    if zona == "centro_storico":
+    # Filter to the right band of zones. Only centro storico used to be
+    # filtered; everything else collapsed across every zone in the comune,
+    # which on real data hands a rural farmhouse the same 1900 ceiling as
+    # a hillside villa in C1 and makes it impossible for anything rural to
+    # register as overpriced. OMI's own first letter carries the class.
+    letters = config.ZONA_TO_FASCIA.get(zona)
+    if letters:
         z = [r for r in rows
-             if "centro" in (r["zona_descr"] or "").lower()
-             or (r["zona_code"] or "").upper().startswith("B")]
+             if (r["zona_code"] or "").upper().startswith(letters)]
         if z:
             return min(r["min_eur_m2"] for r in z), \
-                   max(r["max_eur_m2"] for r in z), "zona+typology"
+                   max(r["max_eur_m2"] for r in z), f"{how}+zona"
 
     return min(r["min_eur_m2"] for r in rows), \
-           max(r["max_eur_m2"] for r in rows), "comune+typology"
+           max(r["max_eur_m2"] for r in rows), f"{how}+comune"
 
 
 def dom_conf(dom_method):
@@ -168,6 +194,15 @@ def build_rows(conn, basis="net"):
             continue
         stats["usable"] += 1
 
+        # The same listing priced against the other defensible reading of
+        # its typology. Null except for rustici, where OMI forces a choice.
+        pct_alt = None
+        if L["typology"] == "rustico":
+            alt = band_for(omi_rows, L["typology"], L["zona_guess"],
+                           force_tipologia=config.RUSTICO_ALT_TIPOLOGIA)
+            if alt:
+                pct_alt = round((eur_m2 - alt[1]) / alt[1] * 100, 1)
+
         conf = dom_conf(L["dom_method"])
         bucket = dom_bucket(L["dom_est"], conf)
         stats["dom_conf"][conf or "none"] = \
@@ -191,6 +226,7 @@ def build_rows(conn, basis="net"):
             "band_hi": hi,
             "band_how": how,
             "pct_over_ceiling": round((eur_m2 - hi) / hi * 100, 1),
+            "pct_over_ceiling_alt": pct_alt,
             "pct_over_mid": round((eur_m2 - mid) / mid * 100, 1),
             "dom_est": L["dom_est"],
             "dom_conf": conf,
@@ -457,9 +493,50 @@ def main():
     print("  finding, and teaches the buyer the mechanism.")
     print("-" * 72)
 
+    _rustico_span(net_rows)
     _robustness(net_rows, com_rows)
     verdict(net_rows, n_med)
     _write_csv(net_rows)
+
+
+def _rustico_span(rows):
+    """How much of the rural verdict rests on our own classification.
+
+    OMI has no category for a stone farmhouse. We file them under Ville e
+    Villini — the most generous band available — precisely so the finding
+    cannot be dismissed as a chosen denominator. This block reports what
+    the harsher reading would have produced, so the choice is visible
+    rather than buried in a config file.
+
+    If the two columns land on the same side of zero, the rural finding
+    does not depend on the judgement and can be published flatly. If they
+    straddle it, the honest headline is the span.
+    """
+    rust = [r for r in rows
+            if r["typology"] == "rustico" and r["pct_over_ceiling_alt"] is not None]
+    if not rust:
+        return
+
+    head = st.median([r["pct_over_ceiling"] for r in rust])
+    alt = st.median([r["pct_over_ceiling_alt"] for r in rust])
+
+    print("\nRUSTICO CLASSIFICATION — the judgement OMI forced on us")
+    print(f"  n = {len(rust)} farmhouse listings")
+    print(f"  as Ville e Villini (published):   {head:+.1f}%")
+    print(f"  as {config.RUSTICO_ALT_TIPOLOGIA}:{alt:+.1f}%")
+    print(f"  span:                             {abs(alt - head):.1f} pp")
+
+    if (head > 0) == (alt > 0):
+        side = "above" if head > 0 else "at or below"
+        print(f"\n  >>> ROBUST. Both readings put rural listings {side} the")
+        print("      band, so the finding does not depend on how a")
+        print("      farmhouse is classified. Publish it flatly.")
+    else:
+        print("\n  >>> CLASSIFICATION-DEPENDENT. The two readings disagree on")
+        print("      whether rural listings are overpriced at all. Publish")
+        print("      the span, not a point — and say plainly that OMI has")
+        print("      no category for the region's characteristic property.")
+        print("      That absence is itself worth reporting.")
 
 
 def _robustness(net_rows, com_rows):
