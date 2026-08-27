@@ -26,6 +26,17 @@ CREATE TABLE IF NOT EXISTS listings (
     condition       TEXT,      -- ga4Condition, maps to OMI stato_conservativo
     epc             TEXT,      -- detail page only; null in Phase 0
     price           INTEGER,
+    -- Idealista publishes a previous asking price and the percentage cut
+    -- right on the search page. Immobiliare does not. This is the only
+    -- price history available without observing the market for months,
+    -- and it is overwritten on the portal's next update — capture it on
+    -- every run or it is gone.
+    price_previous  INTEGER,
+    price_cut_pct   REAL,
+    -- Idealista also prints EUR/m2 computed on ITS OWN surface figure,
+    -- which sometimes differs from Immobiliare's for the same property.
+    -- Stored as stated rather than recomputed; the divergence is a finding.
+    eur_m2_stated   REAL,
     description     TEXT,
     caption         TEXT,
     lat             REAL,
@@ -68,11 +79,34 @@ CREATE TABLE IF NOT EXISTS id_date_pairs (
 """
 
 
+# Columns added after the first schema shipped. CREATE TABLE IF NOT EXISTS
+# will not add a column to a table that already exists, so a database made
+# before these landed would silently lack them and every write would fail.
+LATE_COLUMNS = {
+    "listings": [
+        ("price_previous", "INTEGER"),
+        ("price_cut_pct", "REAL"),
+        ("eur_m2_stated", "REAL"),
+    ],
+}
+
+
+def _migrate(conn):
+    for table, cols in LATE_COLUMNS.items():
+        have = {r["name"] for r in
+                conn.execute(f"PRAGMA table_info({table})").fetchall()}
+        for name, decl in cols:
+            if name not in have:
+                conn.execute(f"ALTER TABLE {table} ADD COLUMN {name} {decl}")
+    conn.commit()
+
+
 def connect():
     Path(config.HTML_CACHE_DIR).mkdir(parents=True, exist_ok=True)
     conn = sqlite3.connect(config.DB_PATH)
     conn.row_factory = sqlite3.Row
     conn.executescript(SCHEMA)
+    _migrate(conn)
     return conn
 
 
@@ -81,7 +115,8 @@ def upsert_listing(conn, rec):
         "source", "source_id", "url", "comune", "zona_guess", "macrozone",
         "typology", "typology_raw", "address_raw", "mq", "mq_commercial",
         "surface_raw", "vani", "bathrooms", "floor", "condition", "epc",
-        "price", "description", "caption", "lat", "lon", "agency_id",
+        "price", "price_previous", "price_cut_pct", "eur_m2_stated",
+        "description", "caption", "lat", "lon", "agency_id",
         "agency_name", "photo_ids", "photo_count", "listed_date_est",
         "dom_est", "dom_method", "fetched_at",
     ]

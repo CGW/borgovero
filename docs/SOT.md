@@ -99,7 +99,7 @@ precious is `id_anchors.json` — see §6.
 | OMI bands | **Not loaded.** File not yet downloaded. All published percentages are provisional |
 | ID curve | 23 measured anchors, 2021-03 to 2026-08 |
 | Site generator | Preview pages only, demo + real sample |
-| Idealista adapter | **Not written** |
+| Idealista adapter | Written S002, **selectors unverified** — see §9 |
 
 **Every percentage in §5 rests on placeholder bands.** They move when the
 real OMI file loads.
@@ -334,15 +334,47 @@ build item.
 Idealista also prints €/m² computed on *its own* surface figure, giving a
 third divergence axis at zero calculation cost.
 
-### Notes for the adapter
+### The adapter (built S002, UNVERIFIED)
 
-- Page structure is rendered DOM (`article.item`), not a JSON payload. More
-  fragile than Immobiliare's `__NEXT_DATA__`; needs breakage assertions.
-- Address normalisation: Idealista appends `Nn` to streets with no civico
-  ("Viale Osimo Nn") and sometimes includes one ("Via Vannocchia, 133").
-  Strip suffix, split on comma, fuzzy-match the remainder.
+`adapters/idealista.py` exists and mirrors the Immobiliare adapter's
+interface: `search_url`, `parse_result`, `harvest`, `--probe`. It captures
+`price_previous`, `price_cut_pct` and `eur_m2_stated`, which are new columns
+on `listings` (added with an `ALTER`-based migration in `db._migrate`, since
+`CREATE TABLE IF NOT EXISTS` will not add columns to an existing table).
+
+**It has never touched the live site.** It was written offline from the
+cross-portal notes, so the URL patterns, CSS class names and pagination
+scheme are informed guesses. Two mitigations:
+
+- Every extractor takes a *list* of candidate selectors and reports which
+  one fired. `--probe` prints the page's most common containers when
+  nothing matches, so a miss is diagnosable rather than silent.
+- `--selftest` parses a fixture shaped like the two real listings recorded
+  above, offline. It proves the parsing logic is right even while the
+  selectors are unconfirmed — and after a selector repair it confirms
+  nothing else broke.
+
+**Run `--probe` before `--selftest` is taken as any kind of green light.**
+
+Remaining notes:
+
+- Rendered DOM, not a JSON payload. Structurally more fragile than
+  Immobiliare's `__NEXT_DATA__` and will break on redesigns the other
+  would survive.
+- Address normalisation handles three quirks: the link title is a full
+  sentence ("Appartamento in vendita in via Roma, 12"), `Nn` is appended
+  where a street has no civico, and a civico may follow a comma.
+  Immobiliare does none of these; each one left in place is a property
+  that fails to match its twin.
+- Idealista publishes **one** surface figure and does not state its basis.
+  Stored as `mq` with `mq_commercial` left null rather than guessed — §7
+  is already the largest open risk and this would compound it.
+- No coordinates on the search page, so `lat`/`lon` are null. Once the OMI
+  zone KML is loaded, Immobiliare listings can be zoned by point-in-polygon
+  but Idealista ones cannot without detail fetches.
 - **Price is the reliable join key** at this scale. Exact price plus
   approximate surface produced unambiguous matches across 165 listings.
+  The matcher itself is not written — that is a separate module.
 - Overlap *rate* is not established — matches were found by inspection on a
   partial sample.
 
@@ -441,6 +473,7 @@ building before writing a page of it.
 | Session | Date | What changed |
 |---|---|---|
 | S001 | 2026-08-27 | Spec, Phase 0 ingest, site generator, cross-portal test, first real-data run on placeholder bands. Wayback anchor harvest started, interrupted mid-run on Sansepolcro. No wrap written. |
+| S002 | 2026-08-27 | OMI: found `Comune_descrizione` is `SAN SEPOLCRO` with a space — the loader's exact-match filter would have dropped every Sansepolcro band and then all 178 Sansepolcro listings, silently. Added `config.norm_comune` on both write and lookup. Corrected `stato`→`Stato`, `zona`→None (Zona_Descr is in the zone file), semester→2025-2, sanity anchor→1000–1400, all verified against the OMI web consultation. Confirmed basis is **L (lorda)** — neither surface column matches it (§7). Seismic-suspension list checked: Arezzo never appears. Bulk files requested (Arezzo, 2025-2 and 2021-1, with zone perimeters). Built `adapters/idealista.py` with offline `--selftest`; added `price_previous`, `price_cut_pct`, `eur_m2_stated` and a migration. |
 | S002 | 2026-08-27 | Anchor harvest completed (23 anchors, 2021-03→2026-08). Confirmed 69% issuance spread — piecewise only, no seasonal dip. `id_curve.py`: extrapolation past outer anchors replaced with floor/ceiling bounds. `analyze.py`: now reads the confidence flag it was always given — confidence mix in data quality, containment-based bucketing for bounds, ambiguous bounds excluded from DOM splits. `config.DOM_MIN_CONFIDENCE` added. `selftest.py` extended to cover both bound paths. This file created. |
 
 ---
