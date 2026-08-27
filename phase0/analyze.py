@@ -61,9 +61,49 @@ def band_for(omi_rows, typology, zona):
            max(r["max_eur_m2"] for r in rows), "comune+typology"
 
 
-def dom_bucket(dom):
+def dom_conf(dom_method):
+    """'high' | 'medium' | 'bound_old' | 'bound_new' | None.
+
+    id_curve.py writes this as 'immobiliare_id:<conf>'. Until S002 nothing
+    read it back, so a fabricated date sat in the same bucket as a tightly
+    bracketed one and no table could tell you which was which.
+    """
+    if not dom_method or ":" not in dom_method:
+        return None
+    return dom_method.rsplit(":", 1)[1]
+
+
+def dom_bucket(dom, conf=None):
+    """Which DOM bucket a listing belongs in, or None if not determinable.
+
+    For a bracketed estimate this is the ordinary lookup.
+
+    For a BOUND it is a containment test, and that is the point. A floor of
+    2,000 days says the true age lies somewhere in [2000, inf). That
+    interval sits entirely inside 'over 4 years', so the listing belongs
+    there with certainty — no estimate required, nothing to dispute. A
+    floor of 900 days spans two buckets and tells us nothing, so it is
+    dropped rather than guessed.
+
+    This is what rescues the oldest listings. They are the least precisely
+    dated in the set and simultaneously the ones the whole thesis rests on,
+    and a bound is enough to place them.
+    """
     if dom is None:
         return None
+
+    first_hi = config.DOM_BUCKETS[0][2]
+    last_lo = config.DOM_BUCKETS[-1][1]
+
+    if conf == "bound_old":
+        # True age is >= dom. Certain only in the open-ended last bucket.
+        return config.DOM_BUCKETS[-1][0] if dom >= last_lo else None
+    if conf == "bound_new":
+        # True age is <= dom. Certain only in the first bucket.
+        return config.DOM_BUCKETS[0][0] if dom < first_hi else None
+    if conf == "medium" and getattr(config, "DOM_MIN_CONFIDENCE", "medium") == "high":
+        return None
+
     for label, lo, hi in config.DOM_BUCKETS:
         if lo <= dom < hi:
             return label
@@ -97,7 +137,8 @@ def build_rows(conn, basis="net"):
     }
 
     stats = {"total": len(listings), "with_mq": 0, "with_price": 0,
-             "with_band": 0, "usable": 0, "with_mq_comm": 0}
+             "with_band": 0, "usable": 0, "with_mq_comm": 0,
+             "dom_conf": {}, "dom_unbucketable": 0}
     out = []
 
     for L in listings:
@@ -127,6 +168,13 @@ def build_rows(conn, basis="net"):
             continue
         stats["usable"] += 1
 
+        conf = dom_conf(L["dom_method"])
+        bucket = dom_bucket(L["dom_est"], conf)
+        stats["dom_conf"][conf or "none"] = \
+            stats["dom_conf"].get(conf or "none", 0) + 1
+        if L["dom_est"] is not None and bucket is None:
+            stats["dom_unbucketable"] += 1
+
         mid = (lo + hi) / 2
         out.append({
             "source_id": L["source_id"],
@@ -145,7 +193,10 @@ def build_rows(conn, basis="net"):
             "pct_over_ceiling": round((eur_m2 - hi) / hi * 100, 1),
             "pct_over_mid": round((eur_m2 - mid) / mid * 100, 1),
             "dom_est": L["dom_est"],
-            "dom_bucket": dom_bucket(L["dom_est"]),
+            "dom_conf": conf,
+            "dom_is_bound": {"bound_old": "floor",
+                             "bound_new": "ceiling"}.get(conf, ""),
+            "dom_bucket": bucket,
             "url": L["url"],
         })
 
@@ -247,9 +298,9 @@ def verdict(rows, overall_med):
             print(f"      Age barely predicts overpricing, so days-on-market is")
             print(f"      a weaker weapon here than assumed. The OMI gap carries")
             print(f"      the argument on its own. Worth rechecking the DOM")
-            print(f"      estimates before accepting this — with only two ID")
-            print(f"      anchors the bucketing may simply be too coarse to")
-            print(f"      resolve a real spread.")
+            print(f"      estimates before accepting this — if most listings")
+            print(f"      landed in one or two buckets, the bucketing may be")
+            print(f"      too coarse to resolve a spread that is really there.")
 
     print()
 
@@ -266,6 +317,26 @@ def run_one(conn, basis, quiet_quality=False):
         print(f"  With commerciale       {stats['with_mq_comm']} ({stats['with_mq_comm']/t*100:.0f}%)")
         print(f"  Matched to OMI band    {stats['with_band']} ({stats['with_band']/t*100:.0f}%)")
         print(f"  Usable                 {stats['usable']} ({stats['usable']/t*100:.0f}%)")
+
+        dc = stats["dom_conf"]
+        if dc:
+            note = {
+                "high":      "bracketed by close anchors",
+                "medium":    "bracketed, wide anchor gap",
+                "bound_old": "older than the earliest anchor (floor only)",
+                "bound_new": "newer than the latest anchor (ceiling only)",
+                "none":      "no date estimate",
+            }
+            print("\n  DOM confidence (usable listings)")
+            for k in ("high", "medium", "bound_old", "bound_new", "none"):
+                if k in dc:
+                    print(f"    {k:<10} {dc[k]:>5}   {note[k]}")
+            if stats["dom_unbucketable"]:
+                print(f"\n  {stats['dom_unbucketable']} listing(s) have a bound too "
+                      f"loose to place in a bucket.")
+                print("  They are excluded from every DOM split below and from")
+                print("  the gate. They still count in the headline median,")
+                print("  which does not depend on dates.")
 
         if stats["usable"] < 30:
             print("\n  !! Under 30 usable listings. Nothing below is a finding.")
@@ -355,6 +426,10 @@ def main():
     n_med, c_med = pair_row("all listings", net_rows, com_rows)
 
     pair_header("BY DAYS ON MARKET")
+    n_bound = sum(1 for r in net_rows if r["dom_is_bound"])
+    if n_bound:
+        print(f"  ({n_bound} of {len(net_rows)} placed by a bound rather than an")
+        print("   estimate — certain of the bucket, not of the exact age.)")
     for lbl, _, _ in config.DOM_BUCKETS:
         pair_row(lbl, net_rows, com_rows, lambda r, l=lbl: r["dom_bucket"] == l)
 
@@ -426,8 +501,10 @@ def _robustness(net_rows, com_rows):
         print("      that it is basis-dependent rather than being caught out.")
     else:
         print("\n  >>> No age gradient on either basis. Days-on-market is not")
-        print("      the weapon here. Check the DOM estimates before")
-        print("      accepting that — two ID anchors may be too coarse.")
+        print("      the weapon here. Check the DOM confidence mix above")
+        print("      before accepting that — if the oldest bucket is thin or")
+        print("      carried entirely by bounds, the gradient may be real but")
+        print("      unresolved rather than absent.")
 
 
 def _single_basis_report(conn, rows, basis):

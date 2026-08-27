@@ -96,6 +96,23 @@ DOM_BUCKETS = [
     ("over 4 years",    1460, 99999),
 ]
 
+# id_curve.py labels every date estimate with a confidence:
+#
+#   high        bracketed by anchors less than 8M ids apart
+#   medium      bracketed, but by a wide gap
+#   bound_old   below the earliest anchor — age is a FLOOR, not an estimate
+#   bound_new   above the latest anchor  — age is a CEILING
+#
+# Bounds are not discarded. A floor of 2,000 days sits entirely inside
+# "over 4 years", so the listing belongs there with certainty. A floor that
+# straddles two buckets is dropped from the DOM splits instead of guessed.
+# That containment test is what keeps the oldest listings — the whole point
+# of the project — in the analysis without inventing dates for them.
+#
+#   "medium"  accept wide-gap interpolations (default)
+#   "high"    accept only tightly bracketed ones; stricter, smaller n
+DOM_MIN_CONFIDENCE = "medium"
+
 # Decision gate thresholds (percent over OMI band ceiling)
 GATE_STRONG   = 35.0   # thesis holds as stated
 GATE_MODERATE = 20.0   # thesis holds, weaker

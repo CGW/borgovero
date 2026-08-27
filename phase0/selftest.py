@@ -41,16 +41,27 @@ def seed():
     today = date.today().toordinal()
 
     # Deliberate shape: overpricing rises with age.
+    #
+    # The fourth column mirrors how the real curve behaves: the oldest
+    # listings sit below the earliest anchor and can only be given a FLOOR,
+    # the newest sit above the latest anchor and can only be given a
+    # CEILING, and the middle is genuinely interpolated. If the bucketing
+    # logic ever stops accepting a bound that clears its boundary, the
+    # oldest profile drops out and this test loses its stale tail.
     profiles = [
-        (90,   1.02, 60),
-        (270,  1.10, 50),
-        (550,  1.28, 45),
-        (1100, 1.55, 40),
-        (2200, 1.95, 35),
+        (90,   1.02, 60, "bound_new"),
+        (270,  1.10, 50, "high"),
+        (550,  1.28, 45, "high"),
+        (1100, 1.55, 40, "medium"),
+        (2200, 1.95, 35, "bound_old"),
+        # A floor of ~800 days straddles '2-4 years' and everything older,
+        # so it places nothing. These 10 must be dropped from the DOM
+        # splits and still counted in the headline median.
+        (800,  1.40, 10, "bound_old"),
     ]
 
     n = 0
-    for dom, mult, count in profiles:
+    for dom, mult, count, conf in profiles:
         for _ in range(count):
             comune = rnd.choice(["sansepolcro", "anghiari"])
             zona = rnd.choice(["centro_storico", "periferia"])
@@ -88,7 +99,7 @@ def seed():
                 "photo_count": rnd.randint(5, 40),
                 "listed_date_est": date.fromordinal(today - d).isoformat(),
                 "dom_est": d,
-                "dom_method": "synthetic",
+                "dom_method": f"immobiliare_id:{conf}",
                 "fetched_at": "1970-01-01T00:00:00+00:00",
             })
             n += 1
