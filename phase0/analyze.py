@@ -17,6 +17,7 @@ whole build at long-DOM properties.
 """
 
 import csv
+import re
 import statistics as st
 import sys
 
@@ -85,6 +86,18 @@ def band_for(omi_rows, typology, zona, force_tipologia=None):
 
     return min(r["min_eur_m2"] for r in rows), \
            max(r["max_eur_m2"] for r in rows), f"{how}+comune"
+
+
+_AUCTION_AG = re.compile(config.AUCTION_AGENCY_RE, re.I)
+_AUCTION_TX = re.compile(config.AUCTION_TEXT_RE, re.I)
+
+
+def is_auction(L):
+    """Judicial auction rather than an ordinary sale. See config."""
+    if _AUCTION_AG.search(L["agency_name"] or ""):
+        return True
+    blob = f"{L['caption'] or ''} {L['description'] or ''}"
+    return bool(_AUCTION_TX.search(blob))
 
 
 def dom_conf(dom_method):
@@ -162,9 +175,26 @@ def build_rows(conn, basis="net"):
         for c in config.COMUNI
     }
 
+    # A comune with no bands loses every one of its listings at the
+    # band-match step, and the run still reports success on what is left.
+    # Citerna is the live example: it is in the province of PERUGIA, not
+    # Arezzo, so the Arezzo OMI file does not contain it and its 60
+    # listings would have disappeared without a word.
+    missing = [c for c in config.COMUNI
+               if not omi_by_comune.get(config.norm_comune(c))]
+    if missing:
+        n_lost = sum(1 for L in listings
+                     if config.norm_comune(L["comune"]) in
+                     {config.norm_comune(c) for c in missing})
+        print(f"\n  !! NO OMI BANDS FOR: {', '.join(missing)}")
+        print(f"     {n_lost} listing(s) will be dropped at the band-match")
+        print("     step. Check the province — the Valtiberina spans two:")
+        print("     Citerna is Perugia (Umbria), the other seven are")
+        print("     Arezzo (Toscana), and each needs its own OMI request.")
+
     stats = {"total": len(listings), "with_mq": 0, "with_price": 0,
              "with_band": 0, "usable": 0, "with_mq_comm": 0,
-             "dom_conf": {}, "dom_unbucketable": 0}
+             "dom_conf": {}, "dom_unbucketable": 0, "excluded_typology": {}}
     out = []
 
     for L in listings:
@@ -174,6 +204,16 @@ def build_rows(conn, basis="net"):
             stats["with_mq"] += 1
         if L["mq_commercial"]:
             stats["with_mq_comm"] += 1
+
+        typ = L["typology"]
+        if typ in getattr(config, "EXCLUDE_TYPOLOGIES", ()):
+            stats["excluded_typology"][typ] = \
+                stats["excluded_typology"].get(typ, 0) + 1
+            continue
+        if is_auction(L):
+            stats["excluded_typology"]["auction"] = \
+                stats["excluded_typology"].get("auction", 0) + 1
+            continue
 
         mq = surface_for(L, basis)
         if not (L["price"] and mq and mq > 0):
@@ -329,6 +369,16 @@ def verdict(rows, overall_med):
             print(f"      Narrower, harder to argue with, and it points the")
             print(f"      whole site at long-DOM properties. Tier 7 ranked")
             print(f"      lists become the front page, not a side feature.")
+        elif spread < 0 and overall_med < 0:
+            print(f"\n  >>> INVERTED, AND BELOW BAND.")
+            print(f"      Older listings are priced LOWER against the band")
+            print(f"      than fresh ones, and the median sits below the")
+            print(f"      ceiling. That is the opposite of the stale tail:")
+            print(f"      it is what a market looks like when sellers cut")
+            print(f"      prices the longer they wait.")
+            print(f"      Before accepting it, check whether the oldest")
+            print(f"      bucket is simply the cheap rural stock — a")
+            print(f"      typology mix effect reads identically here.")
         elif spread <= 5:
             print(f"\n  >>> UNIFORM OVERPRICING.")
             print(f"      Age barely predicts overpricing, so days-on-market is")
@@ -353,6 +403,11 @@ def run_one(conn, basis, quiet_quality=False):
         print(f"  With commerciale       {stats['with_mq_comm']} ({stats['with_mq_comm']/t*100:.0f}%)")
         print(f"  Matched to OMI band    {stats['with_band']} ({stats['with_band']/t*100:.0f}%)")
         print(f"  Usable                 {stats['usable']} ({stats['usable']/t*100:.0f}%)")
+
+        if stats["excluded_typology"]:
+            bits = ", ".join(f"{k} {v}" for k, v
+                             in sorted(stats["excluded_typology"].items()))
+            print(f"  Excluded as not comparable stock: {bits}")
 
         dc = stats["dom_conf"]
         if dc:
@@ -441,6 +496,15 @@ def main():
     if div:
         print(f"\n  Across {div['n']} listings here, commerciale exceeds floor")
         print(f"  area by a median of {div['median']:+.0f}% (p90 {div['p90']:+.0f}%).")
+    else:
+        print("\n  !! NO COMMERCIALE FIGURES IN THIS DATA.")
+        print("     The search payload carries one surface only, so")
+        print("     surface_for() falls back to the net figure for BOTH")
+        print("     bases and the two columns below are IDENTICAL. This")
+        print("     section is decoration until commerciale is captured,")
+        print("     which needs detail-page fetches — one request per")
+        print("     listing instead of one per 25.")
+        print("     Do not present these as two independent readings.")
 
     basis_rows = conn.execute(
         "SELECT DISTINCT surface_basis FROM omi_bands WHERE semester=?",

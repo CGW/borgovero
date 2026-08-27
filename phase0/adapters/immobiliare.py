@@ -186,6 +186,19 @@ TYPOLOGY_MAP = {
     "mansarda": "appartamento",
     "loft": "appartamento",
     "open space": "appartamento",
+    # Room-count names. Immobiliare uses these instead of 'Appartamento'
+    # on a large minority of flats — 49 listings in the 844-row ingest
+    # fell through to 'unknown' without them.
+    "monolocale": "appartamento",
+    "bilocale": "appartamento",
+    "trilocale": "appartamento",
+    "quadrilocale": "appartamento",
+    "plurilocale": "appartamento",
+    # A colonica is a farmhouse. 16 in the ingest, and they belong with
+    # the rustici — they are the characteristic rural stock this project
+    # is about, not an unknown.
+    "casa colonica": "rustico",
+    "colonica": "rustico",
     "terratetto": "terratetto",
     "villetta a schiera": "terratetto",
     "casa indipendente": "cielo_terra",
@@ -198,6 +211,12 @@ TYPOLOGY_MAP = {
     "casale": "rustico",
     "cascina": "rustico",
     "terreno": "terreno",
+    # Off-plan developments. Seen live on the Sansepolcro search page and
+    # previously falling through to 'unknown', which handed them a
+    # residential fallback band. Named so they can be excluded knowingly —
+    # see config.EXCLUDE_TYPOLOGIES.
+    "progetto": "progetto",
+    "nuova costruzione": "progetto",
     "palazzo": "cielo_terra",
     "stabile": "cielo_terra",
 }
@@ -388,8 +407,123 @@ def probe():
         print("\n!! Yield too low. Fix parse_result() before ingesting.")
 
 
+# --- Detail-page survey ------------------------------------------------
+
+# What a detail page might carry that the search payload does not. Each
+# entry is (label, regex) and is SURVEYED, not parsed — the point is to
+# measure availability before deciding whether the fetches are worth it,
+# not to build a parser for fields that may turn out to be absent.
+#
+# The expensive question this answers: capturing anything here costs one
+# request per listing (602) instead of one per 25 (27). That is worth
+# paying for a field that exists on most listings and worthless for one
+# that appears on three.
+DETAIL_FIELDS = [
+    # The known gap. A live listing showed '115 m2 | commerciale 183,2 m2',
+    # but the search payload carries zero, so it must come from here.
+    ("commerciale",   re.compile(r"commerciale[\s:]*([\d.,]+)\s*m", re.I)),
+    # The one that would change the project. If listings state their own
+    # publication date, days-on-market stops being an estimate off the ID
+    # curve and becomes a fact — and the curve becomes a cross-check
+    # rather than the foundation. Worth far more than commerciale.
+    # NB: '.{0,40}?' and not '[^\\d]{0,40}'. The label is usually
+    # 'Riferimento e Data annuncio 4820A - 15/03/2021', so the agency
+    # reference sits between the label and the date and it contains
+    # digits — a non-digit skip can never reach past it.
+    ("data_annuncio", re.compile(
+        r"(?:riferimento e data annuncio|data annuncio|inserito il)"
+        r".{0,40}?(\d{1,2}[/-]\d{1,2}[/-]\d{2,4})", re.I)),
+    ("riferimento",   re.compile(
+        r"riferimento(?:\s+e\s+data\s+annuncio)?[\s:]*"
+        r"([A-Za-z0-9._/-]{3,24})", re.I)),
+    ("classe_energ",  re.compile(
+        r"classe energetica[\s:]*([A-G][1-4]?\+?)", re.I)),
+    ("anno_costr",    re.compile(r"anno di costruzione[\s:]*(\d{4})", re.I)),
+    ("spese_cond",    re.compile(
+        r"spese condominio[^\d]{0,20}([\d.,]+)", re.I)),
+    ("stato_imm",     re.compile(
+        r"stato[\s:]*(ottimo|buono|nuovo|da ristrutturare|ristrutturato)",
+        re.I)),
+]
+
+
+def survey_details(n=10):
+    """Fetch n detail pages and report which fields actually appear.
+
+    Costs n requests, not 602, and replaces speculation about what is on
+    a detail page with a measured rate.
+    """
+    comune = config.COMUNI[0]
+    html, status, _ = fetcher.get(search_url(comune))
+    if not html:
+        print(f"Search page failed — HTTP {status}")
+        return
+    data = extract_next_data(html)
+    results = find_results(data) if data else None
+    if not results:
+        print("No results array; run --probe first.")
+        return
+
+    urls = [parse_result(r, comune)["url"] for r in results][:n]
+    print(f"Sampling {len(urls)} detail pages "
+          f"({config.REQUEST_DELAY_S:.0f}s apart, "
+          f"~{len(urls) * config.REQUEST_DELAY_S / 60:.1f} min)\n")
+
+    hits = {label: [] for label, _ in DETAIL_FIELDS}
+    fetched = 0
+    for u in urls:
+        dhtml, dstatus, cached = fetcher.get(u)
+        if not dhtml:
+            print(f"  {u.rsplit('/', 2)[-2]:>12}  HTTP {dstatus}")
+            continue
+        fetched += 1
+        text = BeautifulSoup(dhtml, "html.parser").get_text(" ", strip=True)
+        found = []
+        for label, rx in DETAIL_FIELDS:
+            m = rx.search(text)
+            if m:
+                hits[label].append(m.group(1))
+                found.append(label)
+        print(f"  {u.rsplit('/', 2)[-2]:>12}  "
+              f"{', '.join(found) if found else '(nothing matched)'}"
+              f"{' [cached]' if cached else ''}")
+
+    if not fetched:
+        print("\nNo pages fetched. Nothing can be concluded.")
+        return
+
+    print(f"\n--- FIELD AVAILABILITY ACROSS {fetched} DETAIL PAGES ---")
+    for label, _ in DETAIL_FIELDS:
+        got = hits[label]
+        pct = len(got) / fetched * 100
+        sample = f"  e.g. {got[0]}" if got else ""
+        print(f"  {label:16} {len(got):>2}/{fetched}  ({pct:5.1f}%){sample}")
+
+    full = 602
+    cost = full * config.REQUEST_DELAY_S / 60
+    print(f"\n  A full detail crawl is ~{full} requests, ~{cost:.0f} minutes,")
+    print(f"  against {27} for search pages alone — a ~22x increase in")
+    print("  request volume and in whatever exposure that carries.")
+    print("\n  Judge each field on its rate above. A field present on most")
+    print("  listings may justify it; one present on a handful will not.")
+    if hits["data_annuncio"]:
+        print("\n  >>> NOTE: listings state their own publication date.")
+        print("      That is a measured DOM rather than an estimate off the")
+        print("      ID curve, and it is worth more than commerciale — it")
+        print("      turns the project's weakest number into its firmest.")
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--probe", action="store_true")
+    ap.add_argument("--survey-details", nargs="?", type=int, const=10,
+                    metavar="N",
+                    help="fetch N detail pages (default 10) and report "
+                         "which fields are actually present")
     args = ap.parse_args()
-    probe() if args.probe else ap.print_help()
+    if args.probe:
+        probe()
+    elif args.survey_details:
+        survey_details(args.survey_details)
+    else:
+        ap.print_help()

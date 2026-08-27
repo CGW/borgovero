@@ -1,5 +1,6 @@
 __pycache__/
 *.pyc
+.DS_Store
 cache/
 # data/ is regenerable EXCEPT the ID anchors, which are hours of Wayback
 # harvesting that cannot be reconstructed if archive.org access changes.

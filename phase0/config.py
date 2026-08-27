@@ -2,9 +2,6 @@
 
 # --- Scope -------------------------------------------------------------
 
-COMUNI = ["sansepolcro", "anghiari"]
-
-
 def norm_comune(s):
     """Comparable key for a comune name across sources.
 
@@ -23,21 +20,31 @@ def norm_comune(s):
     s = "".join(c for c in s if not unicodedata.combining(c))
     return "".join(c for c in s.lower() if c.isalnum())
 
-# Measured live 2026-08-27, Immobiliare only, 25 per page:
+# MEASURED by full ingest 2026-08-27 (844 listings, 44 requests). The
+# earlier figures were counted from page-one estimates and were wrong for
+# the two largest comuni — Sansepolcro is 365, not 179, and Anghiari 167,
+# not 111. The other six were right to the listing.
 #
-#   sansepolcro           179      pieve-santo-stefano    67
-#   anghiari              111      monterchi              38
+#   sansepolcro           365      pieve-santo-stefano    67
+#   anghiari              167      monterchi              38
 #   caprese-michelangelo   82      badia-tedalda          34
 #   citerna                60      sestino                31
 #                                  ------------------------
-#                                  ALL EIGHT             602
+#                                  ALL EIGHT             844
 #
-# Phase 0 (Sansepolcro + Anghiari) = 290 listings in ~12 requests.
-# All eight = 602 listings in ~27 requests. Minutes, not hours.
+# Every listing was checked against its comune centre by lat/lon: the
+# furthest is 10.1 km (Anghiari, a large rural comune) and none exceeds
+# 15 km, so the counts are real and not neighbouring-comune bleed.
 ALL_VALTIBERINA = [
     "sansepolcro", "anghiari", "caprese-michelangelo", "citerna",
     "pieve-santo-stefano", "monterchi", "badia-tedalda", "sestino",
 ]
+
+# All eight. The two-comune Phase 0 scope was a request-budget decision
+# and the budget turned out to be 44 requests for the lot. analyze.py
+# loads OMI bands only for the comuni listed here, so this MUST match
+# what was ingested or the rest silently match no band and drop out.
+COMUNI = ALL_VALTIBERINA
 
 MAX_PAGES_PER_COMUNE = 40          # safety ceiling; ~25 listings/page
 MAX_LISTINGS_PER_COMUNE = 1200     # hard stop
@@ -52,7 +59,12 @@ MAX_RETRIES = 2
 
 # Identify yourself honestly. A contactable UA is the single cheapest thing
 # that turns "hostile bot" into "someone we could just email".
-CONTACT_URL = "https://example.org/about"   # <-- CHANGE THIS
+#
+# A domain, deliberately not an email address. This string is sent to the
+# site being crawled on every request; a mailto: would be broadcasting a
+# personal address to a party you have not chosen to contact. A domain is
+# equally traceable to whoever wants to reach you, and no more.
+CONTACT_URL = "https://dreamtechbff.com"
 USER_AGENT = (
     "ValtiberinaPriceResearch/0.1 (research project; "
     f"contact: {CONTACT_URL})"
@@ -142,6 +154,40 @@ RUSTICO_ALT_TIPOLOGIA = "Abitazioni di tipo economico"
 # Note what the real data says about C1 — 'zona collinare a nord del
 # centro storico' runs 1200-1700 for abitazioni civili against the centro
 # storico's 1000-1400. The premium zone is NOT the historic centre.
+# Stock that is not comparable to a second-hand house and must not sit in
+# the same distribution:
+#
+#   progetto  off-plan new-build developments. Priced as a project, often
+#             without a real surface, and not a property anyone can buy
+#             and move into. Seen live on the Sansepolcro search page.
+#   terreno   land. EUR/m2 on a field is not EUR/m2 on a house, and OMI
+#             prices agricultural land separately from dwellings.
+#
+# These are still ingested and stored — the raw crawl stays complete — and
+# dropped at analysis, where the exclusion is visible in the data-quality
+# block rather than silent.
+EXCLUDE_TYPOLOGIES = {"progetto", "terreno"}
+
+# Judicial auctions. Measured in the 844-listing ingest: 37 of them, at a
+# median EUR414/m2 against the market's EUR1.143 — roughly a third of
+# market value, because a court sets the base price, not a seller.
+#
+# They must come out for two reasons, and the second matters more:
+#
+#   1. They are not asking prices, so they cannot be over or under an
+#      asking-price band. Including them dragged the median down 2%.
+#   2. They sit in the LOW tail of the distribution, and the project's
+#      flagship claim is that the IQR spans 73 points — that this market
+#      has no consensus price. If part of that spread is simply auctions
+#      mixed in with ordinary sales, the claim is measuring two markets
+#      rather than disagreement within one.
+#
+# Detected on the selling agency's name first, which catches most of
+# them, and on listing text for the rest.
+AUCTION_AGENCY_RE = r"\b(aste|asta)\b"
+AUCTION_TEXT_RE = (r"asta (giudiziari|telematic)|vendita giudiziari|"
+                   r"procedura esecutiva|\bR\.?G\.?E\.?\b|tribunale di")
+
 ZONA_TO_FASCIA = {
     "centro_storico": ("B",),
     "periferia":      ("C", "D", "E"),
