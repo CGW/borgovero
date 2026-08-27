@@ -4,6 +4,25 @@
 
 COMUNI = ["sansepolcro", "anghiari"]
 
+
+def norm_comune(s):
+    """Comparable key for a comune name across sources.
+
+    OMI writes Sansepolcro as 'SAN SEPOLCRO' — with a space. Immobiliare
+    and this config write it 'sansepolcro'. A plain lower() comparison
+    matches neither, and the failure is SILENT: every Sansepolcro band is
+    skipped at load, every Sansepolcro listing then fails to match a band
+    and is dropped from the analysis, and the run still reports success on
+    a dataset that has quietly lost its larger comune.
+
+    Strips case, accents and every non-alphanumeric character, so
+    'SAN SEPOLCRO', 'Sansepolcro' and "Sant'Angelo" all reduce cleanly.
+    """
+    import unicodedata
+    s = unicodedata.normalize("NFKD", str(s or ""))
+    s = "".join(c for c in s if not unicodedata.combining(c))
+    return "".join(c for c in s.lower() if c.isalnum())
+
 # Measured live 2026-08-27, Immobiliare only, 25 per page:
 #
 #   sansepolcro           179      pieve-santo-stefano    67
@@ -51,17 +70,26 @@ HTML_CACHE_DIR = "cache/html"      # every fetch is cached; reparse is free
 # semicolon-delimited). Put the values file here.
 
 OMI_CSV_PATH = "data/omi_valori.csv"
-OMI_SEMESTER = "2026-1"
+# 2025-2 is the latest published semester (confirmed against the web
+# consultation for Sansepolcro B1 on 2026-08-27). There is no 2026-1 yet.
+OMI_SEMESTER = "2025-2"
 
 # Column mapping. Run `python omi.py --inspect` first — it prints the
 # columns it actually found, then fix these if they differ.
 OMI_COLUMNS = {
     "comune":     "Comune_descrizione",
-    "zona":       "Zona_Descr",
+    # Zona_Descr does NOT exist in the valori file — it lives in the ZONE
+    # file and joins on LinkZona. Left as None so the loader degrades to
+    # zona_code instead of storing empty strings it thinks are real.
+    # For Sansepolcro, B1 is confirmed to be the centro storico
+    # ("INTERO CENTRO STORICO, VIALE ARMANDO DIAZ, ..."), so the
+    # zona_code.startswith("B") path in analyze.band_for() is sound here.
+    # Load the zone file too if per-zone labels are ever published.
+    "zona":       None,
     "zona_code":  "Zona",
     "fascia":     "Fascia",
     "tipologia":  "Descr_Tipologia",
-    "stato":      "Stato_conservativo",
+    "stato":      "Stato",
     "min_eur_m2": "Compr_min",
     "max_eur_m2": "Compr_max",
     # OMI states which surface its EUR/m2 refers to: 'N' netta or 'L' lorda.
@@ -81,9 +109,13 @@ OMI_TIPOLOGIA_MAP = {
 
 # Known anchors, for sanity-checking the loaded file.
 # If the loader disagrees wildly with these, the column mapping is wrong.
+# MEASURED from the OMI web consultation, 2026-08-27, Sansepolcro B1,
+# anno 2025 semestre 2. Abitazioni civili NORMALE: 1000-1400 EUR/m2, on
+# surface basis L (lorda). This REPLACES the earlier 1100-1400 placeholder,
+# which would have made a correctly loaded file look like a mapping error.
 OMI_SANITY_ANCHORS = {
-    ("sansepolcro", "B1"): (1100, 1400),   # centro storico ~EUR1,245/m2
-    ("anghiari", None):    (880, 1410),    # registered range
+    ("sansepolcro", "B1"): (1000, 1400),   # centro storico, verified
+    ("anghiari", None):    (880, 1410),    # still a prior, not verified
 }
 
 # --- Analysis ----------------------------------------------------------

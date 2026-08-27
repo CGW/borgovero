@@ -123,7 +123,10 @@ def replace_omi(conn, rows, semester):
 
 
 def omi_for(conn, comune, semester):
+    # comune is stored already normalised by omi.load() — see
+    # config.norm_comune. Normalise the lookup too or 'SAN SEPOLCRO'
+    # and 'sansepolcro' never meet.
     return conn.execute(
-        "SELECT * FROM omi_bands WHERE lower(comune)=lower(?) AND semester=?",
-        (comune, semester),
+        "SELECT * FROM omi_bands WHERE comune=? AND semester=?",
+        (config.norm_comune(comune), semester),
     ).fetchall()

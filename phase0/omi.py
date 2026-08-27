@@ -87,20 +87,25 @@ def _num(v):
 def load(path, comuni, semester):
     delim, cols = sniff(path)
     m = config.OMI_COLUMNS
-    wanted = {c.lower() for c in comuni}
+    # OMI writes 'SAN SEPOLCRO'; we write 'sansepolcro'. Compare on the
+    # normalised key or every Sansepolcro band is skipped without a word.
+    wanted = {config.norm_comune(c) for c in comuni}
     rows = []
+    seen = set()
 
     with open(path, encoding="latin-1", errors="replace") as f:
         for rec in csv.DictReader(f, delimiter=delim):
             comune = (rec.get(m["comune"]) or "").strip()
-            if comune.lower() not in wanted:
+            if comune:
+                seen.add(comune)
+            if config.norm_comune(comune) not in wanted:
                 continue
             lo = _num(rec.get(m["min_eur_m2"]))
             hi = _num(rec.get(m["max_eur_m2"]))
             if lo is None or hi is None:
                 continue
             rows.append((
-                comune.lower(),
+                config.norm_comune(comune),
                 (rec.get(m["zona_code"]) or "").strip(),
                 (rec.get(m["zona"]) or "").strip(),
                 (rec.get(m["tipologia"]) or "").strip(),
@@ -109,6 +114,19 @@ def load(path, comuni, semester):
                 (rec.get(m.get("surface_basis", "")) or "").strip().upper(),
                 semester,
             ))
+
+    if not rows:
+        near = sorted(c for c in seen
+                      if any(config.norm_comune(c)[:4] == w[:4] for w in wanted))
+        print(f"\n  !! No bands matched {sorted(wanted)}.")
+        if near:
+            print(f"     Closest names in the file: {near[:8]}")
+            print("     Add the right spelling to config.COMUNI, or extend")
+            print("     norm_comune() if this is a punctuation difference.")
+        else:
+            print(f"     The file holds {len(seen)} distinct comuni and none")
+            print("     resemble the ones requested. Wrong file, or the")
+            print("     'comune' column mapping is wrong.")
     return rows
 
 

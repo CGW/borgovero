@@ -132,7 +132,7 @@ def surface_for(L, basis):
 def build_rows(conn, basis="net"):
     listings = db.all_listings(conn)
     omi_by_comune = {
-        c.lower(): db.omi_for(conn, c, config.OMI_SEMESTER)
+        config.norm_comune(c): db.omi_for(conn, c, config.OMI_SEMESTER)
         for c in config.COMUNI
     }
 
@@ -153,7 +153,7 @@ def build_rows(conn, basis="net"):
         if not (L["price"] and mq and mq > 0):
             continue
 
-        omi_rows = omi_by_comune.get((L["comune"] or "").lower(), [])
+        omi_rows = omi_by_comune.get(config.norm_comune(L["comune"]), [])
         band = band_for(omi_rows, L["typology"], L["zona_guess"])
         if not band:
             continue
@@ -436,7 +436,8 @@ def main():
     pair_header("BY COMUNE")
     for c in config.COMUNI:
         pair_row(c, net_rows, com_rows,
-                 lambda r, c=c: (r["comune"] or "").lower() == c.lower())
+                 lambda r, c=c: config.norm_comune(r["comune"])
+                 == config.norm_comune(c))
 
     pair_header("BY TYPOLOGY")
     for typ in sorted({r["typology"] for r in net_rows}):
