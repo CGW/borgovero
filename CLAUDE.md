@@ -16,15 +16,25 @@ going to be pasted straight into a terminal.
 - Say plainly what the commit will and will not include, especially where
   `.gitignore` silently drops something that matters
 
-**The remote is `origin`, a private GitHub repo created with `gh`.** Push
-with plain `git push`. If a push ever fails with *"No configured push
-destination"*, the remote is missing — recreate it rather than committing
-and moving on:
+**The remote is `origin` over SSH:** `git@github.com:CGW/borgovero.git`,
+a private GitHub repo. SSH keys are set up and working — push with plain
+`git push`, never an HTTPS URL. GitHub dropped password auth for git in
+2021, so an HTTPS remote prompts for a username and password and then
+rejects whatever is typed; if that prompt ever appears, the remote has been
+switched to HTTPS and the fix is:
 
 ```bash
 cd ~/borgovero
-gh repo create borgovero --private --source=. --remote=origin --push
+git remote set-url origin git@github.com:CGW/borgovero.git
 ```
+
+Use `set-url`, not `add` — origin already exists, and `add` fails with
+*"remote origin already exists"*.
+
+**`gh` is not installed on this machine** (`zsh: command not found: gh`), so
+never hand over a `gh repo create` line. Creating a repo is a browser step at
+github.com/new — private, and no README, .gitignore or licence, which would
+otherwise create a divergent history to reconcile.
 
 Never run `git add --dry-run` against this repo from the sandbox — the mount
 cannot clean up `.git/index.lock` afterwards and it blocks the next commit.
