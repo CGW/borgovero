@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+cache/
+data/
+*.sqlite
+*.sqlite-journal
+phase0_results.csv

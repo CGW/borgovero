@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Borgo Vero — Prezzi immobiliari della Valtiberina, verificati.</title>
+<meta name="description" content="Prezzi immobiliari della Valtiberina, verificati.">
+<link rel="alternate" hreflang="en" href="/en/">
+<style>
+*{box-sizing:border-box}
+:root{
+  --ink:#1a1a1a; --mute:#6b6b6b; --line:#d8d4cc; --bg:#faf8f5;
+  --card:#fff; --hi:#8a3324; --ok:#2d6a4f; --warn:#9a6700;
+}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:16px/1.55 -apple-system,BlinkMacSystemFont,'Segoe UI',Georgia,serif;}
+.wrap{max-width:820px;margin:0 auto;padding:24px 20px 80px}
+a{color:var(--hi)}
+header.site{display:flex;justify-content:space-between;align-items:baseline;
+  border-bottom:2px solid var(--ink);padding-bottom:10px;margin-bottom:28px}
+.brand{font-size:20px;font-weight:700;letter-spacing:.02em;text-decoration:none;color:var(--ink)}
+.brand span{color:var(--hi)}
+.lang a{font-size:13px;margin-left:10px;text-decoration:none}
+h1{font-size:26px;line-height:1.25;margin:0 0 4px}
+.sub{color:var(--mute);font-size:15px;margin-bottom:26px}
+.block{background:var(--card);border:1px solid var(--line);border-radius:6px;
+  padding:18px 20px;margin-bottom:16px}
+.block h2{font-size:12px;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--mute);margin:0 0 12px;font-weight:700}
+.big{font-size:34px;font-weight:700;line-height:1}
+.rows{width:100%;border-collapse:collapse;font-size:15px}
+.rows td{padding:7px 0;border-bottom:1px solid var(--line);vertical-align:top}
+.rows tr:last-child td{border-bottom:none}
+.rows td.r{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.lbl{color:var(--mute)}
+.over{color:var(--hi);font-weight:700}
+.under{color:var(--ok);font-weight:700}
+.flag{background:#fdf6e3;border-left:3px solid var(--warn);padding:12px 14px;
+  margin-top:12px;font-size:14px}
+.note{font-size:13px;color:var(--mute);margin-top:10px;line-height:1.5}
+.src{font-size:12px;color:var(--mute)}
+input[type=text]{width:100%;padding:14px 16px;font-size:16px;
+  border:2px solid var(--ink);border-radius:6px;background:#fff}
+button{padding:14px 22px;font-size:16px;font-weight:600;background:var(--ink);
+  color:#fff;border:0;border-radius:6px;cursor:pointer}
+.hero{background:var(--card);border:2px solid var(--ink);border-radius:8px;
+  padding:26px;margin-bottom:26px}
+.hero h1{font-size:23px;margin-bottom:6px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:6px;
+  padding:14px;text-decoration:none;color:inherit;display:block}
+.tile b{display:block;font-size:17px;margin-bottom:3px}
+.tile small{color:var(--mute)}
+footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);
+  font-size:13px;color:var(--mute)}
+@media print{
+  body{background:#fff}
+  .block,.hero{border:1px solid #999;break-inside:avoid}
+  .noprint{display:none}
+  a{color:#000;text-decoration:none}
+}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+<header class="site">
+  <a class="brand" href="/it/">Borgo <span>Vero</span></a>
+  <div class="lang noprint">
+    <a href="/en/">EN</a>
+  </div>
+</header>
+
+<div class="hero">
+  <h1>Incolla il link di un annuncio</h1>
+  <p class="sub" style="margin-bottom:14px">Immobiliare, Idealista o il sito di un&#x27;agenzia. Ti mostriamo ogni altro annuncio dello stesso immobile.</p>
+  <form onsubmit="return lookup(event)">
+    <input type="text" id="q" placeholder="https://www.immobiliare.it/annunci/…"
+           autocomplete="off">
+    <div style="margin-top:12px"><button type="submit">Cerca</button></div>
+  </form>
+  <div id="out" style="margin-top:14px"></div>
+</div>
+
+<div class="block">
+  <h2>Oppure inserisci i dati di un immobile</h2>
+  <p class="note" style="margin:0 0 14px">Funziona per qualsiasi immobile della Valtiberina, anche se non è ancora nel nostro indice. Il calcolo avviene nel tuo browser: non inviamo nulla.</p>
+  <form onsubmit="return calc(event)">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px">
+      <label>Comune<br><select id="f_comune"><option value="anghiari">Anghiari</option><option value="citerna">Citerna</option><option value="monterchi">Monterchi</option><option value="sansepolcro">Sansepolcro</option></select></label>
+      <label>Zona<br><select id="f_zona">
+        <option value="centro_storico">Centro storico</option>
+        <option value="periferia">Periferia</option>
+        <option value="campagna">Campagna</option>
+      </select></label>
+      <label>Tipologia<br><select id="f_typ"><option value="terratetto">Terratetto</option><option value="appartamento">Appartamento</option><option value="cielo_terra">Casa indipendente</option><option value="villa">Villa</option><option value="rustico">Rustico / Casale</option></select></label>
+      <label>Superficie m²<br><input type="number" id="f_mq" min="10" max="2000"
+             placeholder="125"></label>
+      <label>Prezzo richiesto €<br><input type="number" id="f_price" min="1000"
+             step="1000" placeholder="180000"></label>
+    </div>
+    <div style="margin-top:14px"><button type="submit">Calcola</button></div>
+  </form>
+  <div id="calcout" style="margin-top:18px"></div>
+</div>
+
+<div class="grid"><a class="tile" href="/it/anghiari.html"><b>Anghiari</b><small>25 immobili · €212.000</small></a><a class="tile" href="/it/citerna.html"><b>Citerna</b><small>20 immobili · €240.500</small></a><a class="tile" href="/it/monterchi.html"><b>Monterchi</b><small>16 immobili · €169.000</small></a><a class="tile" href="/it/sansepolcro.html"><b>Sansepolcro</b><small>23 immobili · €275.000</small></a></div>
+
+<script>
+// Everything runs in the browser. The whole index, the OMI bands and the
+// comparable medians together are a few tens of KB, so there is no backend,
+// no API and no hosting cost — and it keeps working offline.
+const IDX   = [{"cid":"vt00000","ids":["128714110","128714111"],"urls":["https://www.immobiliare.it/annunci/130001110/","https://www.immobiliare.it/annunci/130001111/"]},{"cid":"vt00001","ids":["124861888"],"urls":["https://www.idealista.it/annunci/130000888/"]},{"cid":"vt00002","ids":["123800073"],"urls":["https://www.immobiliare.it/annunci/130001073/"]},{"cid":"vt00003","ids":["118939851","118939852"],"urls":["https://www.idealista.it/annunci/130000851/","https://www.casa.it.it/annunci/130000852/"]},{"cid":"vt00004","ids":["118769036"],"urls":["https://www.casa.it.it/annunci/130001036/"]},{"cid":"vt00005","ids":["114736925"],"urls":["https://www.idealista.it/annunci/130000925/"]},{"cid":"vt00006","ids":["128975184"],"urls":["https://www.immobiliare.it/annunci/130001184/"]},{"cid":"vt00007","ids":["128236999"],"urls":["https://www.casa.it.it/annunci/130000999/"]},{"cid":"vt00008","ids":["112910147"],"urls":["https://www.idealista.it/annunci/130001147/"]},{"cid":"vt00009","ids":["102290443"],"urls":["https://www.casa.it.it/annunci/130001443/"]},{"cid":"vt00010","ids":["129154740","129154741"],"urls":["https://www.casa.it.it/annunci/130000740/","https://www.casa.it.it/annunci/130000741/"]},{"cid":"vt00011","ids":["129154742"],"urls":["https://www.casa.it.it/annunci/130000742/"]},{"cid":"vt00012","ids":["128362703"],"urls":["https://www.immobiliare.it/annunci/130000703/"]},{"cid":"vt00013","ids":["129398295"],"urls":["https://www.immobiliare.it/annunci/130001295/"]},{"cid":"vt00014","ids":["129398296"],"urls":["https://www.immobiliare.it/annunci/130001296/"]},{"cid":"vt00015","ids":["121874369"],"urls":["https://www.casa.it.it/annunci/130001369/"]},{"cid":"vt00016","ids":["128741221"],"urls":["https://www.idealista.it/annunci/130001221/"]},{"cid":"vt00017","ids":["128741222"],"urls":["https://www.immobiliare.it/annunci/130001222/"]},{"cid":"vt00018","ids":["125573480"],"urls":["https://www.casa.it.it/annunci/130001480/"]},{"cid":"vt00019","ids":["128318258"],"urls":["https://www.casa.it.it/annunci/130001258/"]},{"cid":"vt00020","ids":["126544962"],"urls":["https://www.casa.it.it/annunci/130000962/"]},{"cid":"vt00021","ids":["129317332"],"urls":["https://www.casa.it.it/annunci/130001332/"]},{"cid":"vt00022","ids":["105250814"],"urls":["https://www.casa.it.it/annunci/130000814/"]},{"cid":"vt00023","ids":["118958406"],"urls":["https://www.immobiliare.it/annunci/130001406/"]},{"cid":"vt00024","ids":["125734777"],"urls":["https://www.casa.it.it/annunci/130000777/"]},{"cid":"vt00025","ids":["104559257"],"urls":["https://www.immobiliare.it/annunci/130002257/"]},{"cid":"vt00026","ids":["104559258"],"urls":["https://www.immobiliare.it/annunci/130002258/"]},{"cid":"vt00027","ids":["104559259"],"urls":["https://www.casa.it.it/annunci/130002259/"]},{"cid":"vt00028","ids":["126231294"],"urls":["https://www.immobiliare.it/annunci/130002294/"]},{"cid":"vt00029","ids":["104667072"],"urls":["https://www.idealista.it/annunci/130002072/"]},{"cid":"vt00030","ids":["118617110"],"urls":["https://www.idealista.it/annunci/130002110/"]},{"cid":"vt00031","ids":["118617109"],"urls":["https://www.immobiliare.it/annunci/130002109/"]},{"cid":"vt00032","ids":["112686517"],"urls":["https://www.casa.it.it/annunci/130002517/"]},{"cid":"vt00033","ids":["112227183"],"urls":["https://www.idealista.it/annunci/130002183/"]},{"cid":"vt00034","ids":["123000442"],"urls":["https://www.idealista.it/annunci/130002442/"]},{"cid":"vt00035","ids":["123000443"],"urls":["https://www.casa.it.it/annunci/130002443/"]},{"cid":"vt00036","ids":["129075405"],"urls":["https://www.idealista.it/annunci/130002405/"]},{"cid":"vt00037","ids":["112686518"],"urls":["https://www.casa.it.it/annunci/130002518/"]},{"cid":"vt00038","ids":["112686516"],"urls":["https://www.casa.it.it/annunci/130002516/"]},{"cid":"vt00039","ids":["127680479"],"urls":["https://www.idealista.it/annunci/130002479/"]},{"cid":"vt00040","ids":["112866331"],"urls":["https://www.casa.it.it/annunci/130002331/"]},{"cid":"vt00041","ids":["129228220"],"urls":["https://www.idealista.it/annunci/130002220/"]},{"cid":"vt00042","ids":["114009146"],"urls":["https://www.immobiliare.it/annunci/130002146/"]},{"cid":"vt00043","ids":["111030368"],"urls":["https://www.idealista.it/annunci/130002368/"]},{"cid":"vt00044","ids":["129075035"],"urls":["https://www.casa.it.it/annunci/130002035/"]},{"cid":"vt00045","ids":["123953739"],"urls":["https://www.idealista.it/annunci/130001739/"]},{"cid":"vt00046","ids":["103766850"],"urls":["https://www.idealista.it/annunci/130001850/"]},{"cid":"vt00047","ids":["129416924"],"urls":["https://www.casa.it.it/annunci/130001924/"]},{"cid":"vt00048","ids":["129011517"],"urls":["https://www.immobiliare.it/annunci/130001517/"]},{"cid":"vt00049","ids":["128705555"],"urls":["https://www.casa.it.it/annunci/130001555/"]},{"cid":"vt00050","ids":["128705554"],"urls":["https://www.immobiliare.it/annunci/130001554/"]},{"cid":"vt00051","ids":["121622629"],"urls":["https://www.idealista.it/annunci/130001629/"]},{"cid":"vt00052","ids":["121622628"],"urls":["https://www.immobiliare.it/annunci/130001628/"]},{"cid":"vt00053","ids":["125717887"],"urls":["https://www.casa.it.it/annunci/130001887/"]},{"cid":"vt00054","ids":["112946961","112946962"],"urls":["https://www.immobiliare.it/annunci/130001961/","https://www.idealista.it/annunci/130001962/"]},{"cid":"vt00055","ids":["128300998"],"urls":["https://www.immobiliare.it/annunci/130001998/"]},{"cid":"vt00056","ids":["104702665"],"urls":["https://www.casa.it.it/annunci/130001665/"]},{"cid":"vt00057","ids":["108257776","108257777"],"urls":["https://www.casa.it.it/annunci/130001776/","https://www.immobiliare.it/annunci/130001777/"]},{"cid":"vt00058","ids":["129290591"],"urls":["https://www.idealista.it/annunci/130001591/"]},{"cid":"vt00059","ids":["104018702"],"urls":["https://www.idealista.it/annunci/130001702/"]},{"cid":"vt00060","ids":["128102813"],"urls":["https://www.casa.it.it/annunci/130001813/"]},{"cid":"vt00061","ids":["127390444","127390445"],"urls":["https://www.casa.it.it/annunci/130000444/","https://www.immobiliare.it/annunci/130000445/"]},{"cid":"vt00062","ids":["126526592"],"urls":["https://www.casa.it.it/annunci/130000592/"]},{"cid":"vt00063","ids":["128083222"],"urls":["https://www.idealista.it/annunci/130000222/"]},{"cid":"vt00064","ids":["128695037"],"urls":["https://www.casa.it.it/annunci/130000037/"]},{"cid":"vt00065","ids":["128695038"],"urls":["https://www.casa.it.it/annunci/130000038/"]},{"cid":"vt00066","ids":["116419407"],"urls":["https://www.immobiliare.it/annunci/130000407/"]},{"cid":"vt00067","ids":["128020481"],"urls":["https://www.immobiliare.it/annunci/130000481/"]},{"cid":"vt00068","ids":["121387260"],"urls":["https://www.idealista.it/annunci/130000260/"]},{"cid":"vt00069","ids":["128182296"],"urls":["https://www.casa.it.it/annunci/130000296/"]},{"cid":"vt00070","ids":["128182297"],"urls":["https://www.idealista.it/annunci/130000297/"]},{"cid":"vt00071","ids":["121387259"],"urls":["https://www.casa.it.it/annunci/130000259/"]},{"cid":"vt00072","ids":["121126333"],"urls":["https://www.immobiliare.it/annunci/130000333/"]},{"cid":"vt00073","ids":["121126334"],"urls":["https://www.immobiliare.it/annunci/130000334/"]},{"cid":"vt00074","ids":["123241185"],"urls":["https://www.immobiliare.it/annunci/130000185/"]},{"cid":"vt00075","ids":["108472629"],"urls":["https://www.casa.it.it/annunci/130000629/"]},{"cid":"vt00076","ids":["124258666"],"urls":["https://www.immobiliare.it/annunci/130000666/"]},{"cid":"vt00077","ids":["119794000"],"urls":["https://www.immobiliare.it/annunci/130000000/"]},{"cid":"vt00078","ids":["128713370"],"urls":["https://www.immobiliare.it/annunci/130000370/"]},{"cid":"vt00079","ids":["129154074"],"urls":["https://www.idealista.it/annunci/130000074/"]},{"cid":"vt00080","ids":["110650555","110650556"],"urls":["https://www.casa.it.it/annunci/130000555/","https://www.immobiliare.it/annunci/130000556/"]},{"cid":"vt00081","ids":["128029148"],"urls":["https://www.idealista.it/annunci/130000148/"]},{"cid":"vt00082","ids":["114097111","114097112","114097113"],"urls":["https://www.casa.it.it/annunci/130000111/","https://www.idealista.it/annunci/130000112/","https://www.casa.it.it/annunci/130000113/"]},{"cid":"vt00083","ids":["126571518","126571519"],"urls":["https://www.casa.it.it/annunci/130000518/","https://www.casa.it.it/annunci/130000519/"]}];
+const BANDS = {"anghiari":{"centro_storico":[880,1410],"periferia":[634,1410],"campagna":[634,1410]},"citerna":{"centro_storico":[720,1100],"periferia":[518,1100],"campagna":[518,1100]},"monterchi":{"centro_storico":[700,1050],"periferia":[504,1050],"campagna":[504,1050]},"sansepolcro":{"centro_storico":[1100,1400],"periferia":[792,1400],"campagna":[792,1400]}};
+const COMPS = {"anghiari|villa":[[144,1271],[95,2116],[199,1256],[77,1273],[93,1817],[70,1243],[70,1380]],"anghiari|terratetto":[[158,1342],[170,1576],[118,2178],[71,1592],[161,1236],[218,2220],[233,1476]],"anghiari|cielo_terra":[[183,1984],[127,1244],[149,1215],[162,1162],[172,1250],[172,1388],[227,1344],[146,1870]],"anghiari|appartamento":[[193,1964],[112,1429],[171,1310]],"citerna|terratetto":[[154,2110],[167,2102],[167,2102],[100,1670]],"citerna|appartamento":[[201,1388],[133,1857]],"citerna|cielo_terra":[[227,2489],[114,2053],[114,1974],[105,2079],[187,1941],[92,2372],[92,2446],[170,1282],[223,1247]],"citerna|villa":[[226,1584],[239,1663],[70,1257],[103,1951],[176,1244]],"monterchi|terratetto":[[65,1569],[223,1283],[228,1254],[83,1519],[88,1477],[68,1279],[223,2148],[227,1929],[208,2058]],"monterchi|cielo_terra":[[94,3053]],"monterchi|appartamento":[[190,1226],[110,1364],[68,1735],[130,1300]],"monterchi|villa":[[124,1234],[137,1234]],"sansepolcro|terratetto":[[208,1495],[158,1475],[212,1500],[212,1665],[236,1542],[164,1884],[159,2157],[181,1652],[233,3026]],"sansepolcro|appartamento":[[144,1632],[104,1697],[167,1491],[167,1446],[91,1747],[68,1603],[166,2036],[176,1455],[103,1456],[175,1571]],"sansepolcro|villa":[[193,2451],[98,2684]],"sansepolcro|cielo_terra":[[128,1445],[152,1967]]};
+
+function eur(n){ return '€' + Math.round(n).toLocaleString('it-IT'); }
+
+function lookup(ev){
+  ev.preventDefault();
+  const raw = document.getElementById('q').value.trim();
+  const out = document.getElementById('out');
+  const m = raw.match(/(\d{6,})/);
+  let hit = null;
+  if(m) hit = IDX.find(r => r.ids.includes(m[1]));
+  if(!hit && raw) hit = IDX.find(r => r.urls.some(u => u && raw.includes(u)));
+  if(hit){ location.href = '/it/immobile/' + hit.cid + '.html'; return false; }
+  out.innerHTML = '<div class="flag">Non trovato nel nostro indice — copre la Valtiberina (8 comuni) e si aggiorna ogni settimana. Inserisci i dati qui sotto per calcolarlo comunque.</div>';
+  document.getElementById('f_price').focus();
+  return false;
+}
+
+// Mirrors borgo_vero_price() + comps_for() in the generator exactly:
+// same +/-25% surface filter, same weighting, same rounding. If these
+// two ever drift, the same property gets two different Borgo Vero
+// prices depending which page you read — so they must not drift.
+function borgoVero(comune, zona, typ, mq){
+  const band = (BANDS[comune]||{})[zona] || (BANDS[comune]||{})['periferia'];
+  const pool = COMPS[comune+'|'+typ] || [];
+  const near = pool.filter(p => Math.abs(p[0]-mq)/mq <= 0.25)
+                   .sort((a,b) => Math.abs(a[0]-mq) - Math.abs(b[0]-mq))
+                   .slice(0, 5)                       // same cap as comps_for()
+                   .map(p => p[1]).sort((a,b) => a-b);
+  const omiMid = band ? (band[0]+band[1])/2 : null;
+  const n = near.length;
+  const compMed = n ? near[Math.floor(n/2)] : null;
+  let w, conf;
+  if(n >= 5 && omiMid){ w = 0.65; conf = 'alta'; }
+  else if(n >= 3 && omiMid){ w = 0.50; conf = 'media'; }
+  else if(omiMid && n){ w = 0.25; conf = 'bassa'; }
+  else if(omiMid){ w = 0.0;  conf = 'bassa'; }
+  else if(n >= 4){ w = 1.0;  conf = 'bassa'; }
+  else return null;
+  const m2 = w*(compMed||0) + (1-w)*(omiMid||0);
+  if(!m2) return null;
+  return { price: Math.round(m2*mq/1000)*1000, conf: conf, band: band,
+           compMed: compMed, n: n, omiMid: omiMid, w: w };
+}
+
+function calc(ev){
+  ev.preventDefault();
+  const comune = document.getElementById('f_comune').value;
+  const zona   = document.getElementById('f_zona').value;
+  const typ    = document.getElementById('f_typ').value;
+  const mq     = +document.getElementById('f_mq').value;
+  const ask    = +document.getElementById('f_price').value;
+  const out    = document.getElementById('calcout');
+  if(!mq){ out.innerHTML = '<div class="flag">Inserisci almeno la superficie in m².</div>'; return false; }
+
+  const r = borgoVero(comune, zona, typ, mq);
+  if(!r){ out.innerHTML = '<div class="flag">Dati insufficienti per questa combinazione. Prova un&#x27;altra zona o tipologia.</div>'; return false; }
+
+  let html = '<div class="block" style="border:2px solid var(--ink)">'
+    + '<h2>Prezzo Borgo Vero</h2>'
+    + '<div class="big" style="font-size:40px">' + eur(r.price) + '</div>';
+
+  if(ask){
+    const d = (r.price-ask)/ask*100;
+    html += '<div style="margin:6px 0 12px"><span class="'
+      + (d<0?'under':'over') + '" style="font-size:17px">'
+      + (d>0?'+':'') + d.toFixed(0) + '%</span> <span class="lbl">'
+      + 'rispetto alla richiesta di ' + eur(ask) + '</span></div>';
+  }
+  html += '<div class="note">affidabilità: ' + r.conf + '. ';
+  const parts = [];
+  if(r.w > 0 && r.compMed) parts.push(r.n + ' comparabili (' + eur(r.compMed) + '/m²)');
+  if(r.w < 1 && r.omiMid)  parts.push('OMI ' + eur(r.omiMid) + '/m²');
+  html += 'Calcolato da: ' + parts.join(' + ') + ', × ' + mq + ' m².</div>';
+
+  if(r.band){
+    html += '<table class="rows" style="margin-top:12px">'
+      + '<tr><td class="lbl">Al massimo della fascia OMI</td><td class="r">'
+      + eur(r.band[1]*mq) + '</td></tr>'
+      + '<tr><td class="lbl">Al minimo della fascia OMI</td><td class="r">'
+      + eur(r.band[0]*mq) + '</td></tr></table>';
+  }
+  html += '<div class="note">Cifra calcolata da fascia OMI e comparabili in zona, senza mai guardare il prezzo richiesto. Non è una stima né una perizia né una raccomandazione: è aritmetica su dati pubblici, con la formula indicata sopra. Da verificare sempre.</div></div>';
+  out.innerHTML = html;
+  return false;
+}
+</script>
+
+<footer>
+  <p><b>Borgo Vero è una valutazione indipendente e senza scopo di lucro dei prezzi immobiliari in Valtiberina.</b></p>
+  <p><a href="/it/chi-siamo.html">Chi siamo</a> ·
+     <a href="/it/metodologia.html">Come calcoliamo questi numeri</a> ·
+     <a href="/it/chi-siamo.html#correzioni">Segnala un errore</a></p>
+  <p>Fasce OMI: Agenzia delle Entrate. Annunci: portali pubblici, con link alla fonte. Nessun compenso da agenzie, venditori o portali.</p>
+</footer>
+</div>
+</body>
+</html>
