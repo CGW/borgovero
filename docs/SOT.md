@@ -642,6 +642,64 @@ than copied (357 vs 350 m²). **Typology is the most commonly contested
 field — more than price — and it determines which OMI band applies, so a
 disagreement changes the valuation, not just the description.**
 
+### CORRECTIONS MEASURED S003 — two claims below were wrong
+
+**1. Idealista's search page IS blocked to scripts.** §9 previously said
+it "is not 403'd". That was a browser observation written down as a fact
+about scripts. Measured 2026-08-28: a plain `urllib` GET with the project
+UA returns **403**, and in a real browser the page first serves a
+*"Verifica del dispositivo"* interstitial — active bot detection, which
+clears on its own for a genuine browser and device.
+
+**A bulk Idealista harvest is therefore not available**, on exactly the
+reasoning already applied to Immobiliare's detail pages (§12.4): the
+block is deliberate, and defeating bot detection is out of bounds. The
+adapter's `harvest()` should not be run. **Do not build a pipeline on
+this.** What remains legitimate is Christopher reading pages in his own
+browser, which is how the sample below was taken.
+
+This is the second time a "not blocked" assumption written from a browser
+session has failed against a script. Assume blocked until a script has
+actually fetched it.
+
+**2. Idealista does NOT carry more inventory.** §9 said 188 vs 179. The
+179 was the wrong Immobiliare count, corrected in S002 to **365**.
+Measured live: Idealista shows **189** Sansepolcro listings against
+Immobiliare's 365. Immobiliare has roughly **twice** the inventory, not
+less. The cross-portal argument for Idealista is the price history and
+the typology disagreements — not coverage.
+
+### The price cuts, measured (S003)
+
+One search page read in a browser, Sansepolcro, 30 listings:
+
+```
+selector   .pricedown   (also .pricedown_price, .pricedown_icon)
+
+3 of 30 carry a visible cut = 10%
+  EUR 187.000 -> 178.000   -5%
+  EUR 107.000 -> 100.000   -7%
+  EUR 280.000 -> 265.000   -5%
+```
+
+**This is the only measured negotiation data the project has**, and it
+bears directly on §16's assumed `DOM_DISCOUNT` ladder. Note carefully
+what it is and is not: these are **asking-price reductions the seller has
+already made**, not the ask-to-close discount. A buyer negotiates *on top
+of* the cut. So a listing showing −5% has conceded 5% before anyone
+made an offer, and Banca d'Italia's 7–8% would then apply to the
+reduced price.
+
+Two readings, and the difference matters for the ladder:
+
+- If cuts and closing discounts stack, total concession on a cut listing
+  is ~12–13%, which sits near the S003 ladder's 1–2 year rung.
+- If the published cut is *part* of the eventual total, the ladder's
+  upper rungs are too aggressive.
+
+Unresolved on n=30 from one comune. It is, however, the first real number
+under any of this.
+
 ### The piece that expires
 
 **Idealista publishes price-drop history on the search results page** —
@@ -941,6 +999,162 @@ assumed discount, so that table largely echoes `DOM_DISCOUNT` back. It
 becomes a finding only once the ladder is measured — which needs
 `first_seen` observed over time and actual closing prices, the same
 accumulate-forward problem as relist detection (§8). **Start now.**
+
+### Accumulation started S003 — the ladder's only real route
+
+`INSERT OR REPLACE` was overwriting the previous price with no record of
+it, so **re-running the ingest destroyed exactly the history the ladder
+needs.** Scheduling it before fixing that would have been worse than not
+scheduling it at all.
+
+Added:
+
+```
+price_history      one row per OBSERVED CHANGE (not per run)
+                   source, source_id, seen_at, price, prev_price
+listings.first_seen  set once, never updated
+listings.last_seen   moves every run
+```
+
+`db.observe()` must be called **before** `upsert_listing` or the old
+price is already gone; `run.py` now does this and prints an "OBSERVED
+THIS RUN" block with every cut in full. `db.disappeared()` returns
+listings missing from the latest run — sold, withdrawn or relisted, and
+**the closest observable sale signal this project has** (§8).
+
+Verified offline end to end: previous price survives the upsert,
+first/last seen populate, disappearance detects correctly.
+
+**Scheduled weekly, Mondays 07:00** (`borgovero-weekly-ingest`). Weekly
+not daily on purpose: the signals wanted are *price-change events* and
+*disappearance*, both of which weekly resolves fine, at a seventh of the
+footprint against a robots.txt that disallows the crawl (§12.9). Runs
+only while the app is open; a missed run fires at next launch.
+
+**Roughly 20–30 observed cuts makes the ladder measurable.** At 10%
+of listings carrying a cut (§9's Idealista sample) that is plausibly a
+few weeks, not months.
+
+### §16b. Cross-agency variance — the actual product (S003)
+
+Christopher's framing, and it is a better product than the Target Offer:
+**Leonardi, Marcellini, Centogambe, Cortesi, SICASA, House Immobiliare,
+Romolini, Tiber Immobiliare and It Casa list the same properties at
+different prices and different square footage.** Publishing that variance
+needs **no assumptions at all** — not OMI, not the negotiation ladder,
+not condition positions, not the surface basis. It compares agencies to
+themselves. Every hard problem in §16 evaporates.
+
+Coverage on Immobiliare: **582 of 844 listings (69%)** across seven of
+the nine. **Marcellini and Centogambe are not on Immobiliare** and need
+their own sites.
+
+**The phenomenon is confirmed in data we already hold.** Three agencies,
+Via della Ginestra, identical price to the euro (€110.625), surfaces
+**133 / 90 / 97 m²** — a 48% disagreement on one property.
+
+### Matching is the blocking problem, and photos are the only key
+
+Every obvious join key fails, measured:
+
+| key | verdict |
+|---|---|
+| coordinates | **unusable** — SICASA pins 28 *different* properties (Gricignano, Via del Tevere, Via Petrarca, Piazza della Repubblica) to one point at Sansepolcro's centre. Exact-coordinate matching finds agency habits |
+| photo IDs | **unusable** — zero overlap; each upload gets its own id |
+| address | **weak** — 100% populated but street-level; 5% have a house number, 105 blank |
+| price | **useless here** — works only when prices agree, and disagreement is the thing we want |
+
+`photomatch.py` (S003) uses **dHash on the CDN thumbnails**
+(`pic.im-cdn.it/image/{id}/thumb.jpg`, 100×75, ~2,7 KB; `small.jpg` is
+403). Validated on a five-agency auction cluster: hamming **0** and
+**5** between listings from different agencies.
+
+**Three hard-won cautions, all from real failures:**
+
+1. **Store the hash as hex TEXT, not INTEGER.** A 64-bit dHash with the
+   top bit set exceeds SQLite's *signed* 64-bit INTEGER and raises
+   `OverflowError` — which silently discarded **half** of every harvest
+   until it was caught.
+2. **A single shared image is NOT proof.** The first real run matched a
+   €520.000 villa at Montedoglio to a €195.000 terratetto on Via Santa
+   Croce (reused agency photo), and merged three *different flats* in one
+   Trebbio building (shared facade). Now requires `MIN_SHARED = 2`
+   images and excludes any image recurring across more than 3 listings
+   as agency furniture. Output is **candidates to eyeball**, never
+   automatic publication.
+3. **A non-match proves nothing.** A different auction triple with
+   identical prices shared no photos at all — best hamming 22 against a
+   control of 22. Some agencies shoot their own. Photo matching finds a
+   *subset*, and a subset is enough: one proven cluster with a 48%
+   surface disagreement is a story. Exhaustiveness is not required.
+
+**State:** pipeline works end to end; 52 of 841 listings hashed here
+(sandbox calls cap at 120s). Full harvest is ~6.600 thumbnails, ~45
+minutes, and should be run on Christopher's machine. No multi-agency
+cluster found yet at 6% coverage — expected, not evidence of absence.
+
+### §16c. Marcellini and Centogambe — built S003
+
+`adapters/agencies.py`. The two named agencies absent from Immobiliare,
+now covered: **255 Centogambe + 322 Marcellini = 577 more listings**,
+against 844 on Immobiliare.
+
+**Access is cleaner than either portal, and was checked before a line
+was written:**
+
+```
+centogambe   robots.txt = "User-agent: * / Disallow:"  (empty Disallow
+             = everything permitted) AND publishes sitemap_index.xml.
+             255 listings enumerated directly — no search crawling.
+marcellini   no robots.txt at all (404). Enumerated via
+             Elenco.asp?Pagina=Elenco&Cat=<category>, 9 categories.
+```
+
+Neither refuses a script. Nothing here needs working around, unlike
+Immobiliare's detail pages and Idealista's search. Both run at
+`config.REQUEST_DELAY_S` with the identifiable UA — these are small
+businesses on WordPress and classic ASP, where a hammering is far more
+noticeable than on a portal.
+
+**The agency reference number is the real prize.** Centogambe prints
+`rif. 0383`, Marcellini `Rif: 11175`, and portals print the same
+reference inside the listing description ("Riferimento: 5258", seen on
+an Immobiliare detail page). **That is a second join key and a better
+one than photographs** — exact, agency-issued, and needing no
+eyeballing, where `photomatch.py` only ever produces candidates a human
+must confirm. Caveat: Immobiliare descriptions are 2/844 populated in
+our data because the search payload omits them and detail pages 403, so
+matching on `rif` currently works agency-site → agency-site, and
+agency-site → portal only where a reference surfaces some other way.
+
+**A finding, not a parser bug: Marcellini withholds prices.** Every
+sampled listing reads `Prezzo: trattativa riservata`. The adapter stores
+`price=None` with `price_withheld=True` rather than coercing or
+dropping — how much of an agency's inventory hides its price is a
+measure of market opacity and belongs in the output. Quantify the rate
+on the full run.
+
+Probe verified 2026-08-28: 8/8 Centogambe refs, prices and surfaces
+parsed. One bug found and fixed — a `rif` regex without a word boundary
+matched inside *pe·rif·eria* and produced `ref=eria`.
+
+    python3 -m adapters.agencies --probe
+
+Not yet wired into the database; `parse_*` returns dicts shaped for
+`listings`, but a `source`-aware upsert and a comune normalisation pass
+are still needed (Marcellini's `Zona` carries comuni outside scope —
+Verghereto, Citerna — which must be filtered to `config.COMUNI`).
+
+### A lead worth checking, not yet a finding
+
+Immobiliare listing **128457332** stands at **€280.000**; the Idealista
+sample showed a Sansepolcro listing cut **€280.000 → €265.000 (−5%)**.
+If those are the same property, **Immobiliare is showing a stale
+pre-cut price** — which would mean asking prices in the dataset run
+high, and the whole overpricing measure with them. Not confirmed:
+identity needs an address and surface match. **Check it**; if it
+generalises it is a large correction and a cross-portal finding in its
+own right.
 
 ### Also unresolved before publication
 

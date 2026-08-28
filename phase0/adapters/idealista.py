@@ -22,7 +22,42 @@ sometimes differs from Immobiliare's for the same property — a third
 divergence axis at zero cost.
 
 --------------------------------------------------------------------------
-UNVERIFIED. READ THIS BEFORE TRUSTING ANYTHING BELOW.
+STATUS S003 (2026-08-28): SELECTORS VERIFIED. HARVEST NOT RUNNABLE.
+
+Checked against the live Sansepolcro search page, read in a browser.
+
+  VERIFIED   article.item (30 per page, so PER_PAGE=30 is right),
+             .item-price, .pricedown_price / .pricedown. The offline
+             guesses were correct. 3 of 30 listings carried a cut:
+             187.000->178.000 (-5%), 107.000->100.000 (-7%),
+             280.000->265.000 (-5%).
+
+  BLOCKED    A script GET returns **403**, and a browser first gets a
+             "Verifica del dispositivo" bot-detection interstitial.
+             `harvest()` MUST NOT be run. This is the same call already
+             made on Immobiliare's detail pages (SOT S12.4): the refusal
+             is deliberate and is not to be worked around. The earlier
+             note that Idealista's search page "is not blocked" was a
+             browser observation mistaken for a fact about scripts.
+
+  ROBOTS     Unlike Immobiliare, idealista.it's `User-agent: *` block
+             ALLOWS plain search paths (it disallows /ajax/*, photos,
+             user areas, 3+-filter variants and some sort orders, and
+             the pagination rule is commented out). Note the guessed
+             pagination below — /lista-N.htm — is matched by
+             `Disallow: /*/lista-*.htm` and must not be used even if
+             access were available. Robots permits what the server
+             refuses; the server wins.
+
+  HAZARD     The live page served ENGLISH locale, where the thousands
+             separator is a COMMA ("178,000€"), not the Italian dot
+             `to_int()` assumes. Whichever locale is served, to_int must
+             handle both or prices come out 1000x wrong. Untested.
+
+Everything below the line was written offline and the caveats it records
+are kept for the history.
+--------------------------------------------------------------------------
+UNVERIFIED AS ORIGINALLY WRITTEN. READ THIS BEFORE TRUSTING ANYTHING BELOW.
 
 The immobiliare adapter was written against live browser inspection. This
 one was NOT — it was written offline, from the structural notes in

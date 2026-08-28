@@ -18,6 +18,11 @@ def ingest(conn, comuni, refetch=False):
     See the adapter docstring.
     """
     total_new = 0
+    # One timestamp for the whole run, so "not seen in the latest run"
+    # is a single exact comparison rather than a fuzzy window.
+    run_at = datetime.now(timezone.utc).isoformat()
+    tally = {"new": 0, "price_change": 0, "unchanged": 0}
+    changes = []
 
     for comune in comuni:
         print(f"\n=== {comune.upper()} ===")
@@ -27,7 +32,13 @@ def ingest(conn, comuni, refetch=False):
         n_new = n_err = 0
         for rec in immobiliare.harvest(comune):
             try:
-                rec["fetched_at"] = datetime.now(timezone.utc).isoformat()
+                rec["fetched_at"] = run_at
+                # MUST come first — upsert overwrites the previous price.
+                what = db.observe(conn, rec, run_at)
+                tally[what] += 1
+                if what == "price_change":
+                    changes.append((comune, rec.get("source_id"),
+                                    rec.get("price"), rec.get("url")))
                 db.upsert_listing(conn, rec)
                 n_new += 1
             except Exception as e:
@@ -37,6 +48,26 @@ def ingest(conn, comuni, refetch=False):
         conn.commit()
         print(f"  stored {n_new}" + (f", {n_err} errors" if n_err else ""))
         total_new += n_new
+
+    print(f"\n=== OBSERVED THIS RUN ({run_at[:19]}Z) ===")
+    print(f"  new listings     {tally['new']}")
+    print(f"  price changes    {tally['price_change']}")
+    print(f"  unchanged        {tally['unchanged']}")
+
+    for comune, sid, price, url in changes:
+        prev = conn.execute(
+            "SELECT prev_price FROM price_history WHERE source_id=? "
+            "AND seen_at=?", (sid, run_at)).fetchone()
+        p = prev["prev_price"] if prev else None
+        if p:
+            print(f"    {comune:22} {p:>9,} -> {price:>9,}  "
+                  f"({(price-p)/p*100:+.1f}%)  {url}")
+
+    gone = db.disappeared(conn, "immobiliare", run_at)
+    print(f"  no longer listed {len(gone)}")
+    if gone:
+        print("    (sold, withdrawn, or relisted under a new id — the")
+        print("     closest observable sale signal this project has)")
 
     return total_new
 
