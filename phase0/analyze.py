@@ -42,8 +42,16 @@ def fmt_pct(v):
     return "  n/a" if v is None else f"{v:+6.1f}%"
 
 
-def band_for(omi_rows, typology, zona, force_tipologia=None):
+def band_for(omi_rows, typology, zona, force_tipologia=None, zona_code=None):
     """Return (min, max, how) for a listing, or None.
+
+    `zona_code` is the exact OMI zone from point-in-polygon (zones.py) —
+    'B1', 'R2' — and when present it beats everything: the band is the
+    one OMI publishes for that very zone, not a min/max across a fascia
+    class. When the exact zone does not quote the listing's typology
+    (Ville e Villini is not quoted in every zone), the fallback chain is
+    the zone's own fascia letter, then the comune. `zona` is the coarse
+    text class and is only consulted when no polygon zone is known.
 
     `force_tipologia` overrides the mapping, used to price the same
     listing against an alternative OMI category — see the rustico span in
@@ -71,12 +79,25 @@ def band_for(omi_rows, typology, zona, force_tipologia=None):
     if not rows:
         return None
 
+    # Exact zone first, when zones.py has assigned one.
+    if zona_code:
+        z = [r for r in rows
+             if (r["zona_code"] or "").upper() == zona_code.upper()]
+        if z:
+            return min(r["min_eur_m2"] for r in z), \
+                   max(r["max_eur_m2"] for r in z), f"{how}+zone-exact"
+
     # Filter to the right band of zones. Only centro storico used to be
     # filtered; everything else collapsed across every zone in the comune,
     # which on real data hands a rural farmhouse the same 1900 ceiling as
     # a hillside villa in C1 and makes it impossible for anything rural to
     # register as overpriced. OMI's own first letter carries the class.
-    letters = config.ZONA_TO_FASCIA.get(zona)
+    # The polygon zone's own letter is more trustworthy than the text
+    # guess, so it wins when both exist.
+    if zona_code:
+        letters = (zona_code[:1].upper(),)
+    else:
+        letters = config.ZONA_TO_FASCIA.get(zona)
     if letters:
         z = [r for r in rows
              if (r["zona_code"] or "").upper().startswith(letters)]
@@ -194,7 +215,8 @@ def build_rows(conn, basis="net"):
 
     stats = {"total": len(listings), "with_mq": 0, "with_price": 0,
              "with_band": 0, "usable": 0, "with_mq_comm": 0,
-             "dom_conf": {}, "dom_unbucketable": 0, "excluded_typology": {}}
+             "dom_conf": {}, "dom_unbucketable": 0, "excluded_typology": {},
+             "band_how": {}}
     out = []
 
     for L in listings:
@@ -220,7 +242,9 @@ def build_rows(conn, basis="net"):
             continue
 
         omi_rows = omi_by_comune.get(config.norm_comune(L["comune"]), [])
-        band = band_for(omi_rows, L["typology"], L["zona_guess"])
+        zona_poly = L["zona_poly"] if "zona_poly" in L.keys() else None
+        band = band_for(omi_rows, L["typology"], L["zona_guess"],
+                        zona_code=zona_poly)
         if not band:
             continue
         stats["with_band"] += 1
@@ -233,13 +257,15 @@ def build_rows(conn, basis="net"):
         if eur_m2 < 150 or eur_m2 > 12000:
             continue
         stats["usable"] += 1
+        stats["band_how"][how] = stats["band_how"].get(how, 0) + 1
 
         # The same listing priced against the other defensible reading of
         # its typology. Null except for rustici, where OMI forces a choice.
         pct_alt = None
         if L["typology"] == "rustico":
             alt = band_for(omi_rows, L["typology"], L["zona_guess"],
-                           force_tipologia=config.RUSTICO_ALT_TIPOLOGIA)
+                           force_tipologia=config.RUSTICO_ALT_TIPOLOGIA,
+                           zona_code=zona_poly)
             if alt:
                 pct_alt = round((eur_m2 - alt[1]) / alt[1] * 100, 1)
 
@@ -255,7 +281,9 @@ def build_rows(conn, basis="net"):
             "source_id": L["source_id"],
             "comune": L["comune"],
             "typology": L["typology"],
-            "zona": L["zona_guess"],
+            "zona": zona_poly or L["zona_guess"],
+            "zona_poly": zona_poly,
+            "zona_guess": L["zona_guess"],
             "agency": L["agency_name"],
             "mq_used": mq,
             "mq_net": L["mq"],
@@ -403,6 +431,18 @@ def run_one(conn, basis, quiet_quality=False):
         print(f"  With commerciale       {stats['with_mq_comm']} ({stats['with_mq_comm']/t*100:.0f}%)")
         print(f"  Matched to OMI band    {stats['with_band']} ({stats['with_band']/t*100:.0f}%)")
         print(f"  Usable                 {stats['usable']} ({stats['usable']/t*100:.0f}%)")
+
+        if stats["band_how"]:
+            bits = ", ".join(f"{k} {v}" for k, v
+                             in sorted(stats["band_how"].items(),
+                                       key=lambda kv: -kv[1]))
+            print(f"  Band matched via: {bits}")
+            n_exact = sum(v for k, v in stats["band_how"].items()
+                          if k.endswith("zone-exact"))
+            if n_exact / max(stats["usable"], 1) < 0.5:
+                print("  !! Under half the usable listings have an exact")
+                print("     polygon zone — run `python3 zones.py` or check")
+                print("     why zona_poly is null.")
 
         if stats["excluded_typology"]:
             bits = ", ".join(f"{k} {v}" for k, v

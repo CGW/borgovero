@@ -87,6 +87,11 @@ LATE_COLUMNS = {
         ("price_previous", "INTEGER"),
         ("price_cut_pct", "REAL"),
         ("eur_m2_stated", "REAL"),
+        # OMI zone code from point-in-polygon against the official KML
+        # perimeters (zones.py). NULL = unknown (no coords, no KML for the
+        # comune, or the point sits in no zone polygon); analyze.py falls
+        # back to zona_guess for those rows only.
+        ("zona_poly", "TEXT"),
     ],
 }
 

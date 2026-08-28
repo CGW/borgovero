@@ -1,6 +1,6 @@
 # Borgo Vero — Source of Truth
 
-**Last updated:** 2026-08-27 (S002, wrap)
+**Last updated:** 2026-08-28 (S003 — §1 reframed; §15.1, §15.2, §15.7 done; §16 built)
 
 This file is the authority. Where it disagrees with a README, a results
 document, a code comment or a memory, this file wins — and the disagreement
@@ -15,17 +15,66 @@ cost the first half of S002.
 
 ## 1. What this is
 
-Borgo Vero tests, and then publishes, one claim about the Valtiberina
-property market: **asking prices sit above the state's own registered
-valuation bands, and the gap is largest on listings that have sat unsold
-the longest.**
+**REFRAMED S003.** The project's claim has changed. What follows is the
+current one; the previous framing and why it was retired are below.
+
+Borgo Vero answers one question for a buyer looking at one property:
+**what should I actually pay for this?**
+
+It publishes a single euro figure per listing — the **Target Offer** —
+derived from the state's own registered transaction data, next to the
+asking price, with the gap stated in euros. The engine is §16.
 
 The state bands are OMI (*Osservatorio del Mercato Immobiliare*, Agenzia
 delle Entrate) — free, bulk-downloadable, semestral, per comune, per zone,
-per typology. They are the neutral reference the whole project stands on.
+per typology, and built from **registered sale contracts**: what property
+actually sold for. They are the neutral reference the whole project
+stands on.
 
-Phase 0 publishes nothing. It exists to answer whether the claim survives
-contact with real data, and therefore which site gets built.
+### What was retired, and why it matters that it was
+
+The original claim was: *asking prices sit above the state's own
+registered valuation bands, and the gap is largest on listings that have
+sat unsold the longest.*
+
+Both halves failed on real data. There is **no age gradient** (§5), and
+the market-wide overpricing claim does not survive a comparison it was
+never set up to make: **OMI is built from transactions, our 844 figures
+are asking prices, and those are not the same quantity.** Sellers ask
+high and settle lower. Banca d'Italia's quarterly survey of estate
+agents puts the national average discount from initial asking price at
+**7–8% through 2025** (Q1 7,0 / Q3 7,5 / Q4 ~8,0), with an average
+selling time of 5,5 months, and states the discount runs **larger for
+older homes in slower inland towns**.
+
+Apply that to our own median: asking sits at midpoint × 1,102; less a
+national 8% gives midpoint × 1,014. **Expected closing prices land on
+the OMI midpoint — exactly where registered transactions sit.** For three
+sessions the difference between an ask and a sale was being read as
+seller over-optimism.
+
+**This does not exonerate the market, and the reframe is not a retreat.**
+Two things follow instead:
+
+1. **The national figure is a floor for this market, not a description
+   of it.** Banca d'Italia's 8% comes paired with a 5,5-month selling
+   time. Our stock sits for *years* — 83 listings over four. A property
+   that cannot clear in four years does not close 8% under asking. The
+   achievable-price gap here is **wider** than the national number, not
+   narrower, and it is unmeasured.
+2. **Whoever pays near asking absorbs all of it.** The discount is the
+   reward for knowing the local norm. A foreign buyer who does not know
+   it pays the full spread. That asymmetry — not seller greed — is the
+   concrete harm, and it is addressable by publishing a number.
+
+So the finding survives; the framing was wrong. "This market is
+overpriced" is weak on the median listing and an agent can dismiss it in
+one conversation — taking the 90 listings where it is unambiguously true
+down with it. **"Here is what you should pay, from the state's own
+data"** cannot be dismissed, because the number is the government's.
+
+Phase 0 still publishes nothing. It exists to establish that the Target
+Offer can be computed defensibly before a single page is built.
 
 ---
 
@@ -66,7 +115,11 @@ phase0/
   omi.py                 band loader, --inspect, sanity check
   id_curve.py            ID -> date interpolation (Job B)
   run.py                 ingest orchestrator + field-yield health
+  zones.py               OMI zone by point-in-polygon from the KML (S003)
   analyze.py             the hypothesis test
+  fairprice.py           THE PRODUCT — one Target Offer per listing (S003)
+  surface_reads.py       the 20 browser-read surface samples (S003, §7)
+  dupes.py               duplicate clusters
   selftest.py            synthetic end-to-end check
   db.py                  SQLite schema
 bv-site/                 static generator + preview pages (Phase 1 groundwork)
@@ -105,8 +158,8 @@ precious is `id_anchors.json` — see §6.
 | Ingest | **Done.** 844 listings, eight comuni, 44 requests, fully cached |
 | Database | Present. Re-parsing costs zero requests |
 | Detail pages | **403 Forbidden.** Search served, detail refused — see §12 |
-| OMI bands | Arezzo 2025-2 and 2021-1, valori + zone + KML, in `data/QIP…/`. Loads: 108 rows across seven comuni, sanity anchors pass. **Citerna is province of PERUGIA and needs its own request** — 60 listings currently drop |
-| Zone KML | Downloaded, **unused.** `AR20252.zip`. The fix for §12's zone problem |
+| OMI bands | Arezzo 2025-2 and 2021-1, valori + zone + KML, in `data/QIP…/`. Loads: 108 rows across seven comuni, sanity anchors pass. **Citerna is province of PERUGIA and needs its own request** — 60 listings currently drop. NOTE: `omi.py` needs `--path data/QIP…/QIP_1421390_1_20252_VALORI.csv`; the `config.OMI_CSV_PATH` default does not exist |
+| Zone KML | **Loaded and applied (S003).** `zones.py` assigns `listings.zona_poly` by point-in-polygon; 775 of 844 assigned, 0 fall outside every zone. §12's former #3 is closed |
 | ID curve | 23 measured anchors, 2021-03 to 2026-08 |
 | Site generator | Preview pages only, demo + real sample |
 | Idealista adapter | Written S002, **selectors unverified** — see §9 |
@@ -138,6 +191,32 @@ vs OMI BAND MIDPOINT
   more than +50% over       24% of listings
 ```
 
+### S003 re-run with polygon zones
+
+Same 696 listings, zone assignment replaced by point-in-polygon (§15.1
+done). The S002 numbers above were reproduced exactly first, so the delta
+is the zoning correction and nothing else:
+
+```
+                         S002 (text guess)    S003 (polygon zones)
+vs ceiling   median            −13,0%               −8,5%
+             IQR          −41,5 / +19,0        −36,8 / +26,2
+             above ceiling       36%                  42%
+             >+50% over     74 (med +78%)        90 (med +82%)
+vs midpoint  median             +7,0%               +10,2%
+             above midpoint      57%                  58%
+```
+
+274 listings changed band; 252 moved *up* (median +10,3 pp) — the text
+guess had been handing rural stock urban ceilings, which understated
+overpricing, exactly as §12 predicted. 664 of 696 now match on their own
+exact OMI zone (`band_how = …+zone-exact`), which also retires most of
+§12's old #5 (fascia-wide min/max) for zoned listings.
+
+Both caveats that remain are §7 (surface contamination, downward bias)
+and the ceiling-vs-midpoint choice. Reasons 2 and 4 below still stand;
+reason 3 is resolved.
+
 ### Do NOT record this as a refutation
 
 Taken at face value the ceiling column says the market is not overpriced
@@ -148,10 +227,12 @@ safe, for four reasons, three of which push the same way:
    data. "Above the top of the official range" and "above the middle of
    it" are different claims and both are honest. §12 records that this
    has not been decided.
-2. **The advertised surface is contaminated** — see §7. Always in the
-   direction of looking cheaper. Unknown rate.
-3. **Zone assignment is a text guess** (§12), and it hands rural stock
-   urban ceilings.
+2. ~~The advertised surface is contaminated~~ **SIZED S003 (§7).** 78% of
+   sampled listings are clean and the error runs both ways; correcting
+   it moves the ceiling median by −0,7 pp. This reason is spent — it
+   cannot account for the gap, and it never pointed the way S002 assumed.
+3. ~~Zone assignment is a text guess~~ **FIXED S003.** Point-in-polygon;
+   it moved the answer +4,5 pp toward the thesis but not across zero.
 4. **OMI is built from registered sale contracts** — what property
    actually sold for, not what it was asked. 844 listings asking below
    the range real transactions fall into, while almost nothing sells, is
@@ -162,6 +243,15 @@ safe, for four reasons, three of which push the same way:
 requires.** Recording a refutation now would harden it into next
 session's starting assumption — exactly how S001's invented rural bands
 became a "finding".
+
+**Update, end of S003.** Two of those four reasons have now been worked
+and neither rescued the ceiling reading: zoning moved it +4,5 pp and
+surface contamination is worth −0,7 pp. Reason 4 (OMI is built from
+registered sales, and almost nothing sells) is untouched and is now
+carrying most of the weight, alongside the undecided framing in reason 1.
+**The remaining honest position is narrower than it was:** on the
+ceiling the market is not overpriced, on the midpoint it is, and the
+measurement is no longer the thing standing in the way of choosing.
 
 ### What does survive, independent of all of the above
 
@@ -304,15 +394,78 @@ denominator, which moves that listing from −17,1% to **+3,6%** against its
 band.
 
 So the basis is neither net nor commerciale. It is **contaminated by agent
-data entry**, at an unknown rate, and always in the direction of looking
-cheaper. It cannot be detected from the search page: the breakdown that
+data entry**. It cannot be detected from the search page: the breakdown that
 reveals it is on detail pages, which return **403** to a script (§12).
 
 Immobiliare's own stated `Prezzo al m²` divides by commerciale — confirmed
 on all three (1.492, 746, 1.160 €/m²).
 
-**Measuring the contamination rate needs ~20 listings read in a browser.**
-Until then every €/m² in §5 has an unquantified downward bias.
+### MEASURED S003 — 20 listings read in a browser
+
+Stratified across the price-vs-band distribution (4 deep below, 6 below,
+6 above, 4 far above) so the rate is not estimated from outliers only.
+Data and arithmetic in `phase0/surface_reads.py`.
+
+**The rule, now confirmed exactly**, not inferred:
+
+```
+headline Superficie = SUM(surface x coefficient) over rows tagged 'Principale'
+```
+
+Verified to the square metre on three listings: 116350107
+(1000×100% + 2200×10% = 1220), 110972593 (249 + 80×25% + 60×25% = 284),
+115047499 (80×100% = 80). The coefficient applies to *Principale* rows
+too — S002's "Principale counts at 100%" was wrong.
+
+| | n | share |
+|---|---|---|
+| Published a breakdown | 18 of 20 | 90% |
+| **Headline == dwelling (clean)** | **14 of 18** | **78%** |
+| Headline inflated — looks cheaper | 3 of 18 | 17% |
+| Headline understated — looks dearer | 1 of 18 | 6% |
+
+```
+116350107  head 1220 vs dwelling 1000   x1,22   garden 2.200 m2 tagged Principale @10%
+110972593  head  284 vs dwelling  249   x1,14   two cellars 80+60 tagged Principale @25%
+43607800   head   68 vs dwelling   65   x1,05   cantina 12 m2 tagged Principale @25%
+115047499  head   80 vs dwelling  170   x0,47   a 90 m2 RESIDENCE floor tagged Accessoria
+```
+
+**Two things here overturn what S002 assumed.**
+
+1. **It is not one-directional.** S002 recorded the bias as "always in the
+   direction of looking cheaper". It is not — 115047499 excludes a
+   90 m² living floor from its headline, so that listing's €/m² is
+   overstated by 2,1×. A one-directional bias can be corrected with a
+   factor; a two-directional error can only be bounded, which is worse
+   in kind but, as it turns out, smaller in size.
+2. **The size is small.** Bootstrapping the 18 observed correction
+   factors across all 696 usable listings (2.000 draws):
+
+```
+                        observed     surface-corrected (95% CI)
+ceiling median            −8,5%       −9,2%   [−10,7 , −7,7]
+midpoint median          +10,2%       +9,2%   [ +7,6 , +11,4]
+above ceiling             42%          41%    [ 39,8 , 42,8]
+```
+
+**§7 does not rescue the ceiling comparison and never could have.** The
+correction is under 1,5 pp and its central estimate points *away* from
+overpricing, not toward it, because the clean 78% dominate and the one
+large error runs the other way.
+
+Remaining caution, and it is real: n=18 is small, so the 22% rate itself
+is only bounded to roughly 6–48%. The bootstrap also assumes
+contamination is independent of listing type; the one large downward
+case was cheap unrestored stock, and if that correlates the effect is
+not random. Two listings (11%) publish no breakdown at all.
+
+**Note for any future adapter:** the breakdown is machine-readable in the
+detail page's `__NEXT_DATA__` at
+`props.pageProps.detailData.realEstate.properties[0].surfaceConstitution`
+— `constitutionKey`, `surface`, `percentage`, `surfaceType`. If detail
+access ever opens, this is a parse, not a manual read. It stays
+browser-only while detail pages 403 (§12.4).
 
 Run both ways on test data:
 
@@ -396,6 +549,66 @@ reports yield on `condition`: restored → Ville e Villini, to-renovate →
 economico. Unpopulated ones need the default regardless.
 
 That OMI has no farmhouse category is itself worth publishing.
+
+### Are date-matched bands needed? — ANSWERED S003: no. But see what it revealed.
+
+Compared 2021-1 against 2025-2 across the 89 keys present in both
+(comune × zone × typology × stato). Restricted to the residential
+typologies we actually band against, n=31:
+
+```
+ceiling drift 2021-1 -> 2025-2   median  +0,0%   mean +1,6%
+unchanged                        22 of 31 rows
+moved up 6, moved down 3         range −4,0% to +16,0%
+```
+
+**Date-matching the bands is not worth building.** A listing from 2021
+measured against 2025-2 bands is, for 71% of rows, measured against a
+literally identical band. The movement that exists is concentrated in a
+handful of urban centro rows — Anghiari B1 +16,0%, Sansepolcro C1
++13,3%, Sansepolcro B1 +12,0%, all *Abitazioni civili* — and rural R
+zones did not move at all.
+
+**But the reason it does not matter is itself a limitation.** OMI bands
+for this area barely moved in four and a half years, in a period when
+Italian residential prices did move and post-COVID foreign interest in
+Tuscan borghi was widely reported. Two readings:
+
+1. The Valtiberina genuinely stagnated. Plausible — it is not Chianti,
+   and stagnation is consistent with §5's "almost nothing sells".
+2. **OMI updates are sticky**, and the band is a lagging administrative
+   figure rather than a live market reading.
+
+If (2) carried weight, part of any measured gap would be OMI's inertia
+rather than seller over-optimism — the same direction §7 already pushes.
+
+**Checked the same day, against the whole province** (238 residential
+rows, 35 comuni, both semesters, offline):
+
+| | n | median | mean | unchanged |
+|---|---|---|---|---|
+| Whole province | 238 | +0,0% | +3,3% | 55% |
+| **Valtiberina (our 8)** | 31 | +0,0% | **+1,6%** | **71%** |
+| Rest of province | 207 | +0,0% | +3,5% | 53% |
+
+Per comune: **Cortona +7,7%**, **Arezzo +4,5%**, San Giovanni Valdarno
++1,1%, Montevarchi +0,0%, Sansepolcro +2,7%.
+
+**Reading (1) wins.** OMI does move when the market moves — Cortona, the
+province's foreign-buyer hotspot, is up 7,7% and Arezzo city 4,5% over
+the same four and a half years. The bands are sticky in general but not
+frozen, so the Valtiberina's flatness is a signal about the Valtiberina
+rather than an artefact of the instrument.
+
+That is a finding, not just a cleared caveat: **the Valtiberina is the
+flat part of a province whose tourist areas appreciated.** It
+independently supports §5's fourth reason — a market where the state's
+own registered transaction values have not moved in four and a half
+years is one where very little is transacting.
+
+Residual caution: OMI is still a lagging administrative figure and the
+comparison rests on two semesters, not a series. Do not claim "OMI
+tracks the market accurately", only "OMI moved elsewhere and not here."
 
 ### Is the market relisting to reset the clock?
 
@@ -558,24 +771,30 @@ than absent.
 
 In descending order of how much each could move the answer:
 
-1. **Surface basis is contaminated, not merely unknown.** §7. Unquantified
-   downward bias on every €/m². Needs ~20 browser reads to size.
-2. **Ceiling vs midpoint is undecided.** −13,0% vs +7,0% on identical
-   data. This is a framing choice nobody has made deliberately yet.
-3. **Zone assignment is a text guess.** `map_zona` uses Immobiliare's
-   `macrozone` (64,7% populated), keyword fallback otherwise. It puts 393
-   of 696 listings in the centro storico and only 9 in campagna, while 146
-   are farmhouses — so rural stock is priced against C/D/E ceilings up to
-   1900 instead of R ceilings at 1400. **The zone KML fixes this properly**
-   by point-in-polygon on the lat/lon already stored, and it is already
-   downloaded.
+1. **Ceiling vs midpoint is undecided.** −8,5% vs +10,2% on identical
+   data. This is a framing choice nobody has made deliberately yet, and
+   with §7 and §12.3 now resolved it is the **largest remaining
+   limitation** — the only one left that flips the sign of the answer.
+2. **Surface contamination — SIZED S003, and it is small.** §7. 78% of
+   sampled listings are clean, the error runs both ways, and correcting
+   it moves the ceiling median by −0,7 pp. It no longer ranks first.
+   Residual: n=18, so the rate is bounded only to ~6–48%.
+3. **RESOLVED S003 — zone assignment is now point-in-polygon.**
+   `zones.py` assigns `zona_poly` from the official KML perimeters: 775
+   of 844 assigned, 0 points fall outside every zone, and 664 of 696
+   usable listings match their exact OMI zone band. The 69 unassigned
+   are Citerna (60, no KML — Perugia) and 9 without coordinates; those
+   fall back to the old text guess, visibly, in the data-quality block.
+   The correction moved 252 listings up a median +10,3 pp — see §5.
 4. **Detail pages return 403.** Search served, detail refused. Closes off
    commerciale, stated publication dates, agency references and EPC. Not
    an expense question — the route is shut. Do not circumvent it; the
    Wayback archive is the legitimate alternative for a sample.
-5. **Per-listing bands are coarse.** `band_for()` takes min-of-mins and
-   max-of-maxes across several OMI typologies and every zone in a fascia
-   class. Fine for a distribution, wrong for any single property.
+5. **Per-listing bands are coarse — largely retired S003.** With an
+   exact polygon zone, `band_for()` uses that zone's own rows (95% of
+   usable listings). Residual coarseness: min/max across the mapped OMI
+   typologies within the zone, and the fascia-letter fallback for the
+   32 listings whose zone does not quote their typology.
 6. **Citerna has no bands.** Province of Perugia. 60 listings drop.
 7. **Single source.** Immobiliare only. Idealista carries more inventory
    and publishes price cuts; agency-exclusive listings are invisible.
@@ -603,6 +822,9 @@ building before writing a page of it.
 | S002 | 2026-08-27 | **Full chain run end to end for the first time.** 844 listings ingested across all eight comuni (44 requests), real bands loaded, DOM backfilled, analysis produced. Headline −13,0% vs ceiling / +7,0% vs midpoint. Recorded as **unresolved, not refuted** — §5 gives the four reasons. Detail pages found to return 403, closing off commerciale, stated dates and EPC; decided not to circumvent. Measured what Immobiliare's `Superficie` actually is from three browser reads: usually dwelling-only, but contaminated by agent data entry at an unknown rate, always toward looking cheaper (§7). Found 37 judicial auctions at median €414/m² against the market's €1.143 and excluded them; found Citerna is in Perugia province and has no bands; added a loud guard for both. Fixed `band_for()` zone collapse, its non-residential fallback, the missing typologies (Trilocale/Quadrilocale/Casa colonica, 99,9% yield), the gate's "uniform overpricing" wording on a negative median, and the price-yield threshold that always tripped. Added `dupes.py` — 42 clusters, 7,2% surplus, median moves +1,3%. |
 | S002 | 2026-08-27 | Real bands loaded and inspected. Fixed a second load-breaking bug: `sniff()` skipped the AdE preamble line but `load()` did not, so `DictReader` took the caption as its header and matched zero rows. Added `rows()` as the single correct entry point, plus `zone_labels()` joining `Zona_Descr` from the ZONE file on `LinkZona`. `band_for()` filtered by zone only for centro storico — everything else collapsed across all zones, handing a rural farmhouse a 1900 ceiling set by C1 villas; now filtered via `config.ZONA_TO_FASCIA` on OMI's own B/C/D/E/R letter. Its no-match fallback also spanned Capannoni to Ville (280–1900); now residential only. Rustici filed under Ville e Villini with the span reported (§8). README/SOT commands corrected to `python3`. |
 | S002 | 2026-08-27 | OMI: found `Comune_descrizione` is `SAN SEPOLCRO` with a space — the loader's exact-match filter would have dropped every Sansepolcro band and then all 178 Sansepolcro listings, silently. Added `config.norm_comune` on both write and lookup. Corrected `stato`→`Stato`, `zona`→None (Zona_Descr is in the zone file), semester→2025-2, sanity anchor→1000–1400, all verified against the OMI web consultation. Confirmed basis is **L (lorda)** — neither surface column matches it (§7). Seismic-suspension list checked: Arezzo never appears. Bulk files requested (Arezzo, 2025-2 and 2021-1, with zone perimeters). Built `adapters/idealista.py` with offline `--selftest`; added `price_previous`, `price_cut_pct`, `eur_m2_stated` and a migration. |
+| S003 | 2026-08-27 | **Zone assignment moved from text guess to point-in-polygon.** New `zones.py` (stdlib: zipfile + xml.etree + ray casting with holes) parses the official KML perimeters, identifies comuni by Document name rather than a hand-kept code table, and writes `listings.zona_poly` (new column, migrated): 775/844 assigned, 0 outside every zone, landmark spot-checks pass. `band_for()` now matches the exact OMI zone first (664/696 usable), then the zone's fascia letter, then comune; data-quality block prints the `band_how` mix. S002 numbers reproduced exactly before switching, so the delta is pure zoning: ceiling median −13,0→−8,5%, midpoint +7,0→+10,2%, above-ceiling 36→42%, the >+50% club 74→90 listings; 252 listings moved up median +10,3 pp. §12.3 closed, §12.5 largely retired. Discovered `omi.py` must be run with `--path` to the QIP valori CSV — bands are not persisted in a fresh working copy. |
+| S003 | 2026-08-28 | **§1 REFRAMED — the project's claim changed.** Established that OMI is built from registered *transactions* while our 844 figures are *asking* prices, and that the difference had been read as seller over-optimism for three sessions. Banca d'Italia puts the national ask-to-close discount at 7–8% (2025) with a 5,5-month selling time; applying it puts our median expected close on the OMI midpoint. The market-wide overpricing claim is retired. It is replaced by a per-listing **Target Offer** — `min(fair_value, asking × (1 − negotiation_discount))` — built in new `fairprice.py`: 705 priced, 620 publishable, median gap +20,0% / €32.742, €38,6M total. Added `publishable()` after the first run's headline offender turned out to be a €6,75M estate measured against ordinary rural bands; 12% now suppressed rather than guessed. Condition expressed as a position *inside* the OMI band because OMI publishes only NORMALE here (107/108 rows). Recorded loudly that the DOM discount ladder above the first rung is unmeasured and that the engine's own DOM table therefore echoes its input rather than evidencing anything. Note: the national 8% is a **floor** for a market whose stock sits for years, so the achievable-price gap here is wider than measured, not narrower. |
+| S003 | 2026-08-28 | **§7 measured, and it does not say what S002 thought.** 20 detail pages read in Christopher's own browser (Claude in Chrome; detail pages still 403 to scripts, and the decision not to proxy around that was re-affirmed rather than reversed). Confirmed the headline rule exactly — `SUM(surface × coefficient)` over *Principale* rows, coefficient applying to Principale too, which corrects S002's "Principale counts at 100%". 14 of 18 listings clean (78%); contamination runs **both** directions, refuting "always toward looking cheaper"; bootstrapped across 696 listings it moves the ceiling median −8,5 → −9,2% and the midpoint +10,2 → +9,2%. §7 demoted from the top limitation. Also answered §15.7 offline: OMI bands barely moved 2021-1 → 2025-2 in the Valtiberina (71% identical, mean +1,6%) while Cortona ran +7,7% and Arezzo +4,5% over the same period — date-matched bands are unnecessary, and the flatness is a finding about this market rather than about OMI. Recorded `surfaceConstitution`'s location in `__NEXT_DATA__` for any future adapter. |
 | S002 | 2026-08-27 | Anchor harvest completed (23 anchors, 2021-03→2026-08). Confirmed 69% issuance spread — piecewise only, no seasonal dip. `id_curve.py`: extrapolation past outer anchors replaced with floor/ceiling bounds. `analyze.py`: now reads the confidence flag it was always given — confidence mix in data quality, containment-based bucketing for bounds, ambiguous bounds excluded from DOM splits. `config.DOM_MIN_CONFIDENCE` added. `selftest.py` extended to cover both bound paths. This file created. |
 
 ---
@@ -611,16 +833,12 @@ building before writing a page of it.
 
 Ordered by how much each moves the unresolved answer in §5.
 
-1. **Zone by point-in-polygon.** Parse `data/QIP…/AR20252.zip` (KML, already
-   downloaded), assign each listing by its stored lat/lon. Pure stdlib —
-   `xml.etree` plus ~30 lines of ray casting, no new dependencies.
-   Replaces the text guess that currently puts 393 of 696 listings in the
-   centro storico and 9 in campagna.
-2. **Size the surface contamination.** Read ~20 listings in a browser and
-   count how many fold accessories into the headline `Superficie` (§7).
-   No script can do this — detail pages are 403.
+1. ~~Zone by point-in-polygon~~ **DONE S003** — `zones.py`, results in §5.
+2. ~~Size the surface contamination~~ **DONE S003** — 20 browser reads,
+   78% clean, effect under 1,5 pp. §7.
 3. **Decide ceiling vs midpoint**, deliberately, and write the reasoning
-   into §5. Both are honest; publishing without choosing is not.
+   into §5. Both are honest; publishing without choosing is not. **This
+   is now the top open item** — the last thing that changes the sign.
 4. **Request Citerna's bands** — Forniture OMI, provincia di PERUGIA,
    2025-2. Recovers 60 listings. One-shot download, 7-day expiry.
 5. **Probe Idealista** (`python3 -m adapters.idealista --probe`) and fix
@@ -628,5 +846,109 @@ Ordered by how much each moves the unresolved answer in §5.
    price-drop history is the one dataset with an expiry date (§9).
 6. Harvest pre-2021 ID anchors (§6) — now the *only* route to DOM, since
    stated publication dates are behind the 403.
-7. Compare the 2021-1 bands against 2025-2 to settle whether date-matched
-   bands are needed (§8).
+7. ~~Compare 2021-1 against 2025-2~~ **DONE S003** — not needed (§8).
+
+**Reordered by the S003 reframe.** The top item is no longer a framing
+choice, it is a measurement: **the negotiation ladder in §16.** It is the
+one assumed input standing between the Target Offer and publication.
+
+---
+
+## 16. The Target Offer engine — the product
+
+`phase0/fairprice.py`. One euro figure per listing: **what a buyer should
+pay.** This is the deliverable §1 now describes; `analyze.py` remains the
+hypothesis test and is not user-facing.
+
+### Two quantities, deliberately not merged
+
+```
+FAIR VALUE     what the property is worth. OMI band for its exact zone
+               and typology, positioned by condition and specs.
+               Days on market does NOT enter. A house is not worth less
+               because it has been advertised for four years.
+
+TARGET OFFER   what you should pay. Fair value, capped by what the
+               seller has demonstrably been unable to refuse.
+
+    target = min(fair_value, asking x (1 - negotiation_discount))
+```
+
+The minimum is the whole logic. Where asking exceeds worth, fair value
+binds and the buyer is told not to overpay. Where the listing is priced
+within value, the negotiation term binds and the buyer is still told to
+negotiate. **Neither branch ever recommends paying above the state's own
+valuation.**
+
+### Current output (705 priced, 620 publishable)
+
+```
+median gap, asking vs target      +20,0%      EUR 32.742
+IQR                          +12,0% to +31,0%
+total gap, publishable only        EUR 38,6M across 620 listings
+which term binds       fair value 43%  |  negotiation 57%
+```
+
+### The publishability gate — the most important part
+
+The first run's headline "worst offender" was a €6,75M luxury estate
+measured against **ordinary rural R1 bands of 670–980 €/m²**, producing a
+€5,5M "gap". That is not a finding, it is OMI having no band for that
+stock — the same hole as the missing farmhouse category (§8). It would
+have been the first number any agent or journalist looked at.
+
+**A wrong number on the flagship listing discredits the 700 correct ones
+behind it.** So `publishable()` suppresses rather than guesses:
+
+| | n | |
+|---|---|---|
+| Publishable | 620 (88%) | 507 high, 113 medium |
+| Suppressed | 85 (12%) | |
+| — surface over 500 m² | 59 | outside the stock OMI bands describe |
+| — no exact polygon zone | 21 | text-guess zoning is not good enough to publish |
+| — asking >3× band ceiling | 5 | OMI almost certainly publishes no band for it |
+
+Rustici are capped at **medium** regardless: OMI has no farmhouse
+category, so their band is our choice and the alternative reading moves
+them 14 pp (§8). Honest to show, dishonest to show as precise.
+
+### What is measured and what is assumed
+
+**Measured:** the OMI band (registered contracts, 2025-2), the zone
+(point-in-polygon, §12.3), the surface rule (§7), and the national
+negotiation norm (Banca d'Italia).
+
+**Assumed — and these are the direct descendants of S001's placeholder
+bands:**
+
+```
+CONDITION_POSITION   where in the band each condition sits.
+                     OMI publishes only NORMALE for this province
+                     (107 of 108 rows), so condition CANNOT come from
+                     the state's data. Expressed as a position INSIDE
+                     the band, never a multiplier outside it, so every
+                     published number stays within a range the Agenzia
+                     delle Entrate itself printed.
+
+DOM_DISCOUNT         8% for under-6-months is the measured national
+                     norm. Every longer bucket — 12/16/20/25% — is
+                     EXTRAPOLATED AND UNMEASURED.
+```
+
+**The "by days on market" table `fairprice.py` prints is not evidence.**
+Where the negotiation term binds (57% of listings) the gap *is* the
+assumed discount, so that table largely echoes `DOM_DISCOUNT` back. It
+becomes a finding only once the ladder is measured — which needs
+`first_seen` observed over time and actual closing prices, the same
+accumulate-forward problem as relist detection (§8). **Start now.**
+
+### Also unresolved before publication
+
+- **Surface basis.** OMI states **L (lorda**, walls included**)**; the
+  advertised figure's basis is unestablished (§7). If it is wall-
+  exclusive, every fair value here is understated by 5–10%.
+  `NET_TO_LORDA` is left at 1,0 rather than invented.
+- **Duplicates.** The worst-10 list already shows three Monterchi rustici
+  at the same €980.000. `dupes.py` found 42 clusters (S002) and must run
+  before any ranked list is published.
+- **Citerna** still has no bands — 53 listings unpriced.
