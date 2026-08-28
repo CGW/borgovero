@@ -166,6 +166,24 @@ def observe(conn, rec, seen_at):
     reason repeated ingests are worth running.
 
     Returns 'new' | 'price_change' | 'unchanged'.
+
+    TRAP, hit on 2026-08-28 and it WILL recur: a PARSER CHANGE looks
+    exactly like a market event. Fixing `to_int` so Marcellini price
+    ranges stopped concatenating ('200.000 - 300.000' had been parsing
+    as 200000300000) made 96 of 152 priced listings report a
+    'price_change' in a two-hour window. None of them were real.
+
+    price_history is the one table that cannot be regenerated, and it is
+    what the negotiation ladder will eventually be measured from, so
+    fabricated cuts in it are worse than no data at all.
+
+    RULE: after changing any price parser, delete that source's rows for
+    the run that follows —
+
+        DELETE FROM price_history WHERE source=? AND seen_at >= ?
+
+    and note it in the SOT changelog so a later session does not read the
+    spike as a market signal.
     """
     row = conn.execute(
         "SELECT price, first_seen FROM listings WHERE source=? AND source_id=?",

@@ -50,6 +50,13 @@ def in_scope(comune):
     return None
 
 
+def already_stored(conn, source):
+    """Ids already in the database, passed to the harvester so it can
+    skip them BEFORE fetching. Filtering after the fetch saves nothing."""
+    return {str(r[0]) for r in conn.execute(
+        "SELECT source_id FROM listings WHERE source=?", (source,))}
+
+
 def store(conn, recs, run_at, label):
     tally = {"new": 0, "price_change": 0, "unchanged": 0}
     out_of_scope, withheld, stored = {}, 0, 0
@@ -72,7 +79,9 @@ def store(conn, recs, run_at, label):
         tally[what] += 1
         db.upsert_listing(conn, rec)
         stored += 1
-        if stored % 20 == 0:
+        # Commit often — a long harvest will get interrupted, and an
+        # uncommitted transaction throws the whole run away.
+        if stored % 5 == 0:
             conn.commit()
     conn.commit()
 
@@ -95,6 +104,9 @@ def main():
     ap.add_argument("--limit", type=int)
     ap.add_argument("--centogambe", action="store_true")
     ap.add_argument("--marcellini", action="store_true")
+    ap.add_argument("--resume", action="store_true",
+                    help="skip listings already stored; for finishing an "
+                         "interrupted harvest without re-fetching")
     a = ap.parse_args()
     both = not (a.centogambe or a.marcellini)
 
@@ -102,9 +114,13 @@ def main():
     run_at = datetime.now(timezone.utc).isoformat()
 
     if a.centogambe or both:
-        store(conn, agencies.harvest_centogambe(a.limit), run_at, "CENTOGAMBE")
+        skip = already_stored(conn, "centogambe") if a.resume else ()
+        store(conn, agencies.harvest_centogambe(a.limit, skip),
+              run_at, "CENTOGAMBE")
     if a.marcellini or both:
-        store(conn, agencies.harvest_marcellini(a.limit), run_at, "MARCELLINI")
+        skip = already_stored(conn, "marcellini") if a.resume else ()
+        store(conn, agencies.harvest_marcellini(a.limit, skip),
+              run_at, "MARCELLINI")
 
     print("\n=== TOTAL BY SOURCE ===")
     for r in conn.execute(

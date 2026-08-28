@@ -103,6 +103,7 @@ import io
 import json
 import sys
 import time
+import urllib.parse
 import urllib.request
 
 import config
@@ -196,7 +197,26 @@ def harvest(conn, limit=None):
             continue
         for pid in ids:
             try:
-                req = urllib.request.Request(THUMB.format(pid=pid), headers=ua)
+                # Sources store photos differently and BOTH must be
+                # hashed into the same space, or agency-site listings can
+                # never match portal listings — which is the whole point
+                # (SOT S16b): the same property sits on Centogambe's site,
+                # on Leonardi's, and on Immobiliare under a third name.
+                #   immobiliare  numeric id -> CDN thumbnail URL
+                #   agency sites full URL, already absolute
+                url = str(pid) if str(pid).startswith("http") \
+                    else THUMB.format(pid=pid)
+                # Agency filenames are human-typed and contain spaces and
+                # accents — 'foto/10091/facciata-terrazzo superiore.JPG'.
+                # urllib raises InvalidURL on those rather than encoding
+                # them, which failed 660 of 851 Marcellini thumbnails.
+                # Encode the path only; leave scheme/host/query alone.
+                parts = urllib.parse.urlsplit(url)
+                url = urllib.parse.urlunsplit((
+                    parts.scheme, parts.netloc,
+                    urllib.parse.quote(parts.path, safe="/%"),
+                    parts.query, parts.fragment))
+                req = urllib.request.Request(url, headers=ua)
                 data = urllib.request.urlopen(req, timeout=20).read()
                 h = dhash(Image.open(io.BytesIO(data)))
                 conn.execute(
@@ -302,10 +322,11 @@ def report(conn):
     for root, members in sorted(cl.items(), key=lambda kv: -len(kv[1])):
         q = ",".join("?" * len(members))
         rows = conn.execute(
-            f"SELECT source_id, agency_name, price, mq, typology, "
-            f"address_raw, comune, url FROM listings WHERE source_id IN ({q}) "
-            f"ORDER BY price DESC", members).fetchall()
+            f"SELECT source, source_id, agency_name, agency_ref, price, mq, "
+            f"typology, address_raw, comune, url FROM listings "
+            f"WHERE source_id IN ({q}) ORDER BY price DESC", members).fetchall()
         agencies = {r["agency_name"] for r in rows}
+        sources = {r["source"] for r in rows}
         prices = {r["price"] for r in rows if r["price"]}
         mqs = {r["mq"] for r in rows if r["mq"]}
         if len(agencies) < 2:
@@ -317,11 +338,14 @@ def report(conn):
             n_surface_var += 1
 
         head = rows[0]
-        print(f"\n  {head['comune']} — {head['address_raw'] or 'no address'}")
+        tag = "  [CROSS-SOURCE]" if len(sources) > 1 else ""
+        print(f"\n  {head['comune']} — {head['address_raw'] or 'no address'}{tag}")
         for r in rows:
-            print(f"    {str(r['agency_name'])[:30]:32} "
-                  f"EUR {str(r['price'] or '?'):>9}  {str(r['mq'] or '?'):>5} m²  "
-                  f"{str(r['typology'])[:11]:12}")
+            ref = f" rif.{r['agency_ref']}" if r["agency_ref"] else ""
+            print(f"    {str(r['agency_name'] or r['source'])[:26]:28}"
+                  f"{ref:12} EUR {str(r['price'] or 'withheld'):>9}  "
+                  f"{str(r['mq'] or '?'):>5} m²  {str(r['typology'] or '')[:11]:12}"
+                  f"  [{r['source'][:11]}]")
         if len(prices) > 1:
             lo, hi = min(prices), max(prices)
             print(f"    -> PRICE VARIES  EUR {lo:,} to {hi:,}  "

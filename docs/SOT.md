@@ -128,6 +128,16 @@ bv-site/                 static generator + preview pages (Phase 1 groundwork)
 Python 3.9+, stdlib plus `requests` and `beautifulsoup4`. SQLite. No pandas,
 no build step.
 
+**`photomatch.py` adds a third dependency: `pillow`** (S003), for
+decoding JPEG thumbnails before hashing. It is the only module that
+needs it, and it is imported inside the functions rather than at module
+level so the rest of the pipeline still runs without it.
+
+```bash
+pip3 install pillow
+pip3 install pillow --break-system-packages   # macOS/Homebrew Python
+```
+
 **Storage is disposable and gitignored.** `data/`, `cache/`, `*.sqlite` and
 `phase0_results.csv` are not in the repo. The database is regenerated from
 cache in seconds and from the network in under a minute. Do not treat a
@@ -1144,6 +1154,138 @@ Not yet wired into the database; `parse_*` returns dicts shaped for
 `listings`, but a `source`-aware upsert and a comune normalisation pass
 are still needed (Marcellini's `Zona` carries comuni outside scope —
 Verghereto, Citerna — which must be filtered to `config.COMUNI`).
+
+### §16d. `contradictions.py` — the publishable output (S003)
+
+**The agencies contradict each other, and this is the report that shows
+it.** No OMI, no negotiation ladder, no assumed parameters. It compares
+the agencies to their own published figures.
+
+First run, on Immobiliare's 844 plus 19 agency rows (full agency
+harvests not yet run):
+
+```
+properties listed by 2+ agencies WITH a disagreement    66
+  disagree on SURFACE    58    median 7%   worst 48%
+  disagree on TYPOLOGY   23    (changes which OMI band applies)
+  disagree on PRICE       0    <- STRUCTURAL, see below
+```
+
+The flagship case, five agencies on one auction:
+
+```
+Via della Ginestra, Sansepolcro — all at EUR 110.625
+  Centro Aste Arezzo          132 m²
+  Aste Preaste Investimenti   133 m²
+  Professione Aste             97 m²
+  Simplex Domus                90 m²
+  Valerio Pisano              (no surface)
+  -> 48% apart on the same property
+```
+
+**Zero price disagreements is a limitation, not a finding.** The `price`
+and `price+surface` routes use price *as the join key*, so they can only
+ever surface listings that already agree on price. **Price
+contradictions can only be found by the `ref` and `photo` routes**,
+which do not depend on price — and both need the full harvests
+(`run_agencies.py`, `photomatch.py --harvest`). That is the single
+strongest reason to finish them.
+
+### Three matching routes, each labelled in the output
+
+| route | strength | note |
+|---|---|---|
+| `ref` | **decisive** | the agencies' own reference numbers agree. Their identifier, not our inference |
+| `price` | strong | identical price **only when it is not a round number** |
+| `price+surface` | good | round price, surfaces within 15%, streets not contradicting |
+| `photo` | **candidate only** | 2+ shared images; must be eyeballed |
+
+**Clustering: pairs merge only on IDENTITY evidence.** `ref` and `photo`
+are identity claims and merge transitively; `price` / `price+surface`
+are similarity claims and stay as emitted pairs.
+
+This was got wrong twice, in opposite directions, and both are worth
+remembering:
+
+1. **Merging everything transitively.** "Surfaces within 15%" is not an
+   equivalence relation — 100 links to 115, 115 to 130, 130 to 150 —
+   so union-find chained unrelated listings into blobs. One cluster
+   reached **14 listings at €200.000 including eight different
+   Marcellini refs**, spanning 100 to 160 m²; another merged
+   *Coloniche, Negozi, TerreniEdificabili and Appartamenti* into a
+   single "property". Union-find needs an equivalence relation; a
+   tolerance is not one.
+2. **Over-correcting with a coherence rule.** Requiring every member to
+   sit near the cluster's median surface then deleted the findings:
+   Via della Ginestra — five agencies, one auction, an odd price to the
+   euro, surfaces 90 to 133 m² — was rejected for a 48% spread, *which
+   is the discovery*. The rule now applies **only to similarity-built
+   clusters**, since identity evidence is exactly what earns the right
+   to believe a large surface gap.
+
+**Typology is compared on NORMALISED labels.** Marcellini writes
+category headings in the plural, so the report was printing
+`appartamenti vs appartamento -> different OMI band`, which is a plural,
+not a finding — and publishing it would let an agent dismiss the real
+disagreements beside it. `colonica`/`casale`/`podere` all normalise to
+`rustico` for the same reason. What survives — `appartamento vs
+terratetto`, `rustico vs villa` — genuinely changes the band.
+
+**Two further false-positive classes, found and fixed on the first runs,
+both of which would have been publicly embarrassing:**
+
+1. **Round prices group the whole market.** Matching on €250.000 alone
+   pulled *nine* Sansepolcro listings into one "property" spanning 85 to
+   6.000 m². Via della Ginestra worked only because €110.625 is an odd,
+   computed auction figure. The price route now requires a non-round
+   price, or surface corroboration.
+2. **Common price + common size collide.** €170.000 at 105/120 m²
+   appeared on three different streets as three separate "matches".
+   Fixed by rejecting pairs whose normalised street names contradict.
+
+Also rejects any cluster whose surfaces differ by more than 200% unless
+reference numbers agree — 410 m² against 70.350 m² is a house and a
+field, not a disagreement.
+
+Withheld prices are counted separately and never rendered as €0 or as a
+contradiction.
+
+    python3 contradictions.py            # summary + detail
+    python3 contradictions.py --md       # contradictions.md, per property
+
+### §16e. Opacity is itself the finding (S003)
+
+Two of the nine agencies hide a large share of their own inventory, by
+two different mechanisms. Neither is a bug in our pipeline; both belong
+in the published output.
+
+```
+Centogambe   79 of 255 listings (31%) are PASSWORD-PROTECTED
+             "Accesso negato. Inserisci la password per continuare."
+             Published in their public sitemap, then gated.
+
+Marcellini   ~57% of listings withhold the price entirely
+             "Prezzo: trattativa riservata"
+```
+
+**The Centogambe diagnosis took three attempts and the first two were
+wrong**, which is worth recording so nobody re-runs the same dead end:
+
+1. *"31% fetch failure, probably transient"* — wrong; the same URLs fail
+   every time.
+2. *"Their host is throttling us, slow down"* — wrong; raising the delay
+   from 4s to 8s recovered exactly zero of them. `stored 0`.
+3. **Correct:** opened one in a real browser and got a password form.
+   The wall is deliberate and applies to browsers too.
+
+**Do not retry these and do not attempt the password.** A gate is a
+closed door. They are recorded as gated and counted.
+
+That an agency password-gates a third of its listings while listing them
+publicly, and another withholds prices on well over half, is exactly the
+opacity the site exists to expose — and it needs no matching, no OMI and
+no assumptions to state. It is arguably the single most publishable
+fact found so far.
 
 ### A lead worth checking, not yet a finding
 
