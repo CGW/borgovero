@@ -1,0 +1,606 @@
+<title>The Common Denominator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;0,7..72,700;1,7..72,400&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+
+<style>
+  :root {
+    --paper:      #F3F5F4;
+    --card:       #FFFFFF;
+    --ink:        #12171C;
+    --ink-soft:   #3B474D;
+    --muted:      #5F6E73;
+    --rule:       #D5DCDB;
+    --rule-soft:  #E5EAE9;
+    --slate:      #29506B;
+    --signal:     #A82E22;
+    --signal-bg:  #FBEEEC;
+    --verified:   #22624B;
+    --verified-bg:#EBF3EF;
+    --hold:       #8A6410;
+    --hold-bg:    #F8F1E0;
+
+    --f-display: "Literata", Georgia, "Times New Roman", serif;
+    --f-body: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    --f-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+    --measure: 68ch;
+    --gutter: 8.5rem;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:      #0D1215;
+      --card:       #141B1F;
+      --ink:        #E3EAE8;
+      --ink-soft:   #B9C5C4;
+      --muted:      #88989B;
+      --rule:       #2A3439;
+      --rule-soft:  #1E272B;
+      --slate:      #8FB6CE;
+      --signal:     #E8776A;
+      --signal-bg:  #2A1614;
+      --verified:   #6FBF9C;
+      --verified-bg:#10231C;
+      --hold:       #D9AE55;
+      --hold-bg:    #251E0E;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --paper:      #0D1215;
+    --card:       #141B1F;
+    --ink:        #E3EAE8;
+    --ink-soft:   #B9C5C4;
+    --muted:      #88989B;
+    --rule:       #2A3439;
+    --rule-soft:  #1E272B;
+    --slate:      #8FB6CE;
+    --signal:     #E8776A;
+    --signal-bg:  #2A1614;
+    --verified:   #6FBF9C;
+    --verified-bg:#10231C;
+    --hold:       #D9AE55;
+    --hold-bg:    #251E0E;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--f-body);
+    font-size: 16.5px;
+    line-height: 1.65;
+    margin: 0;
+    padding: 0 1.5rem 6rem;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: calc(var(--measure) + var(--gutter) + 3rem); margin: 0 auto; }
+
+  .masthead { padding: 4.5rem 0 2.25rem; border-bottom: 2px solid var(--ink); }
+  .eyebrow {
+    font-family: var(--f-mono); font-size: 0.7rem; font-weight: 500;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin: 0 0 1.25rem;
+  }
+  h1 {
+    font-family: var(--f-display); font-weight: 700;
+    font-size: clamp(2.4rem, 6.5vw, 3.9rem); line-height: 1.02;
+    letter-spacing: -0.022em; text-wrap: balance; margin: 0 0 1rem;
+  }
+  .standfirst {
+    font-family: var(--f-display); font-size: clamp(1.05rem, 2.4vw, 1.25rem);
+    line-height: 1.5; color: var(--ink-soft); max-width: 54ch; margin: 0;
+  }
+  .meta {
+    display: flex; flex-wrap: wrap; gap: 0.5rem 1.75rem; margin-top: 2rem;
+    font-family: var(--f-mono); font-size: 0.72rem; letter-spacing: 0.06em;
+    color: var(--muted); text-transform: uppercase;
+  }
+
+  section {
+    display: grid; grid-template-columns: var(--gutter) minmax(0, 1fr);
+    gap: 0 3rem; padding: 3.25rem 0; border-bottom: 1px solid var(--rule);
+  }
+  section:last-of-type { border-bottom: 0; }
+
+  .marker {
+    font-family: var(--f-mono); font-size: 0.7rem; font-weight: 500;
+    letter-spacing: 0.13em; text-transform: uppercase; color: var(--muted);
+    line-height: 1.5; padding-top: 0.55rem;
+  }
+  .marker b { display: block; color: var(--slate); font-weight: 600; }
+
+  .col { min-width: 0; display: flex; flex-direction: column; gap: 1.15rem; }
+
+  h2 {
+    font-family: var(--f-display); font-weight: 700;
+    font-size: clamp(1.5rem, 3.4vw, 1.95rem); line-height: 1.15;
+    letter-spacing: -0.015em; text-wrap: balance; margin: 0;
+  }
+  h3 {
+    font-family: var(--f-body); font-weight: 600; font-size: 1.02rem;
+    letter-spacing: -0.005em; margin: 0.6rem 0 -0.35rem;
+  }
+  p { margin: 0; max-width: var(--measure); }
+  strong { font-weight: 600; }
+
+  a { color: var(--slate); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  a:focus-visible { outline: 2px solid var(--slate); outline-offset: 3px; border-radius: 2px; }
+
+  ul { margin: 0; padding-left: 1.15rem; max-width: var(--measure); display: flex; flex-direction: column; gap: 0.45rem; }
+  li::marker { color: var(--muted); }
+
+  code, .num { font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+  code { font-size: 0.86em; background: var(--rule-soft); padding: 0.1em 0.35em; border-radius: 2px; }
+
+  /* ---------- villa exhibit ---------- */
+
+  .exhibit {
+    background: var(--card); border: 1px solid var(--rule);
+    border-left: 3px solid var(--signal); padding: 1.6rem 1.75rem;
+    display: flex; flex-direction: column; gap: 1.1rem;
+  }
+  .exhibit .label {
+    font-family: var(--f-mono); font-size: 0.68rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--signal); font-weight: 600;
+  }
+  .split {
+    display: grid; grid-template-columns: 1fr auto 1fr;
+    align-items: center; gap: 1rem; padding: 0.3rem 0;
+  }
+  .side .who {
+    font-family: var(--f-mono); font-size: 0.7rem; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 0.3rem;
+  }
+  .side .figure {
+    font-family: var(--f-display); font-weight: 700;
+    font-size: clamp(1.7rem, 5.5vw, 2.5rem); line-height: 1;
+    letter-spacing: -0.03em; font-variant-numeric: tabular-nums; color: var(--signal);
+  }
+  .side .unit {
+    font-family: var(--f-body); font-size: 0.8rem; font-weight: 500;
+    color: var(--muted); display: block; margin-top: 0.35rem;
+  }
+  .side.right { text-align: right; }
+  .versus {
+    font-family: var(--f-mono); font-size: 0.72rem; letter-spacing: 0.12em;
+    color: var(--muted); border-left: 1px solid var(--rule);
+    border-right: 1px solid var(--rule); padding: 0.5rem 0.9rem;
+  }
+  .resolve {
+    border-top: 1px solid var(--rule); padding-top: 1.05rem;
+    display: flex; flex-direction: column; gap: 0.5rem;
+  }
+  .resolve .label2 {
+    font-family: var(--f-mono); font-size: 0.68rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--verified); font-weight: 600;
+  }
+  .resolve .collapse {
+    font-family: var(--f-display); font-weight: 700;
+    font-size: clamp(1.35rem, 4vw, 1.8rem); line-height: 1.1;
+    letter-spacing: -0.02em; color: var(--verified); font-variant-numeric: tabular-nums;
+  }
+
+  /* ---------- tables ---------- */
+
+  .scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  table { border-collapse: collapse; width: 100%; min-width: 34rem; font-size: 0.92rem; }
+  th, td {
+    text-align: left; vertical-align: top; padding: 0.68rem 1rem 0.68rem 0;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  th {
+    font-family: var(--f-mono); font-size: 0.67rem; font-weight: 500;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
+    border-bottom: 1px solid var(--rule); padding-bottom: 0.5rem;
+  }
+  td:last-child, th:last-child { padding-right: 0; }
+  tbody tr:last-child td { border-bottom: 0; }
+  .dead { color: var(--muted); }
+  .live { color: var(--ink); font-weight: 500; }
+  td.n { font-family: var(--f-mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  td.good { color: var(--verified); font-weight: 500; }
+  td.bad  { color: var(--signal); }
+
+  /* ---------- layer stack ---------- */
+
+  .layer {
+    display: grid; grid-template-columns: 2.6rem minmax(0,1fr);
+    gap: 0 1.1rem; padding: 1.15rem 0; border-top: 1px solid var(--rule-soft);
+  }
+  .layer:first-of-type { border-top: 1px solid var(--rule); }
+  .layer .n2 {
+    font-family: var(--f-mono); font-size: 1.05rem; font-weight: 600;
+    color: var(--slate); line-height: 1.4;
+  }
+  .layer.core .n2 { color: var(--verified); }
+  .layer .body { display: flex; flex-direction: column; gap: 0.5rem; }
+  .layer .head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.6rem; }
+  .layer .head b { font-size: 1.02rem; font-weight: 600; }
+
+  .chip {
+    font-family: var(--f-mono); font-size: 0.63rem; font-weight: 500;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 0.16rem 0.44rem; border-radius: 2px; white-space: nowrap;
+  }
+  .chip.have  { background: var(--verified-bg); color: var(--verified); }
+  .chip.build { background: var(--rule-soft);  color: var(--muted); }
+  .chip.risk  { background: var(--signal-bg);  color: var(--signal); }
+  .chip.later { background: var(--hold-bg);    color: var(--hold); }
+
+  .risk {
+    background: var(--card); border: 1px solid var(--rule);
+    border-left: 3px solid var(--muted); padding: 1.15rem 1.35rem;
+    display: flex; flex-direction: column; gap: 0.6rem;
+  }
+  .risk.watch { border-left-color: var(--hold); }
+  .risk .rlabel {
+    font-family: var(--f-mono); font-size: 0.66rem; letter-spacing: 0.13em;
+    text-transform: uppercase; font-weight: 600; color: var(--muted);
+  }
+  .risk.watch .rlabel { color: var(--hold); }
+  .risk ul { gap: 0.35rem; }
+
+  .pull {
+    font-family: var(--f-display); font-size: clamp(1.15rem, 2.9vw, 1.45rem);
+    line-height: 1.38; letter-spacing: -0.012em; color: var(--ink);
+    border-left: 3px solid var(--slate); padding: 0.2rem 0 0.2rem 1.25rem;
+    margin: 0.4rem 0; max-width: 46ch; text-wrap: balance;
+  }
+
+  .rec {
+    background: var(--verified-bg); border: 1px solid var(--rule);
+    border-left: 3px solid var(--verified); padding: 1.1rem 1.35rem;
+    display: flex; flex-direction: column; gap: 0.5rem;
+  }
+  .rec .rlabel {
+    font-family: var(--f-mono); font-size: 0.66rem; letter-spacing: 0.13em;
+    text-transform: uppercase; font-weight: 600; color: var(--verified);
+  }
+
+  .phase {
+    display: grid; grid-template-columns: 7rem minmax(0,1fr);
+    gap: 0 1.5rem; padding: 0.95rem 0; border-top: 1px solid var(--rule-soft);
+  }
+  .phase:first-of-type { border-top: 1px solid var(--rule); }
+  .phase .when {
+    font-family: var(--f-mono); font-size: 0.73rem; font-weight: 500;
+    letter-spacing: 0.04em; color: var(--slate); padding-top: 0.15rem; white-space: nowrap;
+  }
+  .phase .what { display: flex; flex-direction: column; gap: 0.3rem; }
+  .phase .what b { font-weight: 600; }
+  .phase .what span { color: var(--ink-soft); font-size: 0.94rem; }
+
+  footer {
+    padding: 3rem 0 0; border-top: 2px solid var(--ink); margin-top: 1rem;
+    font-size: 0.86rem; color: var(--muted); max-width: var(--measure);
+    display: flex; flex-direction: column; gap: 0.75rem;
+  }
+  footer a { color: var(--muted); }
+
+  @media (max-width: 720px) {
+    :root { --gutter: 0px; }
+    body { padding: 0 1.15rem 4rem; font-size: 16px; }
+    section { grid-template-columns: minmax(0,1fr); gap: 0.9rem; padding: 2.5rem 0; }
+    .marker { padding-top: 0; }
+    .marker b { display: inline; }
+    .split { grid-template-columns: 1fr; gap: 0.75rem; }
+    .side.right { text-align: left; }
+    .versus { border: 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 0.4rem 0; }
+    .phase { grid-template-columns: minmax(0,1fr); gap: 0.35rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="eyebrow">Borgovero · Search strategy · Companion to docs/seo-spec.md</p>
+    <h1>The Common Denominator</h1>
+    <p class="standfirst">Every portal in Italy publishes €/m². None of them are comparable, because every agency defines the denominator differently. Borgovero publishes one standard applied to every listing in the Valtiberina — and the contradictions are the evidence that a standard is needed.</p>
+    <div class="meta">
+      <span>~1,000–3,000 pages</span>
+      <span>39 contradictions as proof</span>
+      <span>12 comuni</span>
+      <span>First rankings 2–8 weeks</span>
+    </div>
+  </header>
+
+  <section>
+    <div class="marker"><b>Inversion</b>What changed</div>
+    <div class="col">
+      <h2>The index is the product. The contradictions are the evidence it’s necessary.</h2>
+      <p>The earlier version of this plan had it the other way around — publish the contradictions, build outward from them. That capped the site at about thirty pages and made hand-verification the throughput limit on the entire business.</p>
+      <p>Turning it around fixes both. A normalized €/m² for <em>every</em> listing is a page for every listing. The contradictions stop being the inventory and become what they’re actually good at: proof that the published numbers can’t be trusted, which is the argument for the standard.</p>
+      <p class="pull">Stop selling prices. Sell comparability — the one thing that is genuinely impossible in this market today.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="marker"><b>Evidence</b>Why a standard is needed</div>
+    <div class="col">
+      <h2>The denominator is the problem, not the price.</h2>
+      <p>Two agencies, the same Anghiari Liberty villa, the same €1,600,000 asking price. Their published €/m² differs more than six-fold — not because they disagree about value, but because one divides by a <em>commerciale</em> of 3,150 m² that swallows the 2,600 m² park.</p>
+
+      <div class="exhibit">
+        <p class="label">Exhibit — Anghiari, Liberty villa, both asking €1,600,000</p>
+        <div class="split">
+          <div class="side">
+            <div class="who">Agency A publishes</div>
+            <div class="figure">€508</div>
+            <span class="unit">per m² · divides by 3,150 m² <em>commerciale</em>, park included</span>
+          </div>
+          <div class="versus">6.4×</div>
+          <div class="side right">
+            <div class="who">Agency B publishes</div>
+            <div class="figure">€3,265</div>
+            <span class="unit">per m² · states 490 m² where A states 550 m²</span>
+          </div>
+        </div>
+        <div class="resolve">
+          <p class="label2">Under the standard — land never enters a surface figure</p>
+          <p class="collapse">6.4× → 12%</p>
+          <p>The park is reported separately as 2,600 m² of land. Both listings then resolve against the same denominator, and the six-fold nonsense collapses to the real, checkable disagreement underneath it: 550 m² versus 490 m². That residual 12% is a genuine question a buyer can put to an agent. The 6.4× never was.</p>
+        </div>
+      </div>
+
+      <p>That single rule — <strong>land never enters a surface figure</strong> — eliminates the entire class of abuse, and is trivially defensible because nobody walks on a park. Industry-normal <em>commerciale</em>-to-<em>calpestabile</em> spread is 10–25%. Anything past that is method, not measurement.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="marker"><b>Product</b>Three numbers per listing</div>
+    <div class="col">
+      <h2>Show the agency’s arithmetic beside your own, on every page.</h2>
+      <div class="scroll">
+        <table>
+          <thead><tr><th style="width:22%">Field</th><th style="width:30%">What it is</th><th>Why it’s on the page</th></tr></thead>
+          <tbody>
+            <tr><td class="n">eur_stated</td><td class="bad">Price ÷ the surface the agency published</td><td>What the buyer was told. Reproduced verbatim, with the agency’s own label.</td></tr>
+            <tr><td class="n">eur_sia</td><td class="good">Price ÷ internal habitable area</td><td><strong>The headline.</strong> Land and accessories excluded. The only figure comparable across listings.</td></tr>
+            <tr><td class="n">eur_bvc</td><td>Price ÷ standardized <em>commerciale</em></td><td>Bridges to what agencies claim, using one published weighting table instead of twelve private ones.</td></tr>
+            <tr><td class="n">land_m2</td><td>Garden, park, terreno</td><td>Reported, never hidden inside a surface.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>The gap between the first two is the story on every page, not just on the thirty findings. That is what converts a small corpus into a large one without leaving the valley.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="marker"><b>Honesty</b>The tier system</div>
+    <div class="col">
+      <h2>A site that objects to confident numbers from unconfident inputs cannot publish confident numbers from unconfident inputs.</h2>
+      <p>Most listings won’t give a surface breakdown. So every index figure carries its confidence tier, displayed on the page:</p>
+      <div class="scroll">
+        <table>
+          <thead><tr><th style="width:22%">Tier</th><th style="width:34%">Input</th><th>Published</th></tr></thead>
+          <tbody>
+            <tr><td class="live">A — measured</td><td>Itemized decomposition, ≥80% of surface attributable</td><td class="good">Point value</td></tr>
+            <tr><td class="live">B — inferred</td><td>Single surface figure plus typology</td><td>A band. Never a point.</td></tr>
+            <tr><td class="live">C — insufficient</td><td>No usable surface, or a typology too variable to infer</td><td class="dead">No index at all — the agency’s figures and an explanation</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>The uncomfortable row is villas with parks: the stated-to-habitable deflator ranges from 0.30 to 0.80, which makes inference worthless for exactly the category where the abuse is worst. Those must be decomposed by hand or carry no index. That manual loop is the successor to S004’s hand-verification — same discipline, now applied to the product rather than to exceptions.</p>
+      <div class="rec">
+        <p class="rlabel">Why this is a moat and not a limitation</p>
+        <p>Publishing your own uncertainty is the E-E-A-T signal, the legal position, and the AI-citation hook simultaneously. No portal will ever do it, because their business is confidence. Yours is accuracy.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="marker"><b>Reframe</b>Your keyword list, resolved</div>
+    <div class="col">
+      <h2>With the index, three of your four original queries become answerable — legitimately.</h2>
+      <p>Without it, they were portal keywords and you’d have been building a worse Idealista. With a normalized denominator behind them, they’re pages only you can write.</p>
+      <div class="scroll">
+        <table>
+          <thead><tr><th style="width:38%">Original</th><th>What the index lets you actually publish</th></tr></thead>
+          <tbody>
+            <tr><td class="dead">“What do homes cost in {city}?”</td><td class="live">{City} on a consistent m² basis: band, median, n, date — and every listing’s position in it</td></tr>
+            <tr><td class="dead">“What are fair prices in {area}”</td><td class="live">Where this listing sits against the normalized band for its comune</td></tr>
+            <tr><td class="dead">“Home prices in {city}”</td><td class="live">{City} report: agencies active, surface conventions each uses, contradictions found</td></tr>
+            <tr><td class="dead">“Compare homes in…”</td><td class="live">The comparison that was impossible before — two listings against one denominator</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Note what is still not on this list: any claim about what a property is <em>worth</em>. The index normalizes the agency’s own figures. It is not a valuation, and never uses the words <em>valutazione</em>, <em>stima</em> or <em>perizia</em> — a <em>perizia</em> is a regulated act by a qualified technician.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="marker"><b>Architecture</b>Five layers</div>
+    <div class="col">
+      <h2>The method page is now the most important page on the site.</h2>
+
+      <div class="layer core">
+        <div class="n2">1</div>
+        <div class="body">
+          <div class="head"><b>The standard — <code>/it/metodo/</code></b><span class="chip build">build first</span></div>
+          <p>The weighting table, the caps, the tier definitions, the land rule. In HTML, not a PDF or an image. This is what buyers check, what an agency’s lawyer reads, and what an AI model cites. Everything else on the site is an application of this page.</p>
+        </div>
+      </div>
+
+      <div class="layer core">
+        <div class="n2">2</div>
+        <div class="body">
+          <div class="head"><b>Listing index pages</b><span class="chip build">the volume</span></div>
+          <p>One per active listing — 1,000 to 3,000 of them. Non-thin because each carries four things nobody else has: normalized €/m² against stated, the decomposition or the band, position in the comune band, and whether the property appears elsewhere at another price.</p>
+        </div>
+      </div>
+
+      <div class="layer">
+        <div class="n2">3</div>
+        <div class="body">
+          <div class="head"><b>Comune reports and bands</b><span class="chip build">gated</span></div>
+          <p>p25 / p50 / p75 of normalized €/m², Tier A only, published only at n ≥ 8 and two or more agencies. Below that the comune gets a stub with no band. A band computed from four villas is exactly the kind of number this site exists to object to.</p>
+        </div>
+      </div>
+
+      <div class="layer">
+        <div class="n2">4</div>
+        <div class="body">
+          <div class="head"><b>Contradictions</b><span class="chip have">29 live</span></div>
+          <p>Unchanged mechanically, repositioned editorially: the evidence layer. Each finding links to its members’ index pages and back. Now joined by a second type — <strong>same agency, different portal</strong>, which needs no new scraping and is far harder to explain away than a cross-agency gap.</p>
+        </div>
+      </div>
+
+      <div class="layer">
+        <div class="n2">5</div>
+        <div class="body">
+          <div class="head"><b>Explainers and archive</b><span class="chip later">later</span></div>
+          <p>The searchable confusion in Italian, the buyer’s questions in English, and the delisted-property record described below.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="marker"><b>Depth</b>Reversing an earlier call</div>
+    <div class="col">
+      <h2>Stay in the Valtiberina. Depth on one valley beats shallow coverage of five.</h2>
+      <p>An earlier draft of this plan argued for widening the ingest across Tuscany and Umbria to grow the corpus. The index makes that unnecessary and the reasoning was wrong: it was solving a corpus-size problem by adding geography, when the corpus was small because only contradictions were being published.</p>
+      <p>Normalizing every listing multiplies the corpus by fifty inside the existing footprint — with no new parsers, no new maintenance surface, and no dilution of a name that means <em>borgo</em>. Twelve comuni covered completely is a defensible position. Two hundred covered thinly is a content farm.</p>
+      <p>Widening geography stays available later, once Phase 3 acceptance is met. It is an option, not a prerequisite.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="marker"><b>Long game</b>The archive</div>
+    <div class="col">
+      <h2>The index you can build today is how you collect the data for the valuation you can’t.</h2>
+      <p>A real Zestimate needs transaction prices. Italy doesn’t publish them in bulk — OMI gives coarse semi-annual €/m² bands per zone, which is why S004 rejected the OMI method in the first place. Asking prices predict asking prices, and no amount of modelling changes that.</p>
+      <p>But tracking every listing through to its delisting produces something nobody in Italy publishes: <strong>asking-price-to-outcome history for an entire valley</strong> — days on market, price-drop cadence, withdrawal versus sale. So delisted listings keep their URL and become historical records rather than 404s. That preserves link equity and builds the dataset at the same time.</p>
+      <p>Banca d’Italia puts the Q2 2026 national asking-to-sale discount at about 7%, with roughly five months to sell. Your own data has a listing last updated in December 2020. That divergence between the national picture and this market is itself publishable — and in two or three years you’ll be the only source that can quantify it.</p>
+      <div class="rec">
+        <p class="rlabel">On the OMI data now in the repo</p>
+        <p>Pulling the Quotazioni Immobiliari doesn’t contradict rejecting the OMI method. OMI is transaction-derived where yours is asking-derived, so it can’t be your basis — but it’s an excellent <b>external cross-check</b>. When a normalized p50 diverges sharply from the OMI band for the same zone, that’s either a data bug or a finding, and you want to know which.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="marker"><b>Machines</b>GEO and languages</div>
+    <div class="col">
+      <h2>AI citation runs six to nine months ahead of Google rankings. Build for it first.</h2>
+      <p>Models weight stated methodology, verification status and freshness far above domain age — the three things you have and the portals don’t. Concretely:</p>
+      <ul>
+        <li>Every page’s <strong>first 40 words</strong> are self-contained: what, how much, measured how, verified how, as of when. That paragraph is the extractable unit; everything after it is elaboration.</li>
+        <li><code>Dataset</code> markup on the index, <code>ClaimReview</code>-shaped on findings. <strong>Not</strong> <code>RealEstateListing</code> on listing pages — that schema type asserts you’re offering the property.</li>
+        <li>Public CSV and JSON at <code>/dati/</code> under CC BY 4.0. Attribution is a link, so the free dataset is a link-acquisition mechanism.</li>
+        <li><code>llms.txt</code>, generated rather than hand-maintained so it can’t drift.</li>
+      </ul>
+      <p><strong>Languages split by layer, not mirrored.</strong> Italian carries the index, comuni, agencies and archive — the agencies are Italian, the right of reply must be answerable in Italian, and Italian press is the link engine. English carries the method page in full, extraction paragraphs on listings, and its own explainer topics rather than translations. Roughly 60% of a mirror’s page count at 40% of the maintenance.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="marker"><b>Cost</b>And the hidden ones</div>
+    <div class="col">
+      <h2>Hosting stays free. The index moves the cost into compute and hand-decomposition.</h2>
+      <div class="scroll">
+        <table>
+          <thead><tr><th style="width:32%">Line</th><th style="width:20%">Cost</th><th>The part that bites</th></tr></thead>
+          <tbody>
+            <tr><td>Static hosting</td><td class="n">≈ €0/mo</td><td>Cloudflare Pages or Vercel. 3,000 pages is still a static build.</td></tr>
+            <tr><td>Weekly ingest</td><td class="n">€30–150/mo</td><td>Unchanged — same agencies, same footprint.</td></tr>
+            <tr><td>Photo hashing</td><td class="n">compute</td><td>Goes superlinear. ~450M comparisons at 3,000 listings — fine in chunked numpy, hours in pure Python. Above ~10k images you need a BK-tree.</td></tr>
+            <tr><td>Tier A decomposition</td><td class="n">hours/week</td><td><strong>The real cost.</strong> Villas with land can’t be inferred and must be read by hand. Cap how many you commit to per week.</td></tr>
+            <tr><td>Scraper maintenance</td><td class="n">unbudgeted</td><td>Every agency redesign is unpaid work for two people. Staying in the valley keeps this flat.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="risk watch">
+        <p class="rlabel">Two things in the current build that break at 10× volume</p>
+        <ul>
+          <li>The <code>&gt;3 listings</code> furniture guard is scale-dependent — genuine four- and five-agency clusters become common while shared stock views also multiply. Needs to become a ratio or a co-occurrence test.</li>
+          <li>Byte-identical rebuilds were earned in S004 and are now a contract. Add a CI check that builds twice and diffs, before the index generator gets a chance to reintroduce run ordinals or unstable ties.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="marker"><b>Template</b>Non-negotiables</div>
+    <div class="col">
+      <h2>Four lines in the template, carrying triple duty.</h2>
+      <p>These aren’t a risk policy. They’re cheap to implement, you’ve already built most of them, and they are simultaneously the editorial position, the legal footing, and the exact signals that get a page cited by an AI model. Enforce them in the build, not by discipline:</p>
+      <ul>
+        <li><strong>Publish the discrepancy, never the accusation.</strong> “These two listings state different surfaces” is verifiable. “This agency inflates surfaces” is an unprovable claim about intent — and a weaker sentence.</li>
+        <li><strong>Source link and retrieval date on every page</strong>, plus the standing line: <em>a normalization of the figures the agency itself published, not a valuation.</em></li>
+        <li><strong>Right-of-reply link wherever an agency is named</strong>, replies published verbatim. Seven-day corrections policy with a public log.</li>
+        <li><strong>No agency lead sales.</strong> A site that audits agencies can’t take their money — the first paid agency is the first softened finding, and a competitor will point at it. Conversion is buyer-side: watch-a-comune alerts on contradictions, price drops, and listings below the p25 band.</li>
+      </ul>
+      <p>A build lint should fail on a missing source link, a missing not-a-valuation line, a band published under n=8, or any use of <em>valutazione</em>, <em>stima</em> or <em>perizia</em> in published copy.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="marker"><b>Timeline</b>By query class</div>
+    <div class="col">
+      <h2>A single number for “when do we rank” is misleading. These are four different races.</h2>
+      <div class="scroll">
+        <table>
+          <thead><tr><th style="width:46%">Query class</th><th style="width:22%">Time to compete</th><th>Note</th></tr></thead>
+          <tbody>
+            <tr><td>Entity queries — property names, agency + street, “perché due agenzie prezzi diversi”</td><td class="n good">2–8 weeks</td><td>Nothing to outrank</td></tr>
+            <tr><td>AI citation</td><td class="n good">2–4 months</td><td>Method and freshness beat domain age</td></tr>
+            <tr><td>Normalized-price and comparability queries</td><td class="n">4–8 months</td><td>Created by the index; uncontested</td></tr>
+            <tr><td>Contested explainers — <em>commerciale vs calpestabile</em></td><td class="n">8–14 months</td><td>Hundreds of agency blogs; needs links</td></tr>
+            <tr><td>Portal-adjacent — <em>prezzi case Anghiari</em></td><td class="n">6–9 months</td><td>Was 18–24 without the index. Position 4–8, never 1</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Volume at maturity stays modest — low thousands of sessions a month. For a business where one transaction is six or seven figures that’s the right trade, but it should be a deliberate one rather than a surprise.</p>
+      <h3>Watch these, not traffic</h3>
+      <p>Traffic will look like failure for months while everything is working. In order: pages indexed above 90% (months 1–2) → impressions rising with clicks still near zero (2–4) → named in an AI answer (3–5) → 15–25 referring domains (4–8) → clicks and alert signups (6+).</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="marker"><b>Sequence</b>Four phases</div>
+    <div class="col">
+      <h2>Nothing here needs a hire.</h2>
+      <div class="phase">
+        <div class="when">Weeks 0–3</div>
+        <div class="what">
+          <b>The standard, and instrumentation</b>
+          <span>Ship <code>/it/metodo/</code> with the weighting table and tiers. <code>llms.txt</code>, dataset export, corrections log, right-of-reply route. Retrofit the 29 findings with extraction paragraphs and schema. <em>Accept:</em> method page live in both languages, &gt;90% indexed, two builds byte-identical, lint enforcing the template rules.</span>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="when">Weeks 3–8</div>
+        <div class="what">
+          <b>Index on three comuni</b>
+          <span>Normalization pipeline, tier assignment, listing pages, bands for Anghiari, Sansepolcro and one more clearing n ≥ 8. <em>Accept:</em> three reports with bands, ≥150 listing pages, hand-audit of 20 random Tier A decompositions passes, impressions rising.</span>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="when">Weeks 8–16</div>
+        <div class="what">
+          <b>Coverage, press, conversion</b>
+          <span>All gate-clearing comuni. Four explainers each language. Press push on the six-fold villa as consumer protection, dataset offered free. Alerts live. <em>Accept:</em> one tier-1 pickup or ≥15 referring domains, and the site named when an AI is asked whether Italian listing prices are reliable.</span>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="when">Months 4–9</div>
+        <div class="what">
+          <b>Archive and agency layer</b>
+          <span>Delisting detection and historical templates. Legal review, then agency pages if cleared. <em>Accept:</em> archive records accumulating with days-on-market; review complete with a documented decision either way.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>The implementable version of this document is <code>docs/seo-spec.md</code>, with § numbering matching <code>docs/SOT.md</code>. Where the two disagree, the spec wins — this page is the argument, that one is the contract.</p>
+    <p>Sources: <a href="https://www.idealista.it/en/vendita-case/anghiari-arezzo/">Idealista — Anghiari</a> · <a href="https://www.immobiliare.it/en/vendita-rustici/arezzo-provincia/valtiberina-toscana/">Immobiliare.it — Valtiberina</a> · <a href="https://www.idealista.it/news/immobiliare/residenziale/2026/08/14/428940-immobiliare-2026-prezzi-in-frenata-e-compravendite-deboli-nel-secondo-trimestre">Banca d’Italia Q2 2026 survey, via idealista/news</a> · <a href="https://www.gromia.com/blog/comprare-casa/differenza-tra-metri-quadri-commerciali-e-calpestabili/">Gromia — commerciale vs calpestabile</a></p>
+    <p>Legal points are general information, not legal advice.</p>
+  </footer>
+
+</div>

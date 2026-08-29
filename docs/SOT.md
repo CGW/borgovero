@@ -1,8 +1,10 @@
 # Borgo Vero — Source of Truth
 
-**Last updated:** 2026-08-29 (S004 — top contradictions hand-verified;
-Marcellini "prices" found to be brackets; photo threshold break measured;
-the honest count is 40, of which 15 verified by eye. See
+**Last updated:** 2026-08-29 (S004 — all contradictions hand-verified
+(36, of which 30 by eye); Marcellini "prices" found to be brackets;
+photo threshold break measured; site built and finished; `phase0/data/`
+deleted and the anchors recovered from git. **Read §15's opening
+decision on the normalised-€/m² index before doing anything else.** See
 `docs/verification-S004.md`)
 
 This file is the authority. Where it disagrees with a README, a results
@@ -908,6 +910,10 @@ building before writing a page of it.
 | S003 | 2026-08-28 | **§1 REFRAMED — the project's claim changed.** Established that OMI is built from registered *transactions* while our 844 figures are *asking* prices, and that the difference had been read as seller over-optimism for three sessions. Banca d'Italia puts the national ask-to-close discount at 7–8% (2025) with a 5,5-month selling time; applying it puts our median expected close on the OMI midpoint. The market-wide overpricing claim is retired. It is replaced by a per-listing **Target Offer** — `min(fair_value, asking × (1 − negotiation_discount))` — built in new `fairprice.py`: 705 priced, 620 publishable, median gap +20,0% / €32.742, €38,6M total. Added `publishable()` after the first run's headline offender turned out to be a €6,75M estate measured against ordinary rural bands; 12% now suppressed rather than guessed. Condition expressed as a position *inside* the OMI band because OMI publishes only NORMALE here (107/108 rows). Recorded loudly that the DOM discount ladder above the first rung is unmeasured and that the engine's own DOM table therefore echoes its input rather than evidencing anything. Note: the national 8% is a **floor** for a market whose stock sits for years, so the achievable-price gap here is wider than measured, not narrower. |
 | S003 | 2026-08-28 | **§7 measured, and it does not say what S002 thought.** 20 detail pages read in Christopher's own browser (Claude in Chrome; detail pages still 403 to scripts, and the decision not to proxy around that was re-affirmed rather than reversed). Confirmed the headline rule exactly — `SUM(surface × coefficient)` over *Principale* rows, coefficient applying to Principale too, which corrects S002's "Principale counts at 100%". 14 of 18 listings clean (78%); contamination runs **both** directions, refuting "always toward looking cheaper"; bootstrapped across 696 listings it moves the ceiling median −8,5 → −9,2% and the midpoint +10,2 → +9,2%. §7 demoted from the top limitation. Also answered §15.7 offline: OMI bands barely moved 2021-1 → 2025-2 in the Valtiberina (71% identical, mean +1,6%) while Cortona ran +7,7% and Arezzo +4,5% over the same period — date-matched bands are unnecessary, and the flatness is a finding about this market rather than about OMI. Recorded `surfaceConstitution`'s location in `__NEXT_DATA__` for any future adapter. |
 | S002 | 2026-08-27 | Anchor harvest completed (23 anchors, 2021-03→2026-08). Confirmed 69% issuance spread — piecewise only, no seasonal dip. `id_curve.py`: extrapolation past outer anchors replaced with floor/ceiling bounds. `analyze.py`: now reads the confidence flag it was always given — confidence mix in data quality, containment-based bucketing for bounds, ambiguous bounds excluded from DOM splits. `config.DOM_MIN_CONFIDENCE` added. `selftest.py` extended to cover both bound paths. This file created. |
+| S004 | 2026-08-29 | **The strategy inverted: the index is the product, the contradictions are the evidence it is needed.** `docs/seo-spec.md` (contract) and `docs/seo-strategy.html` (argument) adopted, with §17 recording four corrections measured against the database the same day. Load-bearing one: the spec's scope names twelve comuni "already covered by the existing ingest" including Città di Castello and Umbertide — **`config.COMUNI` is eight and those four have zero listings**, are Umbrian, and each needs its own OMI order. Corpus is **~931 publishable pages, not 1.000–3.000**, once the spec's own price+surface gate is applied (Marcellini contributes 31 of 278, because it publishes brackets). **Structural problem: Tier A needs an itemised decomposition, whose only machine-readable source is `surfaceConstitution` on detail pages that 403 — while comune bands are gated on Tier A only, n ≥ 8. As written, no band is publishable at all**, and Phase 2's acceptance criterion is unreachable; three ways out recorded in §17.1, and the choice is the first order of business. Also corrected: "same agency, different portal needs no new scraping" is false — that overlap is empty by construction and needs three or four new adapters, while 107 same-agency same-price groups are free today. The tier system, the land rule, Tier C publishing nothing, the build lint, determinism-as-CI and archive-over-404 are all endorsed unchanged. §3.2's weighting table is flagged as a chosen standard rather than a measurement, because assumed numbers hardening into findings is this project's recurring failure. |
+| S004 | 2026-08-29 | **`phase0/data/` was deleted, and the correction made six hours earlier is the only reason the anchors survived.** The whole directory went during a `cp`/`rm` sequence around the Citerna delivery; cause never established, and the sandbox mount — which already refuses to unlink host files and cannot journal sqlite — is the main suspect, so treat it as an operation to avoid rather than a mystery to solve. `id_anchors.json` came back with one `git checkout`, all 23 anchors byte-identical (86.260.004 → 131.271.614). **That file was described in CLAUDE.md and §3 as gitignored and not backed up by a push until this same session tested the claim and found it false.** Had the folklore stood, the anchors would be gone. Everything else in `data/` was genuinely lost: both Arezzo OMI orders and the Citerna one, all re-orderable, no measurement destroyed (§7's readings live in the tracked `surface_reads.py`). Fixes: `phase0/.gitignore` now un-ignores `surface_reads.md`, `surface_sample.md` and `data/*.json` — small human-measured files had no business sharing a fate with 30 MB downloads; and **note that `phase0/.gitignore`, not the root one, governs `data/`** — editing the root looks like it works until `git check-ignore -v` says otherwise. `omi.py` now prints what to re-order and exits 1 instead of raising FileNotFoundError three frames deep. |
+| S004 | 2026-08-29 | **Citerna's bands arrived and load — with one shortfall.** `omi.py` takes a repeatable `--path` and defaults to `config.OMI_CSV_PATHS`, because the scope spans two provinces and a single path had silently dropped Citerna for two sessions. Verified before the deletion: 108 Arezzo + 25 Citerna = **133 rows, all eight comuni**, sanity anchors pass, basis LORDA throughout. Citerna's 25 rows cover zones B1, E1, E2, R1. **The order came as `QI_`, not `QIP_` — quotations WITHOUT zone perimeters**, so Citerna gets bands but cannot be polygon-zoned and falls back to the fascia guess that S003 replaced everywhere else. Re-order as QIP when re-ordering the lost files anyway. |
+| S004 | 2026-08-29 | **`self_contradictions.py` — a new axis needing no matching at all.** Compares one listing's structured fields to its own free text, so the entire false-positive class that has cost this project the most cannot occur. **150 candidates: 112 typology, 44 surface. NOT published — every one needs reading first.** Five parser bugs found by spot-checking the first twenty, all now regression-tested: `mq. 450` (Italian puts the unit on either side) read a house's own total as a conflict with its land; "85 mq l'uno" ×2 = the 170 field, agreement misread as a 100% gap; "villa su 3.600 mq" is the plot; **"Località Ville di Roti" matched as a toponym** and would have accused an agency over a hamlet's name; and "villetta a schiera" mapped to *villa* — this module committing the exact category error it exists to catch. "Casa indipendente" is deliberately unscored: the captions using it continue "…su tre lati", which is semi-detached, so the field was right and the flag was mine. **Coverage is asymmetric and the module says so out loud:** Marcellini has 229 descriptions, Centogambe 0, Immobiliare 2 of 844 (detail pages 403), so *surface* is 40 Marcellini vs 4 Immobiliare. An axis whose whole sample is one small agency is a complaint about a business, not a market finding. **Captions (779 of 844, every agency) are what make typology publishable.** |
 | S004 | 2026-08-29 | **The remaining ten clusters, the missing pages, and the weekly task.** Read both listings for each of the ten `price+surface` clusters that had no photographs — the method the Anghiari villa established. **Seven confirmed**, several of which explain their own disagreement: the Anghiari casale differs by exactly the 43 m² fienile one agency counts and the other does not; Villa Colcello is 250 vs 285 m² between agencies while one of them says 250 in its field and "circa 300 mq" in its own text; Cortesi calls a Sansepolcro house *singola* where Leonardi calls it *bifamiliare*. **One rejected**: three flats at €145.000 in the same converted colonica at La Scheggia — a building split into equally priced units, invisible to price+surface matching and visible only in the listing text. **Two inconclusive**, which added an `inconclusive` verdict to the overlay: "these are different properties" and "this could not be settled" are different claims, and recording the second as the first would stop a later session ever looking again. 36 contradictions, 30 verified, and nothing held back for want of a look. Then the site: `chi-siamo` and `metodologia` are emitted (the footer had linked to both from every page since the generator existed), language landing pages added (the header brand link was dead too), and a **right of reply** published — 7 days, page comes down if the agency is right. The methodology page is this site's own rather than `templates.py`'s, which documents the OMI arithmetic these pages never run. Two bugs found by checking rather than assuming: a page told readers it was matched by "identical price and compatible surface" when NEITHER agency published a price (the evidence fallback chose the nearest label, not the weakest), and the stale-page sweep deleted the new landing pages because it derived "files to keep" from "URLs to advertise". Whole-site link check now passes with zero broken links. Finally, the weekly task runs all three sources plus photo hashing, and reports the remaining Marcellini bracket placeholders. |
 | S004 | 2026-08-29 | **Second verification pass — the 19 held-back clusters.** Nine had photographs to compare; all nine settled. Confirmed: the Anghiari Liberty villa (Lionard 550 m² vs Romolini 490 m², both € 1.600.000) — established from the listings' own TEXT, since they share no photographs at all (best hamming 17), a working demonstration that a non-match proves nothing; Fragaiolo, Via della Bozzia (three Cortesi-brand listings of one property), and four single-photo Marcellini pairs. Rejected: Via Casa al Vento, where three Leonardi listings were joined by one identical photograph of the LAKE VIEW — the furniture guard missed it because it appears in exactly three listings and the rule drops images appearing in more than three; lowering that threshold would destroy real three-agency clusters, so the verified overlay is the right instrument, not a tuning change. The reported 81% price gap did NOT survive: Leonardi lists the same villa at € 2.900.000, but that listing was last updated in December 2020 and offers a combined sale with a second building, so its price is not comparable — which motivated `drop` support in the overlay, removing one member from an otherwise good cluster instead of discarding the finding with it. **39 contradictions, 23 verified; worst price gap is now the real 26% at Citerna, not a phantom 81%.** Also fixed three nondeterminisms that made rebuilds churn every URL on the site: page slugs carried a run ordinal, the comune label came from an arbitrary cluster member (it flipped between Badia Tedalda and Sestino — the very disagreement being published), and equal prices left row order to chance. Slugs are now hashed from member ids; two consecutive builds are byte-identical. The generator also reports stale pages it could not delete rather than leaving them silently served. |
 | S004 | 2026-08-29 | **A standing warning was folklore.** CLAUDE.md and §3 both said `id_anchors.json` is gitignored and not backed up by a push, and it was repeated to Christopher twice this session. It is tracked, in HEAD since `dda2cab`, and hash-identical to the working copy. Corrected in both places, with the lesson: a caution nobody re-tests stops being a fact. |
@@ -923,6 +929,104 @@ each moves the unresolved answer in §5" — a question the project no
 longer asks. §1 is now the Target Offer and §16b–e the contradictions,
 so the ordering below is: *what stands between here and a page anyone
 can read.*
+
+### RESOLVED at the S004 wrap: the index is the product — see §17
+
+The proposal below was accepted and is now specified in
+`docs/seo-spec.md`, with four measured corrections in **§17.1** that
+override the spec where they conflict. **Read §17 before the spec.** The
+live decision is no longer *whether* to build the index but **how comune
+bands get published at all**, since Tier A depends on data behind the
+403 — §17.1 correction 3 lays out the three options.
+
+The original framing, kept because the reasoning is what makes the
+decision reviewable:
+
+### The strategic turn proposed at the end of S004
+
+Christopher's proposal, and it reframes the product: **stop trying to
+estimate value, and standardise the denominator instead.** The reasoning
+is that a Zestimate is not buildable here and calling one a valuation is
+where the trouble starts — Zillow runs on ~100M homes and millions of
+recorded sales, a Valtiberina comune sees perhaps twenty transactions a
+year, none public in bulk, and a model trained on asking prices predicts
+asking prices. Whereas the 6× villa (§ below) proves the real problem is
+that **550 m² from one agency is not 550 m² from another**, so no two
+listings in the valley are comparable. Publish one consistent surface
+definition and the normalised €/m² that falls out:
+
+    At the surface this agency states:  €3.265/m²
+    On a consistent definition:         €2.900–3.300/m²
+    Comune band (OMI):                  €1.100–2.400/m²
+
+Legally it is the same footing as what the site publishes today — a
+fact, not an opinion of value. **Band, never a point estimate**, and
+never called a *perizia*, a valuation or an appraisal: in Italy that is
+a regulated act by a qualified technician. It is an index.
+
+The compounding argument is the strongest part: tracking every listing
+to its delisting — "withdrawn after 1.240 days at €X" — is also how the
+dataset for a real valuation gets accumulated. **The index we can build
+today is the mechanism that collects the data for the Zestimate we
+cannot.** Nobody publishes asking-price-to-outcome history in Italy.
+
+**What the data says about buildability, measured S004:**
+
+- `listings.mq_commercial` is **0 of 844**. The search payload carries
+  ONE surface, of the contaminated basis §7 measured.
+- There is **no €/m² in the search payload** either, so commerciale
+  cannot be recovered by division from Immobiliare's own stated figure.
+- `surfaceConstitution` — the row-by-row breakdown that would let us
+  recompute a consistent surface — is **detail-page only, and those
+  403** (§12.4).
+
+So the normalised figure **cannot be a point estimate for 844
+listings**. It CAN be a band, honestly, today: §7 already read 20 detail
+pages by hand, found 78% of headline surfaces clean with errors running
+both directions, and bootstrapped correction factors across 696
+listings. That interval is the band, and its width is not a hedge — the
+width IS the incomparability, which makes it the finding.
+
+**The decision that gates the alternative: does the 403 line move?**
+True surfaces for all 844 are readable in Christopher's own browser —
+that is how §7 got its 20. Doing it at scale is the same act this
+project has declined by script three times and re-affirmed in S003. A
+20-listing sample for measurement and an 844-listing harvest for
+publication are different things. **Decide it deliberately; do not
+arrive at it because the index wants it.**
+
+Two things the rebuilt plan must state: what the index does when a
+listing has no usable surface (6 of 844 have none, and every Marcellini
+listing whose price is a bracket), and whether that 403 line moves —
+because that decides whether the index ships as a band or as a number.
+
+### Two further axes proposed, and what they are actually worth
+
+**Same agency, different portal** — appealing, because there is no
+"different mandate" defence. **Currently EMPTY by construction**: the
+overlap between agencies on Immobiliare and agencies whose own site we
+hold is zero, since Marcellini and Centogambe were chosen precisely
+because they are absent from the portal. Idealista cannot fill the gap
+(403 + bot detection, §9). It needs three or four new adapters —
+Leonardi, Cortesi, Romolini and House all run their own sites. **What
+IS free today: 107 groups where one agency lists two or more properties
+at an identical price on the portal.** Marcellini's 11291/11316 — one
+brick house at 160 m² and 1.450 m² — is already verified.
+
+**Temporal contradictions** — the text route is dead for the same
+reason as §7: "new to market" claims live in descriptions, and
+Immobiliare descriptions are 2 of 844. Zero freshness claims are
+visible. But two things are free:
+
+1. **The payload carries the portal's own `isNew` flag.** 16 listings
+   flagged new; **3 of them over a year old by listing ID**, one at 951
+   days. The portal's badge against the portal's own ID sequence.
+2. **Within the 36 verified properties, 6 of the 27 with two or more
+   portal listings show the same house looking more than a year older
+   depending which agency's listing you find.** Fragaiolo is 4 days old
+   at Rexer, 83 at R.E.Volution and 1.733 days at a third. That is
+   §8's relisting/clock-reset question, answerable on the corpus in
+   hand.
 
 ### The decision — MADE, S004
 
@@ -990,8 +1094,14 @@ hand.** The Target Offer still waits for its ladder, as decided.
 5. **Resolve lorda vs netta** (§7). A published euro figure has to be
    right in a way a distribution median never did. `NET_TO_LORDA` is
    deliberately 1,0 until measured.
-6. **Citerna's OMI bands** — Forniture OMI, provincia di PERUGIA,
-   2025-2, with the KML. Recovers 53 listings and lets them be zoned.
+6. **Re-order the OMI files** — all of them, lost with `data/`
+   (see the S004 changelog). Arezzo 2025-2 and 2021-1, plus Perugia
+   2025-2 for Citerna. **Choose the option WITH zone perimeters so the
+   prefix is `QIP_`** — the Citerna order that arrived was `QI_`,
+   without the KML, so it could not have been polygon-zoned anyway.
+   Ordering fresh fixes that at no extra cost. `omi.py` now tells you
+   this when the files are missing. Nothing else is blocked: the
+   contradiction pages do not touch OMI.
 7. **Run `dupes.py` before any ranked list.** 42 clusters found in S002
    and never applied.
 8. **Decide ceiling vs midpoint** (§5). Demoted: it decides the framing
@@ -1007,6 +1117,133 @@ hand.** The Target Offer still waits for its ladder, as decided.
   prevents it. Cosmetic — 1 of 158 — but unexplained.
 - `adapters/idealista.py` selectors are verified but `harvest()` must
   never run (§9).
+
+---
+
+## 17. The index — the strategy adopted at the end of S004
+
+`docs/seo-spec.md` is the contract; `docs/seo-strategy.html` is the
+argument. **Where they disagree, the spec wins. Where the spec disagrees
+with THIS section, this section wins**, because what follows was checked
+against the database on 2026-08-29 and the spec was written before that
+check.
+
+The strategy, in one line: **the index is the product and the
+contradictions are the evidence it is necessary.** The site stops
+competing on prices and competes on comparability — one surface standard
+applied to every listing, publishing `eur_stated` (the agency's own
+arithmetic) beside `eur_sia` (price ÷ internal habitable area) on every
+page. The gap between those two is then the story on every page rather
+than on thirty. Adopted; §15's opening decision is resolved in favour of
+the index.
+
+The Anghiari villa is the exhibit and it is ours, verified in S004: two
+agencies, the same €1.600.000, published €/m² of €508 and €3.265 — 6,4×
+apart — because one divides by a *commerciale* of 3.150 m² that swallows
+a 2.600 m² park. Under the land rule the 6,4× collapses to the real
+disagreement underneath: 550 m² against 490 m², about 12%. That is a
+question a buyer can put to an agent. The 6,4× never was.
+
+### §17.1 FOUR CORRECTIONS TO THE SPEC, ALL MEASURED
+
+**1. The scope list is wrong, and it is the load-bearing error.**
+`seo-spec.md` §2 names twelve comuni "already covered by the existing
+ingest", including San Giustino, Città di Castello, Monte Santa Maria
+Tiberina and Umbertide; the HTML headlines "12 comuni". Measured:
+`config.COMUNI` is **eight**, and those four have **zero listings
+ingested**. They are Umbrian, in Perugia province — so each needs its own
+OMI order, and Città di Castello is far larger than anything in scope and
+would dominate any corpus-wide figure. Fix the spec to eight, or treat
+the other four as an explicit expansion with its own cost.
+
+**2. The corpus is ~931 pages, not 1.000–3.000.** Applying the spec's own
+publish gate (price present AND a usable surface) to the current
+database: immobiliare 785 of 844, centogambe 115 of 173, marcellini
+**31 of 278** — because Marcellini publishes brackets, not prices, so the
+gate excludes almost all of it (§16c). Still a 25× multiplier on the
+36 pages that exist, still transformative, but plan on ~900 and say ~900.
+
+**3. THE STRUCTURAL PROBLEM: Tier A is unreachable by script, and comune
+bands are gated on it.** Tier A needs an itemised decomposition. The only
+machine-readable source for one is `surfaceConstitution` in the detail
+page's `__NEXT_DATA__` — and **detail pages return 403** (§12.4). Our
+whole corpus has 2 descriptions of 844 and `mq_commercial` is 0 of 844.
+So essentially every listing is Tier B or C.
+
+But §4.3 computes the comune band from **Tier A listings only, n ≥ 8,
+two or more agencies**. With Tier A near-empty, **no comune band can be
+published at all** — and the comune report is one of the five page types
+and the target of the reframed keyword list. Phase 2's acceptance
+criterion ("three comune reports live with bands") is unreachable as
+written. This would surface in about week four of Phase 2, after the
+pipeline was built.
+
+Three ways out, and the choice belongs in the next session, not later:
+
+  a. **Hand-decompose to seed Tier A.** 8 per comune × 8 comuni = 64
+     browser reads minimum, more for villas. This is the §3.4 manual
+     loop, and it is the honest successor to S004's verification. It
+     also caps how fast bands can appear.
+  b. **Recompute the band on Tier A + B with interval arithmetic** —
+     a band of bands. Wider, weaker, but publishable now and arguably
+     more honest than a point from eight hand-picked listings.
+  c. **Move the 403 line** and harvest detail pages for the whole
+     corpus. This project has declined that three times and re-affirmed
+     it in S003. It is a real option; it is not a free one, and it must
+     not be arrived at because the index wants it.
+
+**4. "Same agency, different portal … needs no new scraping" is false.**
+Measured: the overlap between agencies on the portal and agencies whose
+own site we hold is **empty**, because Marcellini and Centogambe were
+chosen precisely for being absent from Immobiliare, and Idealista is out
+of bounds (§9). It needs three or four new adapters. What IS free is
+**107 groups where one agency lists two or more properties at an
+identical price on the portal** — no mandate defence, no sync defence,
+and Marcellini's 11291/11316 (one house at 160 m² and 1.450 m²) is
+already verified.
+
+Minor: the documents say 29 and 39 findings in different places. The
+current, verified number is **36 contradictions, 30 hand-verified, 36
+pages published**.
+
+### §17.2 What the spec gets right, and should not be renegotiated
+
+- **The tier system, and Tier C publishing no index at all.** A site
+  objecting to confident numbers from unconfident inputs cannot publish
+  confident numbers from unconfident inputs. Tier on every page.
+- **The villa row is the honest admission**: a 0,30–0,80 deflator makes
+  inference worthless for exactly the category where the abuse is worst,
+  so villas with land are decomposed by hand or carry no index.
+- **Land never enters a surface figure.** One line, kills the whole abuse
+  class, indefensible to argue with because nobody walks on a park.
+- **Language discipline enforced by build lint, not by care** — no
+  *valutazione*, *stima*, *perizia*, *valuation*, *appraisal*, ever.
+- **Byte-identical rebuilds as a CI contract.** Earned in S004; the index
+  generator is exactly the thing that would reintroduce run ordinals.
+- **The furniture guard is scale-dependent** (`>3 listings`) and misbehaves
+  at 10×. Genuine four- and five-agency clusters become common while
+  shared views multiply. Becomes a ratio or a co-occurrence test — and
+  note S004 already hit its failure mode from the other side: a lake view
+  in exactly three listings that the guard could not drop.
+- **Archive over 404.** Delisted listings keep their URL and become the
+  asking-price-to-outcome record — which is also §8's relisting question
+  and the only route to a real valuation later.
+- **OMI as external cross-check, not as basis.** Correct, and it
+  reconciles §1's reframe with the bands now in the repo: where a
+  normalised p50 diverges sharply from the OMI band for the same zone,
+  that is either a bug or a finding, and we want to know which.
+
+### §17.3 The weighting table is a CHOSEN standard, not a measurement
+
+§3.2's coefficients are a normative choice — which is legitimate and is
+what a standard is — but nothing in this repo measured them, and this
+project's failure mode is assumed numbers hardening into findings (S001's
+placeholder bands, §16's DOM ladder). The one measured anchor we have is
+§7: Immobiliare's own rule is `SUM(surface × coefficient)` over rows
+tagged *Principale*, with garage at 50% and garden at 10%, applied
+inconsistently by agents. Say on `/it/metodo/` that the table is a
+published choice, cite §7 for the parts that match observed practice, and
+never present it as derived.
 
 ---
 
