@@ -119,10 +119,26 @@ DELAY_S = 0.4      # a CDN thumbnail, not a page render; 2.7 KB each
 PRIORITY_COMUNI = ("sansepolcro", "anghiari")
 # 64-bit dHash. <=10 is the conventional "same image" threshold; 0-5 is
 # what the validated cluster produced.
+#
+# S004 MEASURED THE BREAK, by eyeballing every matched pair in all 17
+# multi-agency clusters: every cluster whose best pair was <=5 was the
+# same property (12/12); every cluster resting only on 7-10 was false
+# (5/5) — a kitchen matched a bathroom, a villa facade matched a
+# wardrobe. 10 stays as the CANDIDATE net; identity requires a pair at
+# STRONG_THRESHOLD or the cluster does not merge at all.
 MATCH_THRESHOLD = 10
+STRONG_THRESHOLD = 5
 
 # How many matching images two listings must share before we call them a
 # candidate pair. 1 produced false positives on reused exteriors.
+#
+# S004: counted on DEDUPED hashes (see _dedupe_within). A WordPress site
+# serving the same photograph at two crops (-scaled.jpg, -740x554.jpg)
+# satisfied MIN_SHARED=2 with ONE photograph — the resize loophole. Two
+# means two distinct photographs now. A pair sharing exactly one strong
+# image still surfaces, labeled 'photo-weak': candidate to eyeball,
+# never identity on its own (three of S004's real matches were exactly
+# this shape, and so was the €520k false one — eyes decide).
 MIN_SHARED = 2
 
 # An image appearing in more than this many listings is agency furniture
@@ -241,8 +257,30 @@ def harvest(conn, limit=None):
     print(f"done: {n_ok} thumbnails hashed, {n_err} failed  {errs}")
 
 
-def clusters(conn):
-    """Union-find over listings whose photo sets contain a matching image."""
+def _dedupe_within(hashes):
+    """One hash per distinct photograph WITHIN a listing.
+
+    Sites serve the same photograph at several crops/resolutions
+    (Centogambe: '-scaled.jpg' and '-740x554.jpg'), and each crop used
+    to count separately toward MIN_SHARED — one photograph passed the
+    'two shared images' bar by itself (S004, the Badia cluster). Two
+    hashes within hamming 2 of each other in the SAME listing are the
+    same picture; keep the first.
+    """
+    kept = []
+    for h in hashes:
+        if not any(hamming(h, k) <= 2 for k in kept):
+            kept.append(h)
+    return kept
+
+
+def clusters(conn, detail=False):
+    """Union-find over listings whose photo sets contain a matching image.
+
+    With detail=True also returns {frozenset({a,b}): strength} for every
+    merged pair, so callers can label evidence 'photo-strong' vs
+    'photo-weak' instead of treating all photo joins alike.
+    """
     rows = conn.execute("SELECT source_id, dhash FROM photo_hashes").fetchall()
     by_listing = {}
     for r in rows:
@@ -276,30 +314,41 @@ def clusters(conn):
     if common:
         print(f"  ignoring {len(common)} image(s) that recur across "
               f">{MAX_LISTINGS_PER_IMAGE} listings (logos, facades, views)")
-    filtered = {lid: [h for h in hs
+    filtered = {lid: _dedupe_within([h for h in hs
                       if not any(hamming(h, c) <= MATCH_THRESHOLD
-                                 for c in common)]
+                                 for c in common)])
                 for lid, hs in by_listing.items()}
 
     # O(n^2) over listings, but n is ~800 and the inner test short-circuits.
+    #
+    # A pair merges only on STRONG evidence (S004): images matching at
+    # <=STRONG_THRESHOLD on deduped sets. MIN_SHARED of them merges as
+    # 'photo-strong'; exactly one merges as 'photo-weak' (candidate —
+    # must be eyeballed); matches that exist only in the 6..10 band are
+    # recorded nowhere and never merge, because every S004 cluster that
+    # rested on that band alone was two different properties.
+    strength = {}          # frozenset({a, b}) -> 'photo-strong' | 'photo-weak'
     for i in range(len(ids)):
         for j in range(i + 1, len(ids)):
             a, b = ids[i], ids[j]
-            if find(a) == find(b):
-                continue
-            shared = 0
-            for ha in filtered[a]:
-                if any(hamming(ha, hb) <= MATCH_THRESHOLD
-                       for hb in filtered[b]):
-                    shared += 1
-                    if shared >= MIN_SHARED:
-                        union(a, b)
-                        break
+            shared = sum(
+                1 for ha in filtered[a]
+                if any(hamming(ha, hb) <= STRONG_THRESHOLD
+                       for hb in filtered[b]))
+            if shared >= MIN_SHARED:
+                strength[frozenset((a, b))] = "photo-strong"
+                union(a, b)
+            elif shared == 1:
+                strength[frozenset((a, b))] = "photo-weak"
+                union(a, b)
 
     out = {}
     for i in ids:
         out.setdefault(find(i), []).append(i)
-    return {k: v for k, v in out.items() if len(v) > 1}
+    out = {k: v for k, v in out.items() if len(v) > 1}
+    if detail:
+        return out, strength
+    return out
 
 
 def report(conn):

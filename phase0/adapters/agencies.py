@@ -217,9 +217,24 @@ def parse_marcellini(html, url, lid):
     rec["price_raw"] = price_raw
     # "trattativa riservata" = withheld. Do NOT coerce to 0 or drop the
     # listing — how often price is hidden is itself a finding.
-    rec["price"] = None if (price_raw and "riservat" in price_raw.lower()) \
-        else to_int(price_raw)
     rec["price_withheld"] = bool(price_raw and "riservat" in price_raw.lower())
+
+    # THE PRICE FIELD IS A BRACKET, NOT A PRICE (found S004, the hard
+    # way: every one of 152 "prices" was a 100k multiple). Live pages
+    # read "meno di € 100.000" / "tra € 200.000 ed € 300.000" / a bare
+    # range. to_int() on that returns the first bound, which is how a
+    # €29.000 flat got recorded as a €100.000 asking price and printed
+    # as a +245% cross-agency contradiction. Never store a bracket
+    # bound in `price`.
+    is_bracket = bool(price_raw) and (
+        is_range(price_raw)
+        or re.search(r"\bmeno\s+di\b|\btra\b|\boltre\b|\bfino\s+a\b",
+                     price_raw, re.I))
+    rec["price_bracket"] = price_raw.strip() if is_bracket else None
+    if rec["price_withheld"] or is_bracket:
+        rec["price"] = None
+    else:
+        rec["price"] = to_int(price_raw)
 
     m = re.search(r"Categoria:\s*([^|]+)\|", t)
     rec["typology_raw"] = m.group(1).strip() if m else None
@@ -229,6 +244,20 @@ def parse_marcellini(html, url, lid):
 
     m = re.search(rf"RIF:\s*{re.escape(str(rec['agency_ref'] or lid))}\s*([^|]{{20,600}})", t)
     rec["description"] = m.group(1).strip() if m else None
+
+    # The description often prints the REAL asking price even when the
+    # field is a bracket or "riservata" — "Prezzo 214.000,00",
+    # "Prezzo80.000,00" (no space; both seen live, S004). 31 of 229
+    # stored descriptions carried one. That figure is the agency's own
+    # published number on the same page, so it belongs in `price`.
+    if rec["price"] is None and rec["description"]:
+        m = re.search(r"[Pp]rezzo\s*:?\s*€?\s*"
+                      r"(\d{1,3}(?:\.\d{3})+(?:,\d+)?)",
+                      rec["description"])
+        if m:
+            p = to_int(m.group(1))
+            if p and p >= 5000:
+                rec["price"] = p
 
     # Property photos live at foto/<id>/<name>.jpg. Site chrome lives at
     # img/ — excluded, or every listing would "match" every other one on

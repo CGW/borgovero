@@ -12,4 +12,14 @@ cache/
 *.sqlite
 *.sqlite-journal
 phase0_results.csv
+phase0/fairprice.csv
 dist/
+# Generated site output — regenerable from the database in seconds.
+dist-contradictions/
+# S004's corrected DB, delivered as text because the sandbox mount
+# corrupts live sqlite writes. ~2 MB and regenerable from the harvests;
+# keep it out of the repo but DO keep it on disk until it is applied.
+phase0/phase0_S004_restore.sql
+phase0/phase0_restore.sql
+phase0/*.sqlite.corrupt
+phase0/*.sqlite.pre-S004

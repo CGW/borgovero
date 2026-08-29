@@ -159,14 +159,14 @@ def _norm_street(a):
 def load(conn):
     rows = [dict(r) for r in conn.execute(
         "SELECT source, source_id, agency_name, agency_ref, price, "
-        "price_withheld, mq, typology, typology_raw, address_raw, comune, "
-        "title, url FROM listings")]
+        "price_withheld, price_bracket, mq, typology, typology_raw, "
+        "address_raw, comune, title, url FROM listings")]
     for r in rows:
         r["key"] = (r["source"], r["source_id"])
     return rows
 
 
-def cluster(rows):
+def cluster(rows, conn=None):
     """{frozenset(keys): set(evidence)} — every route that fired."""
     found = defaultdict(set)
 
@@ -208,18 +208,44 @@ def cluster(rows):
                 sa, sb = _norm_street(a["address_raw"]), _norm_street(b["address_raw"])
                 if sa and sb and sa != sb and not (sa in sb or sb in sa):
                     continue
+                # BLANK streets can't contradict, which is how five
+                # €280.000 listings — a stream-side villetta, a centro
+                # B&B palazzo and three riders on three different
+                # frazioni — became one "property" (S004, the Cherubino
+                # cluster; both Romolini rows had no address at all).
+                # A round price with a blank street is believable only
+                # when the price point is RARE: exactly these two
+                # listings corpus-wide. €29.000 appears twice and is
+                # one flat in Fresciano; €280.000 appears five times
+                # and is five different houses.
+                if not (sa and sb) and len(grp) > 2:
+                    continue
                 found[frozenset((a["key"], b["key"]))].add("price+surface")
 
     try:
         import photomatch
-        conn = db.connect()
+        pconn = conn if conn is not None else db.connect()
         idx = {r["source_id"]: r for r in rows}
-        for members in photomatch.clusters(conn).values():
+        pclusters, strength = photomatch.clusters(pconn, detail=True)
+        for members in pclusters.values():
             keys = [idx[m]["key"] for m in members if m in idx]
             if len(keys) > 1 and len(
                     {idx[m]["agency_name"] or idx[m]["source"]
                      for m in members if m in idx}) > 1:
-                found[frozenset(keys)].add("photo")
+                # 'photo' only when every merged edge inside the cluster
+                # is photo-strong (2+ distinct shared images at <=5).
+                # Anything resting on a single shared image is
+                # 'photo-weak' — a candidate for eyes, never identity.
+                # S004 eyeballed both kinds: strong was right 12/12;
+                # single-image joins were right sometimes (a lived-in
+                # kitchen) and catastrophically wrong other times (the
+                # €520k villa) — which is exactly why they stay labeled.
+                edges = [strength[fs] for fs in strength
+                         if fs <= set(members)]
+                tag = ("photo" if edges and all(e == "photo-strong"
+                                               for e in edges)
+                       else "photo-weak")
+                found[frozenset(keys)].add(tag)
     except Exception:
         pass
 
@@ -317,14 +343,33 @@ def cluster(rows):
     return out
 
 
-def disagreements(group):
-    """What actually differs. Withheld prices excluded from price."""
+def disagreements(group, identity=False):
+    """What actually differs. Withheld prices excluded from price.
+
+    identity=True when the cluster is held together by ref or
+    photo-strong evidence — the only case where an ADDRESS difference is
+    a finding rather than a mismatch signal (S004: the same
+    photo-verified Monterchi rustico is 'Località Omarino' at one agency
+    and 'località Padonchia' at the other; the same Fresciano flat is
+    'Badia Tedalda' at two agencies and 'Sestino' at the third).
+    """
     out = {}
     priced = [g for g in group if g["price"] and not g.get("price_withheld")]
     prices = {g["price"] for g in priced}
     if len(prices) > 1:
         lo, hi = min(prices), max(prices)
         out["price"] = (lo, hi, (hi - lo) / lo * 100)
+
+    comuni = {config.norm_comune(g["comune"]) for g in group
+              if g["comune"]}
+    if len(comuni) > 1:
+        out["location"] = sorted(comuni)
+    elif identity:
+        streets = {_norm_street(g["address_raw"]): g["address_raw"]
+                   for g in group if _norm_street(g["address_raw"])}
+        if len(streets) > 1 and not any(
+                a in b or b in a for a in streets for b in streets if a != b):
+            out["address"] = sorted(streets.values())
 
     mqs = {g["mq"] for g in group if g["mq"]}
     if len(mqs) > 1:
@@ -368,16 +413,60 @@ def same_agency_pair(group):
     return len(names) != len(set(names))
 
 
+def load_verified(path="verified_clusters.json"):
+    """S004's hand-verification, kept as data the pipeline consumes.
+
+    Each entry: {"ids": [source_ids...], "verdict": "confirmed"|
+    "rejected", "note": "..."}. Confirmed clusters carry the note into
+    the output; a cluster containing a rejected pair is suppressed even
+    if a matcher still emits it. The file is committed to the repo (NOT
+    in gitignored data/) because, like id_anchors.json, it is measured
+    once by a human and cannot be regenerated by code.
+    """
+    import json
+    from pathlib import Path
+    p = Path(__file__).resolve().parent / path
+    if not p.exists():
+        return []
+    return json.loads(p.read_text())
+
+
 def build(conn):
     rows = load(conn)
     idx = {r["key"]: r for r in rows}
+    verified = load_verified()
     items = []
-    for keys, evidence in cluster(rows).items():
+    n_rejected = 0
+    for keys, evidence in cluster(rows, conn).items():
         group = [idx[k] for k in keys if k in idx]
         if len(group) < 2:
             continue
-        d = disagreements(group)
-        if not any(k in d for k in ("price", "surface", "typology")):
+        sids = {g["source_id"] for g in group}
+        ver = None
+        for v in verified:
+            vids = set(v["ids"])
+            if v["verdict"] == "rejected":
+                # A cluster that contains a known-false set, or sits
+                # inside one, inherits the rejection.
+                if vids <= sids or sids <= vids:
+                    ver = v
+                    break
+            else:
+                # 'Confirmed' covers ONLY members that were actually
+                # eyeballed: the cluster must sit inside the verified
+                # set. A merge that pulls in extra listings makes a
+                # bigger claim than the one that was checked.
+                if sids <= vids:
+                    ver = v
+                    break
+        if ver and ver["verdict"] == "rejected":
+            n_rejected += 1
+            continue
+        identity = bool(set(evidence) & {"ref", "photo"}) \
+            or (ver and ver["verdict"] == "confirmed")
+        d = disagreements(group, identity=identity)
+        if not any(k in d for k in
+                   ("price", "surface", "typology", "location", "address")):
             continue
         # Reject impossible clusters. A surface spread of 400 m² against
         # 70.350 m² is a house and a field, not a disagreement about one
@@ -393,9 +482,14 @@ def build(conn):
                 print(f"       {g['source']}/{g['source_id']} "
                       f"{g['agency_name']} EUR {g['price']} {g['url']}")
             continue
-        items.append({"group": group, "evidence": sorted(evidence), "d": d})
+        items.append({"group": group, "evidence": sorted(evidence), "d": d,
+                      "verified": ver["note"] if ver else None})
+    if n_rejected:
+        print(f"  {n_rejected} cluster(s) suppressed by verified_clusters.json"
+              " (hand-checked in S004 and found to be different properties)")
     items.sort(key=lambda it: -(it["d"].get("surface", (0, 0, 0))[2]
-                                + it["d"].get("price", (0, 0, 0))[2]))
+                                + it["d"].get("price", (0, 0, 0))[2]
+                                + (50 if it["verified"] else 0)))
     return items
 
 
@@ -440,8 +534,13 @@ def summary(items, conn):
         ev["+".join(it["evidence"])] += 1
     print("\n  matched by:")
     for k, v in sorted(ev.items(), key=lambda kv: -kv[1]):
-        note = "  CANDIDATES — eyeball before publishing" if k == "photo" else ""
+        note = ("  CANDIDATES — eyeball before publishing"
+                if "photo-weak" in k else "")
         print(f"    {k:16} {v:>4}{note}")
+
+    n_ver = sum(1 for it in items if it.get("verified"))
+    if n_ver:
+        print(f"\n  verified by hand (S004 eyeball pass): {n_ver} of {len(items)}")
 
     wh = conn.execute("SELECT COUNT(*) FROM listings "
                       "WHERE price_withheld=1").fetchone()[0]
@@ -460,12 +559,17 @@ def detail(items, limit=25):
         head = g[0]
         print(f"\n  {head['comune']} — {best_label(g)}")
         print(f"  matched by: {'+'.join(it['evidence'])}"
-              + ("   CANDIDATE" if it["evidence"] == ["photo"] else "")
+              + ("   VERIFIED BY HAND (S004)" if it.get("verified") else "")
+              + ("   CANDIDATE — single shared image"
+                 if "photo-weak" in it["evidence"] and not it.get("verified")
+                 else "")
               + ("   [SAME AGENCY TWICE — check]" if same_agency_pair(g) else ""))
         for r in sorted(g, key=lambda x: -(x["price"] or 0)):
             ref = f"rif.{r['agency_ref']}" if r["agency_ref"] else ""
             price = "withheld" if r.get("price_withheld") else \
-                (f"{r['price']:,}" if r["price"] else "?")
+                (f"{r['price']:,}" if r["price"] else
+                 (f"[{r['price_bracket']}]" if r.get("price_bracket")
+                  else "?"))
             print(f"    {str(r['agency_name'] or r['source'])[:24]:26}"
                   f"{ref:12} EUR {price:>10}  {str(r['mq'] or '?'):>5} m²  "
                   f"{str(r['typology'] or r['typology_raw'] or '')[:12]:14}")
@@ -478,6 +582,11 @@ def detail(items, limit=25):
         if "typology" in d:
             print(f"      TYPOLOGY {' vs '.join(d['typology'])}"
                   f"   -> different OMI band")
+        if "location" in d:
+            print(f"      LOCATION {' vs '.join(d['location'])}"
+                  f"   -> the agencies disagree on the COMUNE")
+        if "address" in d:
+            print(f"      ADDRESS  {' vs '.join(d['address'])}")
 
 
 def markdown(items, path="contradictions.md"):
@@ -490,7 +599,9 @@ def markdown(items, path="contradictions.md"):
             f.write("| Agency | Ref | Asking | Surface | Type |\n|---|---|---|---|---|\n")
             for r in sorted(g, key=lambda x: -(x["price"] or 0)):
                 price = "*withheld*" if r.get("price_withheld") else \
-                    (f"€ {r['price']:,}" if r["price"] else "—")
+                    (f"€ {r['price']:,}" if r["price"] else
+                     (f"*{r['price_bracket']}*" if r.get("price_bracket")
+                      else "—"))
                 f.write(f"| {r['agency_name'] or r['source']} "
                         f"| {r['agency_ref'] or '—'} | {price} "
                         f"| {r['mq'] or '—'} m² "
@@ -505,9 +616,20 @@ def markdown(items, path="contradictions.md"):
             if "typology" in d:
                 f.write(f"**Disagree on property type**: "
                         f"{' vs '.join(d['typology'])}.\n\n")
+            if "location" in d:
+                f.write(f"**The agencies disagree on the comune**: "
+                        f"{' vs '.join(c.title() for c in d['location'])}.\n\n")
+            if "address" in d:
+                f.write(f"**Different addresses for the same property**: "
+                        f"{' vs '.join(d['address'])}.\n\n")
+            if it.get("verified"):
+                f.write(f"**Verified by hand, 2026-08-29** — "
+                        f"{it['verified']}\n\n")
             f.write(f"<sub>Matched by {'+'.join(it['evidence'])}."
-                    + (" Candidate — unverified." if it["evidence"] == ["photo"]
-                       else "") + "</sub>\n\n---\n\n")
+                    + (" Candidate — unverified."
+                       if "photo-weak" in it["evidence"]
+                       and not it.get("verified") else "")
+                    + "</sub>\n\n---\n\n")
     print(f"\n  -> {path}")
 
 
@@ -516,9 +638,18 @@ def main():
     ap.add_argument("--summary", action="store_true")
     ap.add_argument("--md", action="store_true")
     ap.add_argument("--limit", type=int, default=25)
+    # Read-only analysis can run against a copy of the database (the
+    # sandbox mount corrupts LIVE sqlite writes, S003/S004) — pass the
+    # copy's path here. Default: the configured DB via db.connect().
+    ap.add_argument("--db", default=None)
     a = ap.parse_args()
 
-    conn = db.connect()
+    if a.db:
+        import sqlite3
+        conn = sqlite3.connect(a.db)
+        conn.row_factory = sqlite3.Row
+    else:
+        conn = db.connect()
     items = build(conn)
     summary(items, conn)
     if items and not a.summary:

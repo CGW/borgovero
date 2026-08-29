@@ -135,6 +135,18 @@ LATE_COLUMNS = {
         ("price_withheld", "INTEGER"),
         ("title", "TEXT"),
         ("zona_raw", "TEXT"),
+        # Marcellini's price FIELD is a search bracket, not an asking
+        # price: live pages read "meno di (euro) 100.000" or "tra
+        # (euro) 200.000 ed (euro) 300.000" (verified in-browser
+        # 2026-08-29, S004). to_int() took the first number, so ALL 152
+        # "priced" Marcellini rows were 100k multiples — brackets stored
+        # as prices, which manufactured the +245% Badia "contradiction".
+        # The bracket text is kept here verbatim; `price` holds a real
+        # figure only when the listing's own description prints one
+        # ("Prezzo 214.000,00" — 31 of 229 stored descriptions do).
+        # 'bracket (unresolved)' marks rows corrected in S004 whose
+        # exact bracket text needs the next harvest to recover.
+        ("price_bracket", "TEXT"),
     ],
 }
 
@@ -245,6 +257,7 @@ def upsert_listing(conn, rec):
         "agency_name", "photo_ids", "photo_count", "listed_date_est",
         "dom_est", "dom_method", "fetched_at", "first_seen", "last_seen",
         "agency_ref", "price_withheld", "title", "zona_raw",
+        "price_bracket",
     ]
     vals = []
     for c in cols:
