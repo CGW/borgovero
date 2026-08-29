@@ -421,7 +421,17 @@ def load_verified(path="verified_clusters.json"):
     """S004's hand-verification, kept as data the pipeline consumes.
 
     Each entry: {"ids": [source_ids...], "verdict": "confirmed"|
-    "rejected", "note": "...", "drop": [source_ids...]}. Confirmed
+    "rejected"|"inconclusive", "note": "...", "drop": [source_ids...]}.
+
+    `inconclusive` exists because "these are different properties" and
+    "this could not be settled" are different claims, and recording the
+    second as the first would be its own small dishonesty — the next
+    session would read a rejection and never look again. An
+    inconclusive cluster is suppressed exactly like a rejected one; it
+    is only the reason that differs, and the reason is what tells a
+    later reader whether re-checking is worth anything.
+
+    Confirmed
     clusters carry the note into the output; a cluster containing a
     rejected pair is suppressed even if a matcher still emits it. The
     file is committed to the repo (NOT in gitignored data/) because,
@@ -453,6 +463,7 @@ def build(conn):
     verified = load_verified()
     items = []
     n_rejected = 0
+    n_inconclusive = 0
     for keys, evidence in cluster(rows, conn).items():
         group = [idx[k] for k in keys if k in idx]
         if len(group) < 2:
@@ -461,7 +472,7 @@ def build(conn):
         ver = None
         for v in verified:
             vids = set(v["ids"])
-            if v["verdict"] == "rejected":
+            if v["verdict"] in ("rejected", "inconclusive"):
                 # A cluster that contains a known-false set, or sits
                 # inside one, inherits the rejection.
                 if vids <= sids or sids <= vids:
@@ -475,8 +486,9 @@ def build(conn):
                 if sids <= vids:
                     ver = v
                     break
-        if ver and ver["verdict"] == "rejected":
+        if ver and ver["verdict"] in ("rejected", "inconclusive"):
             n_rejected += 1
+            n_inconclusive += ver["verdict"] == "inconclusive"
             continue
         if ver and ver.get("drop"):
             group = [g for g in group if g["source_id"] not in ver["drop"]]
@@ -506,7 +518,8 @@ def build(conn):
                       "verified": ver["note"] if ver else None})
     if n_rejected:
         print(f"  {n_rejected} cluster(s) suppressed by verified_clusters.json"
-              " (hand-checked in S004 and found to be different properties)")
+              f" — {n_rejected - n_inconclusive} checked and found to be "
+              f"different properties, {n_inconclusive} could not be settled")
     items.sort(key=lambda it: -(it["d"].get("surface", (0, 0, 0))[2]
                                 + it["d"].get("price", (0, 0, 0))[2]
                                 + (50 if it["verified"] else 0)))

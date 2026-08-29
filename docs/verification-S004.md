@@ -271,3 +271,95 @@ un-ignores it, it has been in HEAD since `dda2cab`, and its blob hash
 matches the working copy. CLAUDE.md, the SOT and two of this session's own
 handovers said the opposite. The warning had been repeated for months
 without anyone running `git ls-files | grep anchor`.
+
+---
+
+# Third pass — the ten `price+surface` clusters (no photographs)
+
+Settled by reading both listings, the method the Anghiari villa established.
+**7 confirmed, 1 rejected, 2 inconclusive.**
+
+## Confirmed — and several explain their own disagreement
+
+| property | the contradiction | what the text shows |
+|---|---|---|
+| Anghiari, SP Caprese (€899.000) | 309 vs 348 m² | Romolini's own arithmetic: house 305 m² + converted fienile 43 m² = 348. The gap **is** the barn |
+| Monterchi, Villa Colcello (€580.000) | 250 vs 285 m², villa vs casa indipendente | Two flats, one per floor. House says 250 m² in its field and *"circa 300 mq complessivi"* in its own description — it contradicts itself before it contradicts anyone else |
+| Monterchi, Padonchia (€890.000) | 300 vs 340 m² | Same 5 bedrooms and 3 bathrooms in both; Romolini puts the main villa at 205 m², Cortesi at 340 |
+| Anghiari, Mura di Sotto (€325.000) | 150 vs 170 m², appartamento vs cieloterra | Tiberimmobiliare files it as a flat while its own description calls it a *terra tetto* |
+| Sansepolcro, Martiri della Resistenza (€260.000) | 200 vs 211 m², **singola vs bifamiliare** | Matching floor-by-floor layouts. Detached or semi-detached is not a matter of wording |
+| Sansepolcro, Via Tiberina Sud (€130.000) | 135 vs 150 m² | Same second floor, same palazzina, same two bathrooms and garage |
+| Anghiari, Via Fausto Vagnetti (€190.000) | 103 vs 93 m² | Same raised ground floor, same small hillside condominio. R.E.Volution's field says 93 m² and its own text says 90 |
+
+Three of the seven contain a listing that disagrees **with itself** — field
+against description. That is worth publishing on its own terms: it means the
+number in the structured field, which is what portals sort and filter on, is
+not always the number the agency wrote in prose.
+
+## Rejected (1) — a new false-positive class
+
+**La Scheggia, Anghiari.** Three flats at €145.000, all in the *same*
+converted casa colonica of four units. itcasa's "Appartamento Menta" is
+explicitly on the first floor; the other two are on the second. A building
+split into equally priced units defeats price+surface matching completely —
+same street, same price, similar size — and the only tell was in the text.
+
+This is the price-route sibling of Via Casa al Vento (three houses, one
+shared view). Both are the same underlying mistake: **proximity is not
+identity.**
+
+## Inconclusive (2) — and why that is now its own verdict
+
+- **Via del Tevere, Sansepolcro (€105.000).** Marcellini describes a rural
+  building with a seccatoio and 4.000 m² of land; SICASA describes a flat
+  with its own entrance in a trifamiliare. A rural building divided into
+  three units would reconcile them. Nothing in either listing settles it.
+- **Via XX Settembre, Sansepolcro (€149.000).** Both are ~110–115 m² flats
+  on the second floor of a historic palazzo at the same price — but the room
+  counts differ (5 vs 3), and a palazzo holds several flats. La Scheggia is
+  exactly the cautionary case.
+
+`verified_clusters.json` gained an `inconclusive` verdict for these.
+Recording "could not be settled" as "different properties" would be a small
+dishonesty with a long tail: the next session reads a rejection and never
+looks again. Both are suppressed either way — only the reason differs, and
+the reason is what tells a later reader whether re-checking is worth
+anything.
+
+---
+
+# The site, finished
+
+- All **36** contradictions now publish; the seven newly confirmed clusters
+  cleared the identity gate and nothing is held back.
+- `chi-siamo` and `metodologia` are emitted. The shared footer had linked to
+  both from **every page since the generator existed** — including the
+  corrections policy, which is the one link a wrongly-named agency would
+  reach for.
+- A **right of reply** is published on the methodology page: if an agency
+  believes two listings shown together are not the same property, they are
+  answered within 7 days and the page comes down if they are right.
+- The methodology page is this site's own. `templates.py`'s describes the
+  OMI comparison and the Target Offer — arithmetic these pages never run,
+  so emitting it would have documented a method that isn't used.
+
+## Two bugs found by checking rather than assuming
+
+1. **A page stated its own evidence wrongly.** The Via Tiberina Nord page
+   told readers it was matched by "identical price and compatible surface"
+   — on a cluster where *neither agency publishes a price*. The evidence
+   fallback picked the nearest label rather than the weakest claim.
+2. **The stale-page sweep deleted the new landing pages**, because it
+   derived "files to keep" from "URLs to advertise" — and a redirect belongs
+   on disk but not in a sitemap. The dead brand link went straight back in
+   until this was separated.
+
+Whole-site link check: **zero broken internal links** across 81 files. Two
+consecutive builds are byte-identical.
+
+## Before it goes live
+
+A domain and static hosting (effectively free), a human read of all 36
+pages, and **`correzioni@borgovero.it` actually receiving mail**. The right
+of reply is a promise the site makes in writing; the mailbox has to exist
+before publication, not after.

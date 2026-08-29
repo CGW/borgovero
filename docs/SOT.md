@@ -174,7 +174,7 @@ running `git ls-files | grep anchor`.
 |---|---|
 | Ingest | **Done, three sources: 1.295 listings.** Immobiliare 844, Marcellini 278, Centogambe 173 |
 | Agency sites | **Built S003** (§16c). Both permit crawling; Centogambe publishes a sitemap. 79 of its listings are password-gated and 126 Marcellini listings withhold price — recorded as findings (§16e) |
-| Contradictions | **39 properties where agencies disagree** — 7 on price (worst 26%), 32 on surface (worst 103%), 10 on typology, plus location disagreements (§16d). S003's 158 was inflated by two bugs found in S004: Marcellini bracket labels stored as prices, and photo joins at hamming 7–10 that were all false. **23 of the 39 hand-verified by eye** (`docs/verification-S004.md`, `phase0/verified_clusters.json`). **The publishable output** — 29 pages built, 23 of them verified |
+| Contradictions | **36 properties where agencies disagree** — 7 on price (worst 26%), 29 on surface (worst 103%), 9 on typology, plus location disagreements (§16d). S003's 158 was inflated by two bugs found in S004: Marcellini bracket labels stored as prices, and photo joins at hamming 7–10 that were all false. **30 of the 36 hand-verified** — every one of the 19 held-back clusters was checked (`docs/verification-S004.md`, `phase0/verified_clusters.json`). **The publishable output** — 36 property pages plus chi-siamo and metodologia, IT + EN |
 | Photo matching | 7.966 thumbnails hashed across all three sources; the only working join key (§16b) |
 | Target Offer | Built (§16), **not publishable yet** — 4 of 5 negotiation rungs assumed |
 | Price history | `price_history` + first/last seen live; weekly ingest scheduled. Effectively empty — the clock starts now |
@@ -908,6 +908,7 @@ building before writing a page of it.
 | S003 | 2026-08-28 | **§1 REFRAMED — the project's claim changed.** Established that OMI is built from registered *transactions* while our 844 figures are *asking* prices, and that the difference had been read as seller over-optimism for three sessions. Banca d'Italia puts the national ask-to-close discount at 7–8% (2025) with a 5,5-month selling time; applying it puts our median expected close on the OMI midpoint. The market-wide overpricing claim is retired. It is replaced by a per-listing **Target Offer** — `min(fair_value, asking × (1 − negotiation_discount))` — built in new `fairprice.py`: 705 priced, 620 publishable, median gap +20,0% / €32.742, €38,6M total. Added `publishable()` after the first run's headline offender turned out to be a €6,75M estate measured against ordinary rural bands; 12% now suppressed rather than guessed. Condition expressed as a position *inside* the OMI band because OMI publishes only NORMALE here (107/108 rows). Recorded loudly that the DOM discount ladder above the first rung is unmeasured and that the engine's own DOM table therefore echoes its input rather than evidencing anything. Note: the national 8% is a **floor** for a market whose stock sits for years, so the achievable-price gap here is wider than measured, not narrower. |
 | S003 | 2026-08-28 | **§7 measured, and it does not say what S002 thought.** 20 detail pages read in Christopher's own browser (Claude in Chrome; detail pages still 403 to scripts, and the decision not to proxy around that was re-affirmed rather than reversed). Confirmed the headline rule exactly — `SUM(surface × coefficient)` over *Principale* rows, coefficient applying to Principale too, which corrects S002's "Principale counts at 100%". 14 of 18 listings clean (78%); contamination runs **both** directions, refuting "always toward looking cheaper"; bootstrapped across 696 listings it moves the ceiling median −8,5 → −9,2% and the midpoint +10,2 → +9,2%. §7 demoted from the top limitation. Also answered §15.7 offline: OMI bands barely moved 2021-1 → 2025-2 in the Valtiberina (71% identical, mean +1,6%) while Cortona ran +7,7% and Arezzo +4,5% over the same period — date-matched bands are unnecessary, and the flatness is a finding about this market rather than about OMI. Recorded `surfaceConstitution`'s location in `__NEXT_DATA__` for any future adapter. |
 | S002 | 2026-08-27 | Anchor harvest completed (23 anchors, 2021-03→2026-08). Confirmed 69% issuance spread — piecewise only, no seasonal dip. `id_curve.py`: extrapolation past outer anchors replaced with floor/ceiling bounds. `analyze.py`: now reads the confidence flag it was always given — confidence mix in data quality, containment-based bucketing for bounds, ambiguous bounds excluded from DOM splits. `config.DOM_MIN_CONFIDENCE` added. `selftest.py` extended to cover both bound paths. This file created. |
+| S004 | 2026-08-29 | **The remaining ten clusters, the missing pages, and the weekly task.** Read both listings for each of the ten `price+surface` clusters that had no photographs — the method the Anghiari villa established. **Seven confirmed**, several of which explain their own disagreement: the Anghiari casale differs by exactly the 43 m² fienile one agency counts and the other does not; Villa Colcello is 250 vs 285 m² between agencies while one of them says 250 in its field and "circa 300 mq" in its own text; Cortesi calls a Sansepolcro house *singola* where Leonardi calls it *bifamiliare*. **One rejected**: three flats at €145.000 in the same converted colonica at La Scheggia — a building split into equally priced units, invisible to price+surface matching and visible only in the listing text. **Two inconclusive**, which added an `inconclusive` verdict to the overlay: "these are different properties" and "this could not be settled" are different claims, and recording the second as the first would stop a later session ever looking again. 36 contradictions, 30 verified, and nothing held back for want of a look. Then the site: `chi-siamo` and `metodologia` are emitted (the footer had linked to both from every page since the generator existed), language landing pages added (the header brand link was dead too), and a **right of reply** published — 7 days, page comes down if the agency is right. The methodology page is this site's own rather than `templates.py`'s, which documents the OMI arithmetic these pages never run. Two bugs found by checking rather than assuming: a page told readers it was matched by "identical price and compatible surface" when NEITHER agency published a price (the evidence fallback chose the nearest label, not the weakest), and the stale-page sweep deleted the new landing pages because it derived "files to keep" from "URLs to advertise". Whole-site link check now passes with zero broken links. Finally, the weekly task runs all three sources plus photo hashing, and reports the remaining Marcellini bracket placeholders. |
 | S004 | 2026-08-29 | **Second verification pass — the 19 held-back clusters.** Nine had photographs to compare; all nine settled. Confirmed: the Anghiari Liberty villa (Lionard 550 m² vs Romolini 490 m², both € 1.600.000) — established from the listings' own TEXT, since they share no photographs at all (best hamming 17), a working demonstration that a non-match proves nothing; Fragaiolo, Via della Bozzia (three Cortesi-brand listings of one property), and four single-photo Marcellini pairs. Rejected: Via Casa al Vento, where three Leonardi listings were joined by one identical photograph of the LAKE VIEW — the furniture guard missed it because it appears in exactly three listings and the rule drops images appearing in more than three; lowering that threshold would destroy real three-agency clusters, so the verified overlay is the right instrument, not a tuning change. The reported 81% price gap did NOT survive: Leonardi lists the same villa at € 2.900.000, but that listing was last updated in December 2020 and offers a combined sale with a second building, so its price is not comparable — which motivated `drop` support in the overlay, removing one member from an otherwise good cluster instead of discarding the finding with it. **39 contradictions, 23 verified; worst price gap is now the real 26% at Citerna, not a phantom 81%.** Also fixed three nondeterminisms that made rebuilds churn every URL on the site: page slugs carried a run ordinal, the comune label came from an arbitrary cluster member (it flipped between Badia Tedalda and Sestino — the very disagreement being published), and equal prices left row order to chance. Slugs are now hashed from member ids; two consecutive builds are byte-identical. The generator also reports stale pages it could not delete rather than leaving them silently served. |
 | S004 | 2026-08-29 | **A standing warning was folklore.** CLAUDE.md and §3 both said `id_anchors.json` is gitignored and not backed up by a push, and it was repeated to Christopher twice this session. It is tracked, in HEAD since `dda2cab`, and hash-identical to the working copy. Corrected in both places, with the lesson: a caution nobody re-tests stops being a fact. |
 | S004 | 2026-08-29 | **Shipped the first pages.** `bv-site/contradictions_site.py` writes one page per property — every agency's figures side by side, each linked to its own listing — IT + EN, sitemap and robots, reusing `templates.py`'s shell. 21 of 40 published; the other 19 need `--candidates` because publication requires identity evidence and these are named local businesses. Output in `bv-site/dist-contradictions/` (gitignored, regenerable). |
@@ -948,26 +949,40 @@ hand.** The Target Offer still waits for its ladder, as decided.
    deliberately tighter than the report. Verification notes render on
    the EN pages only; the IT pages carry the badge and date, because
    English prose on the page a Valtiberina buyer reads would undercut
-   the care the site is selling. **Remaining before it goes live:** a
-   review of all 21 pages, the `chi-siamo`/`metodologia` links in the
-   shared footer point at pages this generator does not emit, and a
-   right-of-reply route for an agency that disputes a page.
-2. **DONE for the nine with photographs** (see the S004 changelog).
-   **Ten `price+surface`-only clusters remain unverified** — H05–H10,
-   H12, H13, H16, H17 in the S004 working list: identical prices with
-   surfaces 5–20% apart, no shared photographs to compare, so settling
-   them means reading both listings the way the Anghiari villa was
-   settled. They do not publish by default. Two look worth the read:
-   Monterchi Colcello (€580.000, 250 vs 285 m², villa vs terratetto)
-   and Anghiari Mura di Sotto (€325.000, 150 vs 170 m², appartamento
-   vs terratetto).
-3. **Extend the weekly task to the agency sites and photo hashing.** It
-   currently runs Immobiliare only, so the contradiction data goes stale
-   while the portal data stays fresh — which quietly rots the one thing
-   the site is built on. The next agency run also recovers the exact
-   bracket text for 149 `'bracket (unresolved)'` Marcellini rows
-   (§16c) — after that, bracket-vs-rival-price contradictions become
-   checkable.
+   the care the site is selling.
+
+   **Completed later in S004:** all 36 contradictions now publish (the
+   seven newly confirmed clusters cleared the gate and nothing is held
+   back); `chi-siamo` and `metodologia` are emitted, so the shared
+   footer's links resolve; the language landing pages exist, so the
+   header's brand link resolves; and a **right of reply** is published
+   on the methodology page — an agency that believes two listings here
+   are not the same property is answered within 7 days, and the page
+   comes down if they are right. The methodology page is this site's
+   own, not the OMI one in `templates.py`, which describes arithmetic
+   these pages never run.
+
+   A whole-site link check passes with zero broken internal links, and
+   two consecutive builds are byte-identical.
+
+   **Remaining before it goes live:** a domain and hosting (static, so
+   effectively free), `correzioni@borgovero.it` actually receiving
+   mail — the right of reply is a promise the site makes in writing, so
+   the mailbox has to exist before publication, not after — and a human
+   read of all 36 pages.
+2. **DONE — all 19 held-back clusters are checked.** Nine by
+   photograph, ten by reading both listings. 7 confirmed, 1 rejected
+   (La Scheggia), 2 inconclusive. Nothing is now held back for want of
+   a look.
+3. **DONE — the weekly task now runs all three sources plus photo
+   hashing** (`borgovero-weekly-ingest`, Mondays 07:00). It also
+   reports how many `'bracket (unresolved)'` Marcellini rows remain,
+   and says when that hits zero, because bracket-vs-rival-price
+   contradictions become checkable then (a rival asking €150.000 for a
+   property Marcellini brackets as "under €100.000" is a contradiction
+   neither can wave off). **First run to watch: Monday 31 August** —
+   check it does not report a parser break, and that the Centogambe
+   password-gated 79 are reported as a finding rather than failures.
 4. **Measure the negotiation ladder.** ~20–30 observed price cuts makes
    §16's `DOM_DISCOUNT` real instead of assumed. Accumulation started
    S003; the agency sites are likely to show a cut *before* the portal

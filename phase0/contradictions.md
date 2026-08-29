@@ -214,6 +214,23 @@
 
 ---
 
+## Monterchi — Strada Vicinale del Colcello
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| House Immobiliare | — | € 580,000 | 250 m² | villa |
+| Mancini Re Immobiliare Srl | — | € 580,000 | 285 m² | terratetto |
+
+**Surface differs by 14%** (250 vs 285 m²).
+
+**Disagree on property type**: terratetto vs villa.
+
+**Verified by hand, 2026-08-29** — Villa Colcello at Monterchi, established from both listings' text: same Strada Vicinale del Colcello, two independent apartments one per floor, pool, land. House says 250 m² in its field and 'circa 300 mq complessivi' in its own description; Mancini says 285 m² and gives 135 + 150 m² for the two flats. Filed as villa by one and casa indipendente by the other.
+
+<sub>Matched by price+surface.</sub>
+
+---
+
 ## Sansepolcro — via aldo capitini
 
 | Agency | Ref | Asking | Surface | Type |
@@ -228,6 +245,53 @@
 **Verified by hand, 2026-08-29** — Same beamed dining room — Cortesi and Cortesi Luxury, the same brand, 230 vs 262 m² at the same € 590.000.
 
 <sub>Matched by photo.</sub>
+
+---
+
+## Anghiari — Via delle Mura di Sotto
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Romolini Immobiliare S.r.l. | — | € 325,000 | 170 m² | terratetto |
+| Tiberimmobiliare | — | € 325,000 | 150 m² | appartamento |
+
+**Surface differs by 13%** (150 vs 170 m²).
+
+**Disagree on property type**: appartamento vs terratetto.
+
+**Verified by hand, 2026-08-29** — The same house on the old walls of Anghiari's centro storico, at € 325.000 with 5+ rooms and 3+ bathrooms on both. Tiberimmobiliare files it as an appartamento while its own description calls it a 'terra tetto'; Romolini files it as a cieloterra. 150 vs 170 m².
+
+<sub>Matched by price+surface.</sub>
+
+---
+
+## Monterchi — Strada comunale della Padonchia
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Romolini Immobiliare S.r.l. | — | € 890,000 | 300 m² | villa |
+| Cortesi Luxury Real Estate | — | € 890,000 | 340 m² | villa |
+
+**Surface differs by 13%** (300 vs 340 m²).
+
+**Verified by hand, 2026-08-29** — The same restored villa with pool near Monterchi at € 890.000. Cortesi puts the main residence at 340 m² with 5 bedrooms and 3 bathrooms; Romolini gives the same 5-and-3 for a main villa of 205 m², a headline of 300 m², and a 14 × 7 m pool. The disagreement is over the building, not the property.
+
+<sub>Matched by price+surface.</sub>
+
+---
+
+## Anghiari — Strada Provinciale di Caprese Michelangelo
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Romolini Immobiliare S.r.l. | — | € 899,000 | 348 m² | rustico |
+| Now Immobilare srl | — | € 899,000 | 309 m² | rustico |
+
+**Surface differs by 13%** (309 vs 348 m²).
+
+**Verified by hand, 2026-08-29** — The same restored casale near Anghiari at € 899.000. Romolini's own arithmetic explains the gap: house 305 m² plus a converted fienile of 43 m² = 348 m², while Now Immobilare publishes 309 m² — the disagreement is whether the barn counts.
+
+<sub>Matched by price+surface.</sub>
 
 ---
 
@@ -258,6 +322,36 @@
 **Verified by hand, 2026-08-29** — The same early-1900s Liberty villa above the centro of Anghiari, established from the listings' own text rather than photographs — both describe a villa built for a wealthy Briton, a 2.600 m² park with statues, years of use as an art gallery, Impruneta terracotta floors and pietra serena door surrounds. They share NO photographs at all (best hamming 17), which is worth recording: a non-match proves nothing. Both ask € 1.600.000; Lionard says 550 m², Romolini 490 m². Leonardi lists it too at € 2.900.000, but that listing was last updated in December 2020 and offers the sale combined with a second building in the same park, so its price is not comparable and is excluded rather than published as an 81% gap.
 
 <sub>Matched by photo-weak+price+surface.</sub>
+
+---
+
+## Sansepolcro — Via Tiberina Sud
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 130,000 | 150 m² | appartamento |
+| House Immobiliare | — | € 130,000 | 135 m² | appartamento |
+
+**Surface differs by 11%** (135 vs 150 m²).
+
+**Verified by hand, 2026-08-29** — The same second-floor flat on Via Tiberina Sud, Sansepolcro, at € 130.000 — both describe a small palazzina, two bathrooms and a garage. 135 vs 150 m².
+
+<sub>Matched by price+surface.</sub>
+
+---
+
+## Anghiari — Via Fausto Vagnetti
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| R.E.Volution Immobiliare | — | € 190,000 | 93 m² | appartamento |
+| Tiberimmobiliare | — | € 190,000 | 103 m² | appartamento |
+
+**Surface differs by 11%** (93 vs 103 m²).
+
+**Verified by hand, 2026-08-29** — The same raised-ground-floor flat on Via Fausto Vagnetti, Anghiari, at € 190.000: small hillside condominio, panoramic, eat-in kitchen, two bathrooms. Tiberimmobiliare says 103 m², R.E.Volution's field says 93 m² and its own text says 90 m².
+
+<sub>Matched by price+surface.</sub>
 
 ---
 
@@ -304,6 +398,21 @@
 **Verified by hand, 2026-08-29** — Identical aerial of the same restored villa complex. T.V.I. asks € 2.300.000 at 1600 m²; Marcellini publishes no price and says 1500 m².
 
 <sub>Matched by photo-weak.</sub>
+
+---
+
+## Sansepolcro — Via Martiri Della Resistenza 6
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 260,000 | 200 m² | terratetto |
+| Leonardi Immobiliare | — | € 260,000 | 211 m² | terratetto |
+
+**Surface differs by 6%** (200 vs 211 m²).
+
+**Verified by hand, 2026-08-29** — The same house near the centre of Sansepolcro at € 260.000, with matching floor-by-floor layouts, garden and garage. Cortesi calls it a casa SINGOLA of 200 m²; Leonardi calls it a casa BIFAMILIARE, free on three sides, of 211 m² — detached or semi-detached is not a matter of wording.
+
+<sub>Matched by price+surface.</sub>
 
 ---
 
@@ -373,7 +482,7 @@
 
 ---
 
-## Badia-Tedalda — Via Sestinese
+## Sestino — Via Sestinese
 
 | Agency | Ref | Asking | Surface | Type |
 |---|---|---|---|---|
@@ -404,130 +513,6 @@
 
 ---
 
-## Anghiari — Frazione la Scheggia-Lame
-
-| Agency | Ref | Asking | Surface | Type |
-|---|---|---|---|---|
-| Agenzia Immobiliare Cortesi | — | € 145,000 | 90 m² | appartamento |
-| Immobiltecnica | — | € 145,000 | 83 m² | appartamento |
-| itcasa | — | € 145,000 | 75 m² | appartamento |
-
-**Surface differs by 20%** (75 vs 90 m²).
-
-<sub>Matched by price+surface.</sub>
-
----
-
-## Monterchi — Strada Vicinale del Colcello
-
-| Agency | Ref | Asking | Surface | Type |
-|---|---|---|---|---|
-| House Immobiliare | — | € 580,000 | 250 m² | villa |
-| Mancini Re Immobiliare Srl | — | € 580,000 | 285 m² | terratetto |
-
-**Surface differs by 14%** (250 vs 285 m²).
-
-**Disagree on property type**: terratetto vs villa.
-
-<sub>Matched by price+surface.</sub>
-
----
-
-## Anghiari — Via delle Mura di Sotto
-
-| Agency | Ref | Asking | Surface | Type |
-|---|---|---|---|---|
-| Agenzia Romolini Immobiliare S.r.l. | — | € 325,000 | 170 m² | terratetto |
-| Tiberimmobiliare | — | € 325,000 | 150 m² | appartamento |
-
-**Surface differs by 13%** (150 vs 170 m²).
-
-**Disagree on property type**: appartamento vs terratetto.
-
-<sub>Matched by price+surface.</sub>
-
----
-
-## Monterchi — Strada comunale della Padonchia
-
-| Agency | Ref | Asking | Surface | Type |
-|---|---|---|---|---|
-| Agenzia Romolini Immobiliare S.r.l. | — | € 890,000 | 300 m² | villa |
-| Cortesi Luxury Real Estate | — | € 890,000 | 340 m² | villa |
-
-**Surface differs by 13%** (300 vs 340 m²).
-
-<sub>Matched by price+surface.</sub>
-
----
-
-## Sansepolcro — Via del tevere
-
-| Agency | Ref | Asking | Surface | Type |
-|---|---|---|---|---|
-| Marcellini | 10252 | € 105,000 | 115 m² | Coloniche |
-| SICASA Immobiliare | — | € 105,000 | 130 m² | appartamento |
-
-**Surface differs by 13%** (115 vs 130 m²).
-
-**Disagree on property type**: appartamento vs coloniche.
-
-<sub>Matched by price+surface.</sub>
-
----
-
-## Anghiari — Strada Provinciale di Caprese Michelangelo
-
-| Agency | Ref | Asking | Surface | Type |
-|---|---|---|---|---|
-| Agenzia Romolini Immobiliare S.r.l. | — | € 899,000 | 348 m² | rustico |
-| Now Immobilare srl | — | € 899,000 | 309 m² | rustico |
-
-**Surface differs by 13%** (309 vs 348 m²).
-
-<sub>Matched by price+surface.</sub>
-
----
-
-## Sansepolcro — Via Tiberina Sud
-
-| Agency | Ref | Asking | Surface | Type |
-|---|---|---|---|---|
-| Agenzia Immobiliare Cortesi | — | € 130,000 | 150 m² | appartamento |
-| House Immobiliare | — | € 130,000 | 135 m² | appartamento |
-
-**Surface differs by 11%** (135 vs 150 m²).
-
-<sub>Matched by price+surface.</sub>
-
----
-
-## Anghiari — Via Fausto Vagnetti
-
-| Agency | Ref | Asking | Surface | Type |
-|---|---|---|---|---|
-| R.E.Volution Immobiliare | — | € 190,000 | 93 m² | appartamento |
-| Tiberimmobiliare | — | € 190,000 | 103 m² | appartamento |
-
-**Surface differs by 11%** (93 vs 103 m²).
-
-<sub>Matched by price+surface.</sub>
-
----
-
-## Sansepolcro — Via Martiri Della Resistenza 6
-
-| Agency | Ref | Asking | Surface | Type |
-|---|---|---|---|---|
-| Agenzia Immobiliare Cortesi | — | € 260,000 | 200 m² | terratetto |
-| Leonardi Immobiliare | — | € 260,000 | 211 m² | terratetto |
-
-**Surface differs by 6%** (200 vs 211 m²).
-
-<sub>Matched by price+surface.</sub>
-
----
-
 ## Pieve-Santo-Stefano — Via delle Antiche Prigioni n., 7
 
 | Agency | Ref | Asking | Surface | Type |
@@ -539,19 +524,6 @@
 **Surface differs by 5%** (93 vs 98 m²).
 
 <sub>Matched by price.</sub>
-
----
-
-## Sansepolcro — Via XX Settembre
-
-| Agency | Ref | Asking | Surface | Type |
-|---|---|---|---|---|
-| House Immobiliare | — | € 149,000 | 115 m² | appartamento |
-| SICASA Immobiliare | — | € 149,000 | 110 m² | appartamento |
-
-**Surface differs by 5%** (110 vs 115 m²).
-
-<sub>Matched by price+surface.</sub>
 
 ---
 

@@ -88,6 +88,8 @@ TXT = {
         "how_price": "Prezzo identico e non arrotondato — una cifra che non "
                      "capita due volte per caso.",
         "how_ps": "Prezzo identico e superficie compatibile.",
+        "how_photo_weak": "Gli annunci condividono una fotografia identica, "
+                          "e la corrispondenza è stata controllata a mano.",
         "why": "Perché conta",
         "why_body": ("Chi compra confronta un annuncio alla volta. Messi uno "
                      "accanto all'altro, i numeri non tornano — e la "
@@ -130,6 +132,8 @@ TXT = {
         "how_price": "An identical, non-round price — a figure nobody lands "
                      "on twice by accident.",
         "how_ps": "Identical price and compatible surface.",
+        "how_photo_weak": "The listings share an identical photograph, and "
+                          "the match was checked by hand.",
         "why": "Why it matters",
         "why_body": ("A buyer reads one listing at a time. Side by side the "
                      "numbers do not add up — and the difference is paid by "
@@ -164,6 +168,151 @@ def slug(item):
     h = hashlib.sha1("|".join(sorted(str(r["source_id"]) for r in g))
                      .encode()).hexdigest()[:6]
     return f"{base}-{a}-{h}" if a else f"{base}-{h}"
+
+
+# The methodology page in templates.py describes the OMI comparison and
+# the Target Offer — a method this site does not use. Emitting it here
+# would document arithmetic that never runs on these pages. So the
+# contradictions site carries its own, at the same URL the shared footer
+# already points to.
+METHOD = {
+    "it": """
+<h1>Come colleghiamo gli annunci</h1>
+
+<div class="block">
+  <p style="margin-top:0">Queste pagine confrontano annunci di agenzie
+  diverse che riguardano lo <b>stesso immobile</b>. Ogni cifra è quella
+  pubblicata dall'agenzia, con il link all'annuncio: chi legge può
+  verificare in un clic.</p>
+  <p><b>Non usiamo nessuna stima.</b> Niente fasce OMI, niente sconti di
+  trattativa, niente valutazioni nostre. Confrontiamo le agenzie con quello
+  che hanno scritto loro.</p>
+</div>
+
+<div class="block">
+  <h2>Come stabiliamo che si tratta dello stesso immobile</h2>
+  <table class="rows">
+    <tr><td><b>Numero di riferimento</b></td>
+        <td>Le agenzie usano lo stesso riferimento. È il loro
+        identificativo, non una nostra deduzione.</td></tr>
+    <tr><td><b>Fotografie</b></td>
+        <td>Almeno due fotografie identiche. Confrontate a mano, una per
+        una: una foto condivisa non basta, perché le agenzie riusano
+        immagini e un panorama può essere lo stesso da case diverse.</td></tr>
+    <tr><td><b>Prezzo non arrotondato</b></td>
+        <td>Una cifra come € 110.625 non capita due volte per caso. Un
+        prezzo tondo, da solo, non prova nulla.</td></tr>
+    <tr><td><b>Descrizioni</b></td>
+        <td>Quando due annunci descrivono la stessa casa in modo
+        inequivocabile — stessa struttura, stessa storia, stesso parco —
+        anche senza foto in comune.</td></tr>
+  </table>
+</div>
+
+<div class="block">
+  <h2>Cosa non pubblichiamo</h2>
+  <ul>
+    <li><b>Quello che non abbiamo verificato.</b> Le corrispondenze che non
+    hanno superato un controllo umano restano fuori.</li>
+    <li><b>Casi in cui una spiegazione innocente esiste.</b> Un annuncio non
+    aggiornato da anni, o che include nel prezzo un secondo edificio, non è
+    una contraddizione: è un confronto tra cose diverse.</li>
+    <li><b>Prezzi non pubblicati.</b> "Trattativa riservata" o una fascia di
+    prezzo vengono mostrati per quello che sono, mai trasformati in una
+    cifra.</li>
+    <li><b>Giudizi.</b> Non diciamo chi ha ragione. Mettiamo i numeri uno
+    accanto all'altro.</li>
+  </ul>
+</div>
+
+<div class="block" id="replica">
+  <h2>Diritto di replica</h2>
+  <p>Se sei un'agenzia e ritieni che due annunci accostati qui non siano
+  lo stesso immobile, <b>scrivici e ricontrolliamo</b>. Se hai ragione,
+  la pagina viene rimossa; se il dato è cambiato, viene aggiornato.
+  In entrambi i casi rispondiamo entro <b>7 giorni</b>.</p>
+  <p>Vale anche per il contrario: se una cifra qui è sbagliata perché
+  l'annuncio è stato nel frattempo corretto, segnalacelo.</p>
+  <p>Scrivi a: <b>correzioni@borgovero.it</b> —
+  vedi anche <a href="/it/chi-siamo.html#correzioni">Segnala un errore</a>.</p>
+</div>
+
+<div class="block">
+  <h2>Aggiornamento</h2>
+  <p>I dati vengono riletti periodicamente dalle fonti pubbliche. Una
+  pagina riporta ciò che era pubblicato al momento della lettura, e gli
+  annunci cambiano: il link alla fonte è sempre il riferimento.</p>
+</div>
+""",
+    "en": """
+<h1>How we link listings</h1>
+
+<div class="block">
+  <p style="margin-top:0">These pages compare listings from different
+  agencies for the <b>same property</b>. Every figure is the agency's own,
+  linked to its listing, so any reader can check it in one click.</p>
+  <p><b>No estimates are involved.</b> No OMI bands, no negotiation
+  discounts, no valuation of ours. We compare the agencies to what they
+  themselves published.</p>
+</div>
+
+<div class="block">
+  <h2>How we establish it is the same property</h2>
+  <table class="rows">
+    <tr><td><b>Reference number</b></td>
+        <td>The agencies use the same reference. Their identifier, not our
+        inference.</td></tr>
+    <tr><td><b>Photographs</b></td>
+        <td>At least two identical photographs, compared by eye one pair at
+        a time. A single shared image is not enough: agencies reuse
+        pictures, and the same view can be photographed from different
+        houses.</td></tr>
+    <tr><td><b>A non-round price</b></td>
+        <td>A figure like € 110,625 does not occur twice by accident. A
+        round price on its own proves nothing.</td></tr>
+    <tr><td><b>Descriptions</b></td>
+        <td>Where two listings describe the same house unmistakably — same
+        structure, same history, same grounds — even with no photographs in
+        common.</td></tr>
+  </table>
+</div>
+
+<div class="block">
+  <h2>What we do not publish</h2>
+  <ul>
+    <li><b>Anything unverified.</b> Matches that did not survive a human
+    check stay out.</li>
+    <li><b>Cases with an innocent explanation.</b> A listing not updated in
+    years, or one whose price includes a second building, is not a
+    contradiction — it is a comparison of different things.</li>
+    <li><b>Prices that were never published.</b> "Price on request" or a
+    price bracket is shown as exactly that, never converted into a
+    number.</li>
+    <li><b>Verdicts.</b> We do not say who is right. We put the numbers
+    side by side.</li>
+  </ul>
+</div>
+
+<div class="block" id="replica">
+  <h2>Right of reply</h2>
+  <p>If you are an agency and believe two listings shown here are not the
+  same property, <b>write to us and we will re-check</b>. If you are right
+  the page comes down; if the data has changed it is updated. Either way we
+  reply within <b>7 days</b>.</p>
+  <p>The same applies in reverse: if a figure here is wrong because the
+  listing has since been corrected, tell us.</p>
+  <p>Write to: <b>correzioni@borgovero.it</b> — see also
+  <a href="/en/chi-siamo.html#correzioni">Report an error</a>.</p>
+</div>
+
+<div class="block">
+  <h2>Updating</h2>
+  <p>The data is re-read from public sources periodically. A page reports
+  what was published at the time of reading, and listings change: the link
+  to the source is always the reference.</p>
+</div>
+""",
+}
 
 
 def comune_of(group):
@@ -254,10 +403,18 @@ def property_page(item, sid, lang):
     if not [r for r in g if r.get("price") and not r.get("price_withheld")]:
         facts.append(e(t["no_price"]))
 
+    # Order matters, and getting it wrong printed a falsehood: a
+    # photo-weak cluster where NEITHER agency publishes a price was
+    # explained to the reader as "identical price and compatible
+    # surface". The fallback has to be the weakest claim, not the
+    # nearest one — and photo-weak needs its own line rather than
+    # borrowing the two-photograph wording.
     ev = set(item["evidence"])
     how = (t["how_ref"] if "ref" in ev else
            t["how_photo"] if "photo" in ev else
-           t["how_price"] if "price" in ev else t["how_ps"])
+           t["how_price"] if "price" in ev else
+           t["how_ps"] if "price+surface" in ev else
+           t["how_photo_weak"])
 
     if item.get("verified"):
         # The verification notes in verified_clusters.json are written in
@@ -388,10 +545,31 @@ def main():
         write(f"{a.out}/{lang}/confronti/index.html",
               index_page(keep, sids, lang))
         urls.append(f"/{lang}/confronti/")
+        # The shared footer links to both of these on every page, so
+        # until they exist every page ships with two dead links — on a
+        # site whose whole claim is carefulness, and whose corrections
+        # policy lives behind one of them.
+        write(f"{a.out}/{lang}/chi-siamo.html", T.about_page(lang))
+        write(f"{a.out}/{lang}/metodologia.html",
+              T.shell(("Come colleghiamo gli annunci" if lang == "it"
+                       else "How we link listings") + " — Borgo Vero",
+                      METHOD[lang], lang,
+                      f'/{"en" if lang == "it" else "it"}/metodologia.html',
+                      T.T[lang]["declaration"]))
+        urls += [f"/{lang}/chi-siamo.html", f"/{lang}/metodologia.html"]
         for it, sid in zip(keep, sids):
             write(f"{a.out}/{lang}/confronti/{sid}.html",
                   property_page(it, sid, lang))
             urls.append(f"/{lang}/confronti/{sid}.html")
+
+    for lang in LANGS:
+        # The shared header's brand link points at /{lang}/. In the full
+        # site that is the homepage; in this standalone slice it did not
+        # exist, so every page carried a dead logo link.
+        write(f"{a.out}/{lang}/index.html",
+              '<!doctype html><meta charset="utf-8">'
+              f'<meta http-equiv="refresh" content="0;url=/{lang}/confronti/">'
+              f'<link rel="canonical" href="/{lang}/confronti/">')
 
     write(f"{a.out}/index.html",
           '<!doctype html><meta charset="utf-8">'
@@ -405,9 +583,15 @@ def main():
     write(f"{a.out}/robots.txt",
           "User-agent: *\nAllow: /\nSitemap: /sitemap.xml\n")
 
+    # Files to KEEP is not the same set as URLs to ADVERTISE: the
+    # language landing pages are redirects, so they belong on disk but
+    # not in the sitemap. Deriving one from the other deleted them on
+    # the way out, which put the dead brand link straight back.
     written = {os.path.normpath(f"{a.out}{u}"
                                 + ("index.html" if u.endswith("/") else ""))
                for u in urls}
+    written |= {os.path.normpath(f"{a.out}/{lang}/index.html")
+                for lang in LANGS}
     stale = []
     for root, _, files in os.walk(a.out):
         for fn in files:
