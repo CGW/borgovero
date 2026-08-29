@@ -93,8 +93,17 @@ T = {
         "disagree_on": "Gli annunci non concordano su",
         "each_linked": "Ogni valore è collegato alla sua fonte.",
         "numbers_say": "Cosa dicono i numeri",
-        "declaration": "Borgo Vero è una valutazione indipendente e senza "
-                       "scopo di lucro dei prezzi immobiliari in Valtiberina.",
+        # NOT "una valutazione indipendente". That phrasing shipped on all
+        # 36 pages and it was the site calling itself, affirmatively, the
+        # one regulated word seo-spec §3.5 forbids — while the method page
+        # two blocks below said "non è una perizia". The site was
+        # contradicting itself about its own nature on every page it
+        # published, which is the exact class of thing it publishes other
+        # people for. "Indice indipendente" is both accurate and the term
+        # the whole standard is built on.
+        "declaration": "Borgo Vero è un indice indipendente e senza scopo "
+                       "di lucro dei prezzi immobiliari in Valtiberina. "
+                       "Non è una perizia.",
         "about": "Chi siamo",
         "corrections": "Segnala un errore",
         "sources_line": "Fasce OMI: Agenzia delle Entrate. Annunci: portali "
@@ -163,8 +172,11 @@ T = {
         "disagree_on": "The listings disagree on",
         "each_linked": "Every value links to its source.",
         "numbers_say": "What the numbers say",
-        "declaration": "Borgo Vero is an independent, non-profit assessment "
-                       "of property prices in the Valtiberina.",
+        # See the IT note above. "Assessment" carries the same implication
+        # in English that "valutazione" does in Italian.
+        "declaration": "Borgo Vero is an independent, non-profit index of "
+                       "property prices in the Valtiberina. "
+                       "It is not an appraisal.",
         "about": "About",
         "corrections": "Report an error",
         "sources_line": "OMI bands: Agenzia delle Entrate. Listings: public "
@@ -928,7 +940,7 @@ ABOUT = {
 <h1>Chi siamo</h1>
 
 <div class="block">
-  <p style="font-size:18px;margin-top:0"><b>Borgo Vero è una valutazione
+  <p style="font-size:18px;margin-top:0"><b>Borgo Vero è un indice
   indipendente e senza scopo di lucro dei prezzi immobiliari in
   Valtiberina.</b></p>
   <p>L'obiettivo è incoraggiare trasparenza, coerenza e accuratezza nei
@@ -985,7 +997,7 @@ ABOUT = {
 
 <div class="block">
   <p style="font-size:18px;margin-top:0"><b>Borgo Vero is an independent,
-  non-profit third-party assessment of property prices in the Valtiberina.</b></p>
+  non-profit index of property prices in the Valtiberina.</b></p>
   <p>The goal is to encourage transparency, consistency and accuracy in
   property pricing, descriptions and marketing in the area.</p>
 </div>

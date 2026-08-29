@@ -177,16 +177,28 @@ def slug(item):
 # already points to.
 METHOD = {
     "it": """
-<h1>Come colleghiamo gli annunci</h1>
+<h1>Il metodo</h1>
+
+<p class="lede">Due cose, ed è la stessa argomentazione: <b>come stabiliamo
+che due annunci riguardano la stessa casa</b>, e <b>con quale superficie
+dividiamo i prezzi</b> perché siano confrontabili. La prima è la prova che
+la seconda serve.</p>
+
+<h2>Come colleghiamo gli annunci</h2>
 
 <div class="block">
   <p style="margin-top:0">Queste pagine confrontano annunci di agenzie
   diverse che riguardano lo <b>stesso immobile</b>. Ogni cifra è quella
   pubblicata dall'agenzia, con il link all'annuncio: chi legge può
   verificare in un clic.</p>
-  <p><b>Non usiamo nessuna stima.</b> Niente fasce OMI, niente sconti di
-  trattativa, niente valutazioni nostre. Confrontiamo le agenzie con quello
-  che hanno scritto loro.</p>
+  <p><b>Su queste pagine non c'è nessuna stima.</b> Niente fasce OMI,
+  niente sconti di trattativa, niente valutazioni nostre. Confrontiamo le
+  agenzie con quello che hanno scritto loro.</p>
+  <p>L'<a href="#indice">indice</a>, più sotto, è una cosa diversa e lo
+  diciamo apertamente: per confrontare gli annunci fra loro dobbiamo
+  riportarli a una superficie unica, e quella conversione è una nostra
+  scelta dichiarata. Per questo è pubblicata come <b>intervallo</b>, mai
+  come numero singolo, con la regola scritta qui sotto.</p>
 </div>
 
 <div class="block">
@@ -245,15 +257,27 @@ METHOD = {
 </div>
 """,
     "en": """
-<h1>How we link listings</h1>
+<h1>The method</h1>
+
+<p class="lede">Two things, and they are one argument: <b>how we establish
+that two listings are the same house</b>, and <b>which surface we divide
+prices by</b> so they can be compared. The first is the evidence that the
+second is needed.</p>
+
+<h2>How we link listings</h2>
 
 <div class="block">
   <p style="margin-top:0">These pages compare listings from different
   agencies for the <b>same property</b>. Every figure is the agency's own,
   linked to its listing, so any reader can check it in one click.</p>
-  <p><b>No estimates are involved.</b> No OMI bands, no negotiation
-  discounts, no valuation of ours. We compare the agencies to what they
-  themselves published.</p>
+  <p><b>No estimate appears on these pages.</b> No OMI bands, no
+  negotiation discounts, no valuation of ours. We compare the agencies to
+  what they themselves published.</p>
+  <p>The <a href="#indice">index</a> below is a different thing, and we say
+  so plainly: to compare listings with each other we have to bring them to
+  one surface, and that conversion is a declared choice of ours. Which is
+  why it is published as a <b>range</b>, never as a single number, with the
+  rule written out below.</p>
 </div>
 
 <div class="block">
@@ -313,6 +337,279 @@ METHOD = {
 </div>
 """,
 }
+
+
+# --- The standard (seo-spec.md §3) -------------------------------------
+
+def index_method(lang):
+    """The surface standard, rendered from `normalize.py`'s own tables.
+
+    Generated rather than hand-written for one reason: a method page that
+    disagrees with the code is worse than no method page. This site's
+    entire complaint is that agencies publish a EUR/m2 whose denominator
+    they will not define; if our published deflator table drifted one
+    revision behind the one we actually apply, we would be doing the same
+    thing with better typography. So the numbers below come from
+    `normalize.DEFLATORS`, `normalize.WEIGHTS` and the live gate
+    constants. There is no second copy to fall out of date.
+    """
+    import normalize as N
+
+    it = lang == "it"
+
+    weights = "\n".join(
+        f"    <tr><td>{c}</td><td class=\"n\">{w}</td><td>{cap}</td></tr>"
+        for c, w, cap in N.WEIGHTS)
+
+    names = {
+        "appartamento": ("Appartamento", "Apartment"),
+        "terratetto":   ("Terratetto / casa a schiera", "Terratetto / townhouse"),
+        "cielo_terra":  ("Casa cielo-terra", "Whole-building house"),
+        "rustico":      ("Casale / colonica restaurata", "Restored casale / farmhouse"),
+    }
+    # Italian writes decimals with a comma. Getting this wrong on a page
+    # whose subject is numerical care would be read, correctly, as not
+    # caring — and the audience for the IT page is Italian agencies.
+    def num(x, places=2):
+        s = f"{x:.{places}f}"
+        return s.replace(".", ",") if it else s
+
+    defl = "\n".join(
+        f"    <tr><td>{names[k][0 if it else 1]}</td>"
+        f"<td class=\"n\">&times; {num(lo)} &ndash; {num(hi)}</td></tr>"
+        for k, (lo, hi) in sorted(N.DEFLATORS.items()))
+
+    gate_n, gate_ag = N.GATE_MIN_N, N.GATE_MIN_AGENCIES
+    gate_w = num(N.GATE_MAX_WIDTH_PCT, 1)
+
+    if it:
+        return f"""
+<div class="block" id="indice">
+  <h2>L'indice: una sola superficie, applicata a tutti</h2>
+  <p style="margin-top:0">Ogni portale italiano pubblica un prezzo al metro
+  quadro. Nessuno di quei numeri è confrontabile con un altro, perché il
+  <b>denominatore</b> — la superficie — è definito in modo diverso da ogni
+  agenzia, e quasi mai è scritto da nessuna parte.</p>
+  <p>Il caso che lo dimostra è nel nostro archivio. Due agenzie chiedono lo
+  stesso identico prezzo per la stessa villa ad Anghiari, e pubblicano
+  <b>€ 508/m²</b> e <b>€ 3.265/m²</b>: sei volte tanto. Non perché siano in
+  disaccordo sul valore, ma perché una divide per una "superficie
+  commerciale" di 3.150 m² che comprende un parco di 2.600 m². Tolto il
+  terreno, il disaccordo vero è fra 550 m² e 490 m² — circa il 12%. Quella
+  è una domanda che un compratore può fare a un'agente. Il 6,4× no.</p>
+  <p><b>La regola che conta è una sola: il terreno non entra mai in una
+  superficie.</b> Giardini, parchi e terreni agricoli sono riportati a
+  parte, come quello che sono. Nessuno cammina su un parco.</p>
+</div>
+
+<div class="block">
+  <h2>Da cosa dividiamo</h2>
+  <p style="margin-top:0">La nostra superficie di riferimento è la
+  <b>superficie interna abitabile</b>: il calpestabile interno, misurato al
+  filo interno dei muri esterni. Esclude accessori e terreno.</p>
+  <p>Accanto pubblichiamo sempre <b>il prezzo al m² dell'agenzia</b>,
+  calcolato con la superficie che ha dichiarato lei. Le due cifre stanno
+  una accanto all'altra su ogni pagina. La differenza fra loro è il punto.</p>
+</div>
+
+<div class="block">
+  <h2>Quanto pesano gli accessori</h2>
+  <p style="margin-top:0">Questa tabella è una <b>scelta dichiarata</b>, non
+  una misurazione. Non l'abbiamo dedotta dal mercato: l'abbiamo scritta, e
+  la applichiamo allo stesso modo a tutti. È esattamente ciò che le agenzie
+  non fanno. Le righe su garage (50%) e giardino (10%) coincidono con la
+  regola che Immobiliare stessa applica ai propri annunci — in modo
+  disomogeneo fra un agente e l'altro; le altre righe sono nostre.</p>
+  <table class="rows">
+    <tr><th>Componente</th><th>Peso</th><th>Limite</th></tr>
+{weights}
+  </table>
+  <p><b>Questa tabella non è ancora in uso.</b> Applicarla richiede la
+  scomposizione voce per voce della superficie, che gli annunci pubblici
+  non riportano. La pubblichiamo lo stesso, perché un'agenzia ha diritto di
+  vedere lo standard con cui verrà misurata prima che possiamo misurarla.</p>
+</div>
+
+<div class="block">
+  <h2>Quanto ci fidiamo di ogni annuncio</h2>
+  <p style="margin-top:0">Pubblicare un numero preciso partendo da un dato
+  impreciso è esattamente ciò che contestiamo. Quindi ogni annuncio porta
+  scritto quanto è solido il suo indice.</p>
+  <table class="rows">
+    <tr><td><b>A — misurato</b></td>
+        <td>Scomposizione della superficie disponibile. Valore puntuale.
+        <i>Oggi nessun annuncio raggiunge questo livello.</i></td></tr>
+    <tr><td><b>B — dedotto</b></td>
+        <td>Una sola superficie e la tipologia. Pubblichiamo un
+        <b>intervallo</b>, mai un numero.</td></tr>
+    <tr><td><b>C — insufficiente</b></td>
+        <td>Nessun prezzo, nessuna superficie utilizzabile, o una tipologia
+        troppo variabile. <b>Nessun indice.</b> La pagina mostra i dati
+        dell'agenzia e spiega perché non c'è un nostro numero.</td></tr>
+  </table>
+</div>
+
+<div class="block">
+  <h2>La conversione, per tipologia</h2>
+  <p style="margin-top:0">Per gli annunci di livello B convertiamo la
+  superficie dichiarata in superficie interna abitabile così:</p>
+  <table class="rows">
+    <tr><th>Tipologia</th><th>Fattore</th></tr>
+{defl}
+  </table>
+  <p><b>Le ville con parco non hanno un fattore</b>, e non è una
+  dimenticanza. Per quella categoria la conversione andrebbe da 0,30 a
+  0,80: un intervallo così ampio da non dire nulla. È anche la categoria in
+  cui il problema è più grave. Quindi una villa o viene scomposta a mano, o
+  <b>non riceve nessun indice</b>. Preferiamo un vuoto dichiarato a un
+  numero che non regge.</p>
+</div>
+
+<div class="block">
+  <h2>Le fasce per comune</h2>
+  <p style="margin-top:0">Ogni annuncio entra nella fascia del suo comune
+  come intervallo, non come punto, e l'intervallo resta tale fino alla
+  pagina: quello che pubblichiamo è <b>da X a Y</b>, mai la loro media.</p>
+  <p>Una fascia viene pubblicata solo con almeno <b>{gate_n} annunci</b> di
+  almeno <b>{gate_ag} agenzie diverse</b>, e solo se l'intervallo centrale
+  non supera il <b>{gate_w}%</b> — cioè se non è più largo dell'incertezza
+  della singola conversione peggiore. Sotto quella soglia il comune non ha
+  fascia e lo diciamo.</p>
+  <p>Su ogni fascia pubblichiamo due larghezze: <b>quanto è incerta la
+  nostra conversione</b> e <b>quanto varia davvero il mercato</b>. Nei
+  comuni della Valtiberina la prima sta fra il 13% e il 27%; la seconda fra
+  il 52% e il 98%. Chi legge deve poter vedere quanta parte dell'intervallo
+  siamo noi e quanta è il mercato — e qui la seconda è di gran lunga la
+  più grande.</p>
+</div>
+
+<div class="block">
+  <h2>Quello che questo non è</h2>
+  <p style="margin-top:0">Non è una perizia, e non ne ha la pretesa. Una
+  perizia in Italia è un atto che compie un tecnico abilitato, sul posto.
+  Questo è un <b>indice</b>: i numeri che le agenzie hanno già pubblicato,
+  riportati tutti alla stessa superficie con una regola scritta, così che
+  siano confrontabili fra loro.</p>
+  <p>Non diciamo quanto vale una casa e non diciamo quanto offrire.
+  Diciamo cosa è stato pubblicato, e cosa succede a quei numeri quando si
+  applica a tutti lo stesso metro.</p>
+</div>
+"""
+
+    return f"""
+<div class="block" id="indice">
+  <h2>The index: one surface, applied to everyone</h2>
+  <p style="margin-top:0">Every Italian property portal publishes a price
+  per square metre. None of those numbers can be compared with each other,
+  because the <b>denominator</b> — the surface — is defined differently by
+  every agency, and is almost never written down anywhere.</p>
+  <p>The case that proves it is in our own archive. Two agencies ask the
+  identical price for the same villa in Anghiari and publish
+  <b>&euro;508/m&sup2;</b> and <b>&euro;3,265/m&sup2;</b> — six times
+  apart. Not because they disagree about the value, but because one divides
+  by a "commercial surface" of 3,150 m&sup2; that includes a 2,600
+  m&sup2; park. With the land removed, the real disagreement is between
+  550 m&sup2; and 490 m&sup2;, about 12%. That is a question a buyer can
+  put to an agent. The 6.4&times; never was.</p>
+  <p><b>One rule does most of the work: land never enters a surface
+  figure.</b> Gardens, parks and agricultural land are reported separately,
+  as what they are. Nobody walks on a park.</p>
+</div>
+
+<div class="block">
+  <h2>What we divide by</h2>
+  <p style="margin-top:0">Our reference surface is the <b>internal
+  habitable area</b> — internal floor area measured to the inside face of
+  the external walls. It excludes accessories and all land.</p>
+  <p>Beside it we always publish <b>the agency's own price per
+  m&sup2;</b>, calculated with the surface the agency itself stated. The
+  two figures sit side by side on every page. The gap between them is the
+  point.</p>
+</div>
+
+<div class="block">
+  <h2>How accessories are weighted</h2>
+  <p style="margin-top:0">This table is a <b>declared choice</b>, not a
+  measurement. We did not derive it from the market: we wrote it down, and
+  we apply it identically to everyone. That is precisely what the agencies
+  do not do. The garage row (50%) and garden row (10%) match the rule
+  Immobiliare applies to its own listings — inconsistently, from one agent
+  to the next; the remaining rows are ours.</p>
+  <table class="rows">
+    <tr><th>Component</th><th>Weight</th><th>Cap</th></tr>
+{weights}
+  </table>
+  <p><b>This table is not yet in use.</b> Applying it requires an itemised
+  breakdown of the surface, which public listings do not carry. We publish
+  it anyway, because an agency is entitled to see the standard it will be
+  measured against before we are able to measure it.</p>
+</div>
+
+<div class="block">
+  <h2>How much we trust each listing</h2>
+  <p style="margin-top:0">Publishing a confident number from an unconfident
+  input is exactly what we object to. So every listing states how solid its
+  index is.</p>
+  <table class="rows">
+    <tr><td><b>A &mdash; measured</b></td>
+        <td>Surface breakdown available. A point value.
+        <i>No listing currently reaches this level.</i></td></tr>
+    <tr><td><b>B &mdash; inferred</b></td>
+        <td>One surface figure and a typology. We publish a
+        <b>range</b>, never a number.</td></tr>
+    <tr><td><b>C &mdash; insufficient</b></td>
+        <td>No price, no usable surface, or a typology too variable to
+        infer from. <b>No index at all.</b> The page shows the agency's
+        figures and explains why there is no number of ours.</td></tr>
+  </table>
+</div>
+
+<div class="block">
+  <h2>The conversion, by property type</h2>
+  <p style="margin-top:0">For Tier B listings we convert the stated surface
+  to internal habitable area like this:</p>
+  <table class="rows">
+    <tr><th>Type</th><th>Factor</th></tr>
+{defl}
+  </table>
+  <p><b>Villas with grounds have no factor</b>, and that is not an
+  oversight. For that category the conversion would run from 0.30 to 0.80 —
+  a range wide enough to say nothing. It is also the category where the
+  problem is worst. So a villa is either broken down by hand or it
+  <b>carries no index</b>. We would rather publish a declared gap than a
+  number that does not hold.</p>
+</div>
+
+<div class="block">
+  <h2>Comune bands</h2>
+  <p style="margin-top:0">Every listing enters its comune's band as an
+  interval, not a point, and it stays an interval all the way to the page:
+  what we publish is <b>X to Y</b>, never their midpoint.</p>
+  <p>A band is published only with at least <b>{gate_n} listings</b> from
+  at least <b>{gate_ag} different agencies</b>, and only if the central
+  interval is no wider than <b>{gate_w}%</b> — that is, no wider than the
+  uncertainty of the single worst conversion feeding it. Below that
+  threshold the comune has no band, and we say so.</p>
+  <p>With every band we publish two widths: <b>how uncertain our
+  conversion is</b> and <b>how much the market itself varies</b>. Across
+  the Valtiberina the first runs 13&ndash;27%; the second runs
+  52&ndash;98%. A reader should be able to see how much of the range is us
+  and how much is the market — and here the market is by far the
+  larger.</p>
+</div>
+
+<div class="block">
+  <h2>What this is not</h2>
+  <p style="margin-top:0">It is not a survey or an appraisal, and it does
+  not claim to be. In Italy a <i>perizia</i> is a regulated act carried out
+  by a qualified technician, on site. This is an <b>index</b>: figures the
+  agencies have already published, brought onto one surface by a written
+  rule, so that they can be compared with each other.</p>
+  <p>We do not say what a house is worth and we do not say what to offer.
+  We say what was published, and what happens to those numbers when the
+  same measure is applied to all of them.</p>
+</div>
+"""
 
 
 def comune_of(group):
@@ -550,10 +847,15 @@ def main():
         # site whose whole claim is carefulness, and whose corrections
         # policy lives behind one of them.
         write(f"{a.out}/{lang}/chi-siamo.html", T.about_page(lang))
+        # METHOD is how we link listings; index_method is the surface
+        # standard. One page, because they are one argument: the standard
+        # is why the contradictions matter, and the contradictions are why
+        # the standard is necessary. Splitting them would leave each half
+        # looking like an assertion.
         write(f"{a.out}/{lang}/metodologia.html",
-              T.shell(("Come colleghiamo gli annunci" if lang == "it"
-                       else "How we link listings") + " — Borgo Vero",
-                      METHOD[lang], lang,
+              T.shell(("Il metodo" if lang == "it"
+                       else "The method") + " — Borgo Vero",
+                      METHOD[lang] + index_method(lang), lang,
                       f'/{"en" if lang == "it" else "it"}/metodologia.html',
                       T.T[lang]["declaration"]))
         urls += [f"/{lang}/chi-siamo.html", f"/{lang}/metodologia.html"]

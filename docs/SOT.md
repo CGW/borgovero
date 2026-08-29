@@ -1,11 +1,12 @@
 # Borgo Vero — Source of Truth
 
-**Last updated:** 2026-08-29 (S004 — all contradictions hand-verified
-(36, of which 30 by eye); Marcellini "prices" found to be brackets;
-photo threshold break measured; site built and finished; `phase0/data/`
-deleted and the anchors recovered from git. **Read §15's opening
-decision on the normalised-€/m² index before doing anything else.** See
-`docs/verification-S004.md`)
+**Last updated:** 2026-08-30 (S005 — the §17.1 band deadlock resolved as
+**(b)**, measured not argued: interval arithmetic over Tier A+B, the
+Tier-A-only gate retired, **all eight comuni publishing** at n = 27–290.
+`phase0/normalize.py` shipped; `metodologia.html` grown into the standard;
+`bv-site/lint.py` added, which caught the site describing itself as *una
+valutazione* on all 36 live pages. **Read §17 first — its S005 block
+overrides §4.3 of `docs/seo-spec.md` and item 2 of §17.1 itself.**)
 
 This file is the authority. Where it disagrees with a README, a results
 document, a code comment or a memory, this file wins — and the disagreement
@@ -919,6 +920,8 @@ building before writing a page of it.
 | S004 | 2026-08-29 | **A standing warning was folklore.** CLAUDE.md and §3 both said `id_anchors.json` is gitignored and not backed up by a push, and it was repeated to Christopher twice this session. It is tracked, in HEAD since `dda2cab`, and hash-identical to the working copy. Corrected in both places, with the lesson: a caution nobody re-tests stops being a fact. |
 | S004 | 2026-08-29 | **Shipped the first pages.** `bv-site/contradictions_site.py` writes one page per property — every agency's figures side by side, each linked to its own listing — IT + EN, sitemap and robots, reusing `templates.py`'s shell. 21 of 40 published; the other 19 need `--candidates` because publication requires identity evidence and these are named local businesses. Output in `bv-site/dist-contradictions/` (gitignored, regenerable). |
 | S004 | 2026-08-29 | **Hand-verification pass, then the fixes it demanded.** Every matched photo pair in all 17 multi-agency clusters eyeballed via contact sheets; the three §15.1 named cases read on live pages. Results: 12/12 clusters at hamming ≤5 real, 5/5 at 7–10 false (Matteotti and Cherubino both die); the Badia triple is one Fresciano flat but its +245% was a parser artifact — **all 152 Marcellini "prices" are search brackets** ("meno di € 100.000"), stored as asking prices. Fixed: `agencies.py` stores `price_bracket` and extracts real prices from descriptions (31 recovered, incl. Citerna €214.000 → a real +26% against Leonardi's €270.000 on a photo-verified ruin); `photomatch.py` dedupes hashes within a listing (resize loophole) and merges only on ≤5 evidence, labeling `photo` vs `photo-weak`; `contradictions.py` gains a verified overlay (`verified_clusters.json`, human-measured, committed), a location axis (agencies disagree on the comune: Badia Tedalda vs Sestino), a round-price rarity guard, and `--db`. Report regenerated: **158 → 40 honest contradictions, 15 verified.** The mount now refuses live sqlite writes (ALTER hit disk I/O error), so the corrections were worked out on a sandbox copy and ship as **`phase0/apply_S004_fix.py`** — run it once against the real database (`python3 apply_S004_fix.py`, `--dry-run` to preview). It is idempotent, touches only Marcellini rows, and bypasses `db.observe()` so no fabricated cuts land in `price_history`. A full replacement dump also exists (`phase0_S004_restore.sql`) but the in-place script is the intended route; **the repo's `phase0.sqlite` carries the old bracket prices until one of them is applied.** Verification evidence: `docs/verification-S004.md`. |
+| S005 | 2026-08-30 | **The band deadlock resolved on a measurement, and the index pipeline shipped.** §17.1's choice taken as **(b)**: bands are computed over Tier A+B with interval arithmetic, a Tier A listing entering as a zero-width interval, and the unfireable Tier-A-only n ≥ 8 gate is retired. The decision was measured rather than argued — **deflator uncertainty widens the p50 by 14–18%, while the market's own p25–p75 spread is 55–104%**, so hand-seeding Tier A would have spent 64+ browser reads removing a fifth of the uncertainty and left the rest standing. (c) is correspondingly weaker than it looked and should not be revisited on index-quality grounds. **All eight comuni now clear the gate at n = 27–290 and 9–29 agencies**, so Phase 2's "three comune reports" is exceeded on day one. New `phase0/normalize.py` (deterministic, byte-identical across runs); spec §2 corrected to the eight real comuni, §4.3 rewritten, §10.3 lint extended, counts fixed to 36/30/36. **Fifth correction to §17: ~676 listing pages, not ~931** — §17 applied only the price+surface gate and omitted §4.2's tier condition; say ~700. Typology recovered for 244 listings from `typology_raw` and titles already held (no detail pages, no 403), and 123 shops and land parcels removed from a residential index entirely. Three self-inflicted defects caught before shipping and commented in place: a **band-width gate invented at 25%** that would have silently suppressed every farmhouse-dominated comune (rustico's own deflator is 26,7% wide — it killed Monterchi), now derived from the deflator table; **`sia` and `eur_sia` rounded independently**, so a reader dividing our published surface into our published price got a different answer from our published €/m² — fatal on a site whose product is checkable arithmetic; and a **lint that fired on all 35 contradiction pages** because "Fasce OMI" contains the word band. |
+| S005 | 2026-08-30 | **The site was calling itself a *valutazione* on all 36 published pages.** Found by the new `bv-site/lint.py`: the footer declaration read *"Borgo Vero è una valutazione indipendente"* — §3.5's regulated word, affirmative, about ourselves — while the method page two blocks below said *"non è una perizia"*. The site contradicted itself about its own nature on every page it published, which is the exact class of thing it publishes other people for. Three separate hardcoded copies existed (footer, IT about, EN about); the EN one said *"third-party assessment"* and survived the first fix because §3.5 never names that word. All now read *indice* / *index*, and **`assessment` is added to the forbidden list — §3.5 should gain it.** The lint deliberately is **not** a substring ban: it excuses negated and attributed uses, because a checker that forces *"It is not an appraisal"* off the page deletes the disclaimer and leaves the claim. It also matches on word boundaries, after the first version reported the English *"days on market are e-stima-ted"* as an Italian regulated-term violation. `metodologia.html` grown into the standard per §3 — surface definition, the land rule, the weighting table, tiers, deflators and the band method — rendered **from `normalize.py`'s own tables** so the published method cannot drift from the applied one. Build verified: 78 pages, two builds byte-identical, lint clean, zero broken internal links. |
 
 ---
 
@@ -1191,6 +1194,66 @@ Three ways out, and the choice belongs in the next session, not later:
      corpus. This project has declined that three times and re-affirmed
      it in S003. It is a real option; it is not a free one, and it must
      not be arrived at because the index wants it.
+
+#### RESOLVED in S005, 2026-08-30: **(b), decided on a measurement**
+
+The question "is the band too wide to publish?" was never measured, so
+S005 measured it before choosing. Tier B intervals were computed for all
+676 eligible listings using §3.4's deflators, villas excluded to Tier C
+as §3.4 requires, and the comune p50 interval compared against the
+market's own p25–p75 spread of the same listings at their deflator
+midpoints:
+
+```
+comune                nB   ag   p50 interval (b)   width    market p25-p75   width
+sansepolcro          290   29   1.430 - 1.656      14,6%    1.127 - 1.971    55,3%
+anghiari             136   24   1.680 - 1.963      15,5%    1.217 - 2.423    65,6%
+caprese-michelangelo  64   17     986 - 1.154      15,7%      682 - 1.648    90,1%
+pieve-santo-stefano   59   23     606 -   696      13,8%      499 - 1.106    92,7%
+citerna               43   11   1.046 - 1.235      16,6%      813 - 1.492    60,0%
+badia-tedalda         29   12     479 -   572      17,8%      391 -   952   104,4%
+sestino               28    9     981 - 1.145      15,4%      675 - 1.263    55,2%
+monterchi             27   13   1.699 - 2.011      16,8%    1.100 - 2.445    72,4%
+```
+
+**Deflator uncertainty is 14–18%. The market's own spread is 55–104%.**
+The uncertainty option (a) would have spent 64+ browser reads to remove
+is roughly a fifth of the variation that is genuinely in the stock and
+would remain after the work. That is the whole argument: (a) sharpens the
+term that is not dominating.
+
+Consequences, all now written into `seo-spec.md`:
+
+- **The Tier-A-only n ≥ 8 gate is retired.** The band is computed over
+  Tier A + B with interval arithmetic, a Tier A listing entering as a
+  zero-width interval. The gate becomes n ≥ 8, ≥ 2 agencies, and a p50
+  interval no wider than 25% of its midpoint — which is what the tier
+  condition was trying to express, and it now fails loudly on a comune
+  too mixed to summarise rather than silently on one merely lacking
+  decompositions.
+- **All eight comuni clear it immediately**, at n = 27–290 and 9–29
+  agencies. Phase 2's "three comune reports with bands" is not just
+  reachable, it is exceeded on day one — and §13 should be re-read with
+  that in mind rather than left as written.
+- **The band is an interval end to end, and is never rendered as its
+  midpoint.** Added to the §10.3 lint as the load-bearing check: the
+  failure mode is a template collapsing the interval for tidiness, which
+  would publish this site's own criticism in this site's own voice.
+- **(c) is now clearly the wrong trade** and should not be revisited on
+  index-quality grounds. It buys the 14–18% at the cost of a boundary
+  held four times and legal exposure on the only asset the product has.
+  If it is ever taken it must be for a different reason than this one.
+
+**A fifth correction, found while measuring.** Item 2 above says ~931
+publishable pages, but it applied only the price-and-surface gate. §4.2's
+actual gate is price **AND tier ∈ {A,B}**, and 255 listings are Tier C:
+676 pages, not 931. The C's are 107 villas (§3.4 forces them to A or C,
+correctly) and 146 with no typology — but that 146 is largely recoverable
+without touching a detail page, because Marcellini carries `typology_raw`
+for all 31 of its rows and Centogambe has titles for 83 of its 115. Worth
+noting several of those titles read *Locale commerciale* and *Negozio*,
+which should probably not be in a residential index at all. **Say ~700
+until that recovery is done**, and expect ~800 after.
 
 **4. "Same agency, different portal … needs no new scraping" is false.**
 Measured: the overlap between agencies on the portal and agencies whose

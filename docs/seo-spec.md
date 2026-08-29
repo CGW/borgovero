@@ -5,22 +5,32 @@
 **Convention:** § numbering matches `docs/SOT.md` so later sessions can cite `§4.2` etc.
 
 > **This document was written before it was checked against the database.**
-> S004 checked it on 2026-08-29 and found four errors. **Where SOT §17
-> disagrees with anything below, §17 wins.** The known-wrong parts, left in
-> place so the correction stays legible:
+> S004 checked it on 2026-08-29 and found four errors; S005 found a fifth
+> and resolved the deadlock. **Where SOT §17 disagrees with anything below,
+> §17 wins.** Corrections, with the originals left legible:
 >
-> - **§2 names twelve comuni. `config.COMUNI` is eight.** San Giustino,
->   Città di Castello, Monte Santa Maria Tiberina and Umbertide have zero
->   listings ingested, are in Perugia province, and each needs its own OMI
->   order. Every §4.3 gate calculation depends on this list.
-> - **Corpus is ~931 publishable pages, not 1,000–3,000** under §4.2's own
->   price-and-surface gate.
-> - **§4.3 is deadlocked against §3.3.** Tier A needs an itemised
->   decomposition whose only machine-readable source is `surfaceConstitution`
->   on detail pages that return 403. The corpus is effectively all Tier B
->   and C, while §4.3 gates bands on Tier A only at n ≥ 8 — so **no band is
->   publishable as written** and §13 Phase 2 acceptance is unreachable.
->   Three ways out in §17.1; the choice opens S005.
+> - **§2 named twelve comuni. `config.COMUNI` is eight.** **Fixed in §2
+>   below.** San Giustino, Città di Castello, Monte Santa Maria Tiberina and
+>   Umbertide have zero listings ingested, are in Perugia province, and each
+>   needs its own OMI order. Every §4.3 gate calculation depends on this list.
+> - **Corpus is ~676 listing pages, not 1,000–3,000 and not ~931.** §17's
+>   931 applied only the price-and-surface gate; §4.2's actual gate is price
+>   **AND tier ∈ {A,B}**, which excludes 255 Tier C listings. Measured
+>   2026-08-30: 676 Tier B, 255 Tier C. Of that C, 107 are villas (§3.4
+>   forces them to A or C) and 146 are missing typology recoverable from
+>   fields already held — so the realistic figure after recovery is ~800.
+>   **Say ~700 until the recovery is done.**
+> - **§4.3's deadlock against §3.3 is RESOLVED — see §4.3 and SOT §17.1.**
+>   Tier A is unreachable by script (`surfaceConstitution` lives on detail
+>   pages that 403), so §4.3's Tier-A-only n ≥ 8 gate published nothing.
+>   **Route (b) adopted 2026-08-30:** the band is computed over Tier A and B
+>   together with interval arithmetic, a Tier A listing entering as a
+>   zero-width interval. The Tier-A-only gate is retired and replaced by a
+>   band-width gate. The decision was made on a measurement, not a
+>   preference: deflator uncertainty widens the p50 by **14–18%**, while the
+>   market's own p25–p75 spread is **55–104%**. Hand-seeding Tier A would
+>   have removed the smaller term and left the larger one untouched.
+>   All eight comuni clear the new gate immediately at n = 27–290.
 > - **§4.4's "same agency, different portal needs no new scraping" is false.**
 >   That overlap is empty by construction — Marcellini and Centogambe were
 >   selected for being absent from the portal. Needs 3–4 new adapters. The
@@ -49,7 +59,9 @@ Two consequences that drive everything below:
 
 ## §2. Scope
 
-**In scope.** Valtiberina comuni already covered by the existing ingest: Anghiari, Sansepolcro, Monterchi, Citerna, Badia Tedalda, Sestino, Pieve Santo Stefano, Caprese Michelangelo, San Giustino, Città di Castello, Monte Santa Maria Tiberina, Umbertide (final list per §12.1).
+**In scope — the eight comuni actually ingested**, per `config.ALL_VALTIBERINA`, verified against the database 2026-08-29: Sansepolcro, Anghiari, Caprese Michelangelo, Citerna, Pieve Santo Stefano, Monterchi, Badia Tedalda, Sestino. Seven are in Arezzo province and covered by the Arezzo OMI order; Citerna is in Perugia province and needs the Perugia order.
+
+**Expansion, not scope.** San Giustino, Città di Castello, Monte Santa Maria Tiberina and Umbertide were previously listed here in error. They have **zero listings ingested**, sit in Perugia province, and each needs its own OMI order. Città di Castello is also far larger than anything in scope and would dominate any corpus-wide figure. Adding them is a costed expansion with its own ingest and OMI work, not a line in this list. §12.1 is closed by this paragraph.
 
 **Explicit non-goals.**
 
@@ -146,7 +158,7 @@ A *perizia* in Italy is a regulated act performed by a qualified technician. The
 /it/immobili/{comune}/{slug}-{id}/   listing index page
 /it/comuni/{comune}/                 comune report + band
 /it/agenzie/{agency}/                agency page — gated, §11
-/it/contraddizioni/{slug}/           findings — existing 29
+/it/contraddizioni/{slug}/           findings — existing 36
 /it/archivio/{comune}/               delisted history
 /it/guide/{slug}/                    explainers (IT)
 /en/guides/{slug}/                   explainers (EN)
@@ -159,7 +171,7 @@ Slugs stay deterministic and free of run ordinals — the S004 nondeterminism fi
 
 ### §4.2 Listing index page — template contract
 
-The unit that turns ~30 pages into ~1,000–3,000. It is only non-thin if every page carries all of:
+The unit that turns 36 pages into ~700. It is only non-thin if every page carries all of:
 
 1. **Extraction paragraph, first 40 words.** Price, `stated_m2` with the agency's label, `sia_m2` or band, `eur_stated` vs `eur_sia`, tier, retrieval date. This paragraph is what an LLM lifts; everything after it is elaboration.
 2. Full surface decomposition table (Tier A) or the deflator range applied (Tier B).
@@ -172,9 +184,15 @@ The unit that turns ~30 pages into ~1,000–3,000. It is only non-thin if every 
 
 ### §4.3 Comune report
 
-Replaces the old "home prices in {city}" idea entirely. Contains: normalized band (p25 / p50 / p75 of `eur_sia` over **Tier A listings only**), n, date, agencies active, surface conventions observed per agency, contradictions found, worst spread, listing table sortable by `eur_sia`.
+Replaces the old "home prices in {city}" idea entirely. Contains: normalized band, n, date, agencies active, surface conventions observed per agency, contradictions found, worst spread, listing table sortable by `eur_sia`.
 
-**Publish gate:** n ≥ 8 active Tier A listings AND ≥ 2 distinct agencies. Below that, the comune gets a stub linking to listings, with **no band and no index claims**. A band computed from four villas is exactly the kind of number this site exists to object to.
+**The band is computed over Tier A and Tier B together, with interval arithmetic.** Each listing contributes an interval, not a point: Tier B's interval is `[price / (stated_m2 × d_hi), price / (stated_m2 × d_lo)]` for its §3.4 deflator range, and a Tier A listing enters as an interval of zero width. Each of p25 / p50 / p75 is therefore itself an interval, and **the published band is the interval, never its midpoint.** Tier C contributes nothing.
+
+This replaces the original "Tier A listings only, n ≥ 8" rule, which could never fire — Tier A is unreachable by script (§17.1) and the corpus is effectively all B and C. Rationale, measured 2026-08-30: the deflator range widens p50 by 14–18%, while the genuine p25–p75 spread of the stock is 55–104%. The uncertainty the old gate was protecting against is a fifth of the variation it was going to publish anyway. **A wide honest band is the product; a point estimate from eight hand-picked listings is the thing this site objects to.**
+
+**Publish gate:** n ≥ 8 active Tier A+B listings AND ≥ 2 distinct agencies AND the p50 interval no wider than 25% of its midpoint. The width condition is what the old tier condition was really trying to express, and it fails loudly on a comune whose stock is too mixed to summarise rather than silently on one that simply lacks decompositions. Below the gate, the comune gets a stub linking to listings, with **no band and no index claims**.
+
+Every comune report states n, the tier split behind it, and the band width, in the extraction paragraph. A reader must be able to see how much of the range is the market and how much is us.
 
 ### §4.4 Findings
 
@@ -296,7 +314,9 @@ Byte-identical rebuilds are a contract, not a nicety — add a CI check that bui
 
 ### §10.3 Build lint
 
-Fail the build on: a forbidden §3.5 term in any published copy; a listing page missing source link, retrieval date, or the not-a-valuation line; a comune band published below n=8; a Tier B villa-with-park; an extraction paragraph over 40 words or missing a required token.
+Fail the build on: a forbidden §3.5 term in any published copy; a listing page missing source link, retrieval date, or the not-a-valuation line; a comune band published below n=8, below 2 agencies, or with a p50 interval wider than 25% of its midpoint; a comune band rendered as a single figure rather than an interval; a Tier B villa-with-park; a Tier C listing carrying any normalized figure; an extraction paragraph over 40 words or missing a required token.
+
+The "band rendered as a single figure" check is the load-bearing one. Under §4.3 the band is an interval all the way through the pipeline, and the failure mode is a template collapsing it to a midpoint for tidiness — which would publish exactly the false precision the site exists to object to, in the site's own voice.
 
 ### §10.4 Ingest
 
@@ -335,7 +355,7 @@ Whether to further split `land_m2` into garden / agricultural / woodland. Useful
 ## §13. Phases and acceptance criteria
 
 ### Phase 1 — Standard and instrumentation *(weeks 0–3)*
-Ship `/it/metodo/`, the weighting table, tier definitions, `llms.txt`, dataset export, corrections log, right-of-reply route. Retrofit the existing 29 findings with extraction paragraphs and schema.
+Ship `/it/metodo/`, the weighting table, tier definitions, `llms.txt`, dataset export, corrections log, right-of-reply route. Retrofit the existing 36 findings with extraction paragraphs and schema.
 
 **Accept when:** method page live in IT and EN; > 90% of existing pages indexed; two consecutive builds byte-identical; build lint enforcing §10.3.
 
@@ -379,7 +399,7 @@ Volume at maturity is modest — low thousands of sessions per month. For a busi
 | Was | Now |
 |---|---|
 | Contradictions are the product | The **index** is the product; contradictions are the evidence it's needed |
-| ~30 pages | ~1,000–3,000 pages, each with data nobody else has |
+| 36 pages | ~700 pages, each with data nobody else has |
 | Hand-verification is the bottleneck | Tiering makes verification a quality gate, not a throughput limit |
 | Findings-only corpus | Findings + index + bands + archive |
 | Delisted listings disappear | Delisted listings become the outcome dataset (§7) |

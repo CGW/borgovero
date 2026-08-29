@@ -16,3 +16,8 @@ data/*
 *.sqlite
 *.sqlite-journal
 phase0_results.csv
+# normalize.py output. Regenerable in seconds from the database and the
+# deflator table, and byte-identical across runs, so committing it would
+# only add diff noise on every ingest.
+normalized.csv
+comune_bands.json
