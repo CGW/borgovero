@@ -6,7 +6,7 @@ negotiation ladder, no condition positions, no surface basis. Every
 figure on every page is an agency's own published number, linked to the
 page it was published on. The reader checks it in one click.
 
-    python3 contradictions_site.py --db ../phase0/phase0.sqlite --out dist-c
+    python3 contradictions_site.py          # -> dist-contradictions/
     python3 contradictions_site.py --candidates ...   # include unverified
 
 WHAT GETS PUBLISHED, AND WHY THE GATE IS THIS TIGHT
@@ -344,7 +344,7 @@ def write(path, html):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--db", default="../phase0/phase0.sqlite")
-    ap.add_argument("--out", default="dist-c")
+    ap.add_argument("--out", default="dist-contradictions")
     ap.add_argument("--candidates", action="store_true",
                     help="also publish single-photo and price+surface "
                          "matches, labelled as unconfirmed")
