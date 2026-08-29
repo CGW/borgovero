@@ -5,6 +5,14 @@ cache/
 # root .gitignore for why this is `data/*` and not `data/`.
 data/*
 !data/id_anchors.json
+# Small and human-measured, so they belong with id_anchors.json rather
+# than with the 30 MB AdE downloads they happen to sit beside. NOTE this
+# file is the one that actually governs data/ — the root .gitignore's
+# rules are overridden here, and editing only the root looks like it
+# works until you run `git check-ignore -v`.
+!data/surface_reads.md
+!data/surface_sample.md
+!data/*.json
 *.sqlite
 *.sqlite-journal
 phase0_results.csv

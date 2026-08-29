@@ -247,15 +247,61 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--inspect", action="store_true",
                     help="print columns and suggested mapping, load nothing")
-    ap.add_argument("--path", default=config.OMI_CSV_PATH)
+    # Repeatable, because the scope spans TWO provinces. Seven comuni are
+    # in Arezzo; Citerna is in Perugia (SOT S2) and ships as its own
+    # AdE order, so a single --path silently dropped 53 listings for two
+    # sessions. Both files use identical column names, so they merge
+    # without translation.
+    ap.add_argument("--path", action="append", default=None,
+                    help="VALORI csv; repeat for more than one province")
     args = ap.parse_args()
 
+    paths = args.path or getattr(config, "OMI_CSV_PATHS", None) \
+        or [config.OMI_CSV_PATH]
+
     if args.inspect:
-        inspect(args.path)
+        for p in paths:
+            inspect(p)
         return
 
-    rows = load(args.path, config.COMUNI, config.OMI_SEMESTER)
+    # Fail with an instruction, not a stack trace. These files are
+    # gitignored (they are large AdE downloads), so a fresh clone — or a
+    # deleted data/ directory, which happened on 2026-08-29 — leaves the
+    # loader pointing at nothing. A FileNotFoundError three frames deep
+    # does not tell anyone that the fix is to re-order from the Agenzia
+    # delle Entrate.
+    import os
+    absent = [p for p in paths if not os.path.exists(p)]
+    if absent:
+        print("!! OMI band files are missing:")
+        for p in absent:
+            print(f"     {p}")
+        print("\n   These are gitignored, so they are NOT restored by a")
+        print("   clone or a checkout. Re-order them from the Agenzia")
+        print("   delle Entrate (free, bulk 'Forniture' download):")
+        print("     https://www1.agenziaentrate.gov.it/servizi/geopoi_omi/index.php")
+        print("   Seven comuni need AREZZO, Citerna needs PERUGIA, both")
+        print("   semester 2025-2. Choose the option WITH zone perimeters")
+        print("   (the file prefix is then QIP_, not QI_) or listings")
+        print("   cannot be zoned by polygon — see config.OMI_CSV_PATHS.")
+        print("   Then put them under phase0/data/ and update that list.")
+        sys.exit(1)
+
+    rows = []
+    for p in paths:
+        got = load(p, config.COMUNI, config.OMI_SEMESTER)
+        comuni = sorted({r[0] for r in got})   # rows are tuples; comune is [0]
+        print(f"  {p}\n    {len(got)} rows: {', '.join(comuni) or 'NONE'}")
+        rows += got
     print(f"Loaded {len(rows)} band rows for {', '.join(config.COMUNI)}")
+
+    missing = sorted({config.norm_comune(c) for c in config.COMUNI}
+                     - {r[0] for r in rows})
+    if missing:
+        print(f"\n!! NO BANDS for: {', '.join(missing)}")
+        print("   Those comuni's listings cannot be priced. If one is")
+        print("   Citerna, it is in PERUGIA province and needs its own")
+        print("   AdE order — pass a second --path.")
     if not rows:
         print("\n!! Nothing loaded. Run --inspect and check OMI_COLUMNS,")
         print("   and confirm comune spelling matches the file exactly.")

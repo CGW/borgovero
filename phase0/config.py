@@ -82,6 +82,22 @@ HTML_CACHE_DIR = "cache/html"      # every fetch is cached; reparse is free
 # semicolon-delimited). Put the values file here.
 
 OMI_CSV_PATH = "data/omi_valori.csv"
+
+# The scope spans TWO provinces, so the bands arrive as two separate AdE
+# orders and both must be loaded or a comune silently has no bands:
+# seven comuni are in Arezzo, Citerna is in Perugia (SOT S2). Passing one
+# path dropped Citerna's 53 listings for two sessions without an error.
+#
+#     python3 omi.py $(python3 -c "import config;print(' '.join('--path '+p for p in config.OMI_CSV_PATHS))")
+#
+# NOTE the Perugia order is QI_, not QIP_ — quotations WITHOUT zone
+# perimeters. So Citerna gets bands but cannot be zoned by
+# point-in-polygon (zones.py), and its listings fall back to the fascia
+# guess that S003 replaced everywhere else. Re-order as QIP to fix.
+OMI_CSV_PATHS = [
+    "data/QIP1421390_WRDCRS77S02Z404C/QIP_1421390_1_20252_VALORI.csv",  # Arezzo
+    "data/QI1422048_WRDCRS77S02Z404C/QI_1422048_1_20252_VALORI.csv",    # Perugia (Citerna)
+]
 # 2025-2 is the latest published semester (confirmed against the web
 # consultation for Sansepolcro B1 on 2026-08-27). There is no 2026-1 yet.
 OMI_SEMESTER = "2025-2"

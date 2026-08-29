@@ -9,6 +9,15 @@ cache/
 # rather than the directory itself.
 **/data/*
 !**/data/id_anchors.json
+# Small, human-measured, not regenerable by code — the same reasoning as
+# id_anchors.json, and they were only ignored because they happened to
+# live in the same directory as the big AdE downloads. On 2026-08-29
+# phase0/data/ was deleted whole; id_anchors.json came back from git in
+# one command and everything else in there did not. A few KB of hand
+# readings should never share a fate with a 30 MB zip.
+!**/data/surface_reads.md
+!**/data/surface_sample.md
+!**/data/*.json
 *.sqlite
 *.sqlite-journal
 phase0_results.csv
