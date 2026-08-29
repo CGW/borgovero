@@ -65,7 +65,7 @@ def write(path, content):
 def llms_txt(rows, bands, n_findings, data_date):
     n_b = sum(1 for r in rows if r["tier"] == "B")
     n_pub = sum(1 for b in bands.values() if b.get("published"))
-    return f"""# Borgo Vero — llms.txt
+    return f"""# CasaZebra — llms.txt
 
 > Independent, non-profit index of asking prices in the Valtiberina
 > (upper Tiber valley, Italy). One written surface standard applied to
@@ -145,7 +145,7 @@ def dati_page(rows, bands, n_findings, data_date, lang):
         body = f"""
 <h1>Dati aperti</h1>
 <p class="sub">L'intero indice, scaricabile. Licenza CC BY 4.0:
-usalo per qualsiasi scopo, cita Borgo Vero con un link.</p>
+usalo per qualsiasi scopo, cita CasaZebra con un link.</p>
 <div class="block">
   <p style="margin-top:0">{n_ab} annunci normalizzati, {n_findings}
   contraddizioni documentate, {n_pub} comuni con fascia pubblicata.
@@ -162,7 +162,7 @@ usalo per qualsiasi scopo, cita Borgo Vero con un link.</p>
         body = f"""
 <h1>Open data</h1>
 <p class="sub">The whole index, downloadable. Licence CC BY 4.0:
-use it for anything, credit Borgo Vero with a link.</p>
+use it for anything, credit CasaZebra with a link.</p>
 <div class="block">
   <p style="margin-top:0">{n_ab} normalized listings, {n_findings}
   documented contradictions, {n_pub} comuni with a published band.
@@ -177,10 +177,10 @@ use it for anything, credit Borgo Vero with a link.</p>
 </div>"""
     schema = {
         "@context": "https://schema.org", "@type": "Dataset",
-        "name": "Borgo Vero — Valtiberina asking-price index",
+        "name": "CasaZebra — Valtiberina asking-price index",
         "license": "https://creativecommons.org/licenses/by/4.0/",
         "temporalCoverage": d,
-        "creator": {"@type": "Organization", "name": "Borgo Vero"},
+        "creator": {"@type": "Organization", "name": "CasaZebra"},
         "distribution": [
             {"@type": "DataDownload", "encodingFormat": "text/csv",
              "contentUrl": "/dati/listings.csv"},
@@ -188,7 +188,7 @@ use it for anything, credit Borgo Vero with a link.</p>
              "contentUrl": "/dati/listings.json"},
         ],
     }
-    title = "Dati aperti | Borgo Vero" if it else "Open data | Borgo Vero"
+    title = "Dati aperti | CasaZebra" if it else "Open data | CasaZebra"
     other = "en" if it else "it"
     return T.shell(title, body, lang, f"/{other}/dati.html",
                    " ".join(_flat_words(body))[:150], schema)
@@ -213,7 +213,7 @@ Un sito che misura la cura degli altri registra i propri errori.</p>
   correzione viene registrata in questa pagina. Se l'annuncio di origine è
   cambiato dopo la nostra lettura, la pagina viene aggiornata con la nuova
   data di lettura.</p>
-  <p>Scrivi a <b>correzioni@borgovero.it</b>, oppure usa il
+  <p>Scrivi a <b>correzioni@casazebra.it</b>, oppure usa il
   <a href="/it/diritto-di-replica/">diritto di replica</a> se rappresenti
   un'agenzia nominata.</p>
 </div>
@@ -231,7 +231,7 @@ A site that measures other people's care records its own mistakes.</p>
   an answer within 7 days. If the figure is wrong it is corrected and the
   correction is logged on this page. If the source listing changed after
   our retrieval, the page is updated with a new retrieval date.</p>
-  <p>Write to <b>correzioni@borgovero.it</b>, or use the
+  <p>Write to <b>correzioni@casazebra.it</b>, or use the
   <a href="/it/diritto-di-replica/">right of reply</a> if you represent a
   named agency.</p>
 </div>
@@ -239,7 +239,7 @@ A site that measures other people's care records its own mistakes.</p>
   <h2>Log</h2>
   <table class="rows">{entries}</table>
 </div>"""
-    title = "Correzioni | Borgo Vero" if it else "Corrections | Borgo Vero"
+    title = "Correzioni | CasaZebra" if it else "Corrections | CasaZebra"
     other = "en" if it else "it"
     return T.shell(title, body, lang, f"/{other}/correzioni/",
                    "Registro pubblico delle correzioni" if it else
@@ -267,7 +267,7 @@ def replica_page(lang):
     <li>Se chiedi una replica, la pubblichiamo integralmente accanto alla
     pagina a cui si riferisce, con la tua firma.</li>
   </ul>
-  <p>Scrivi a: <b>replica@borgovero.it</b></p>
+  <p>Scrivi a: <b>replica@casazebra.it</b></p>
 </div>"""
     else:
         body = """
@@ -286,10 +286,10 @@ def replica_page(lang):
     <li>If you ask for a reply, we publish it in full beside the page it
     concerns, under your name.</li>
   </ul>
-  <p>Write to: <b>replica@borgovero.it</b></p>
+  <p>Write to: <b>replica@casazebra.it</b></p>
 </div>"""
-    title = ("Diritto di replica | Borgo Vero" if it else
-             "Right of reply | Borgo Vero")
+    title = ("Diritto di replica | CasaZebra" if it else
+             "Right of reply | CasaZebra")
     other = "en" if it else "it"
     return T.shell(title, body, lang, f"/{other}/diritto-di-replica/",
                    "Come chiedere una correzione o una replica" if it else
@@ -417,8 +417,8 @@ publishes one. Data as of {d}.</p>
   <p class="note"><a href="/it/diritto-di-replica/">Right of reply</a>
   · <a href="/it/correzioni/">Report an error</a></p>
 </div>"""
-    title = ("Chi pubblica i prezzi | Borgo Vero" if it else
-             "Who publishes prices | Borgo Vero")
+    title = ("Chi pubblica i prezzi | CasaZebra" if it else
+             "Who publishes prices | CasaZebra")
     other = "en" if it else "it"
     return T.shell(title, body, lang,
                    f"/{other}/guide/prezzi-non-pubblicati/",

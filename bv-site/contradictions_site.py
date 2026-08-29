@@ -245,7 +245,7 @@ la seconda serve.</p>
   In entrambi i casi rispondiamo entro <b>7 giorni</b>.</p>
   <p>Vale anche per il contrario: se una cifra qui è sbagliata perché
   l'annuncio è stato nel frattempo corretto, segnalacelo.</p>
-  <p>Scrivi a: <b>correzioni@borgovero.it</b> —
+  <p>Scrivi a: <b>correzioni@casazebra.it</b> —
   vedi anche <a href="/it/chi-siamo.html#correzioni">Segnala un errore</a>.</p>
 </div>
 
@@ -325,7 +325,7 @@ second is needed.</p>
   reply within <b>7 days</b>.</p>
   <p>The same applies in reverse: if a figure here is wrong because the
   listing has since been corrected, tell us.</p>
-  <p>Write to: <b>correzioni@borgovero.it</b> — see also
+  <p>Write to: <b>correzioni@casazebra.it</b> — see also
   <a href="/en/chi-siamo.html#correzioni">Report an error</a>.</p>
 </div>
 
@@ -765,7 +765,7 @@ def property_page(item, sid, lang, listing_rows=None):
         "@context": "https://schema.org",
         "@type": "Article",
         "headline": f"{comune} — {label}",
-        "author": {"@type": "Organization", "name": "Borgo Vero"},
+        "author": {"@type": "Organization", "name": "CasaZebra"},
         "about": {
             "@type": "Claim",
             "appearance": [{"@type": "CreativeWork", "url": r["url"]}
@@ -773,11 +773,11 @@ def property_page(item, sid, lang, listing_rows=None):
                            if r.get("url")],
         },
         "claimReviewed": desc,
-        "reviewedBy": {"@type": "Organization", "name": "Borgo Vero"},
+        "reviewedBy": {"@type": "Organization", "name": "CasaZebra"},
         "verificationStatus": ("hand-verified 2026-08-29"
                                if item.get("verified") else "unconfirmed"),
     }
-    return T.shell(f'{comune} — {label} | Borgo Vero', body, lang,
+    return T.shell(f'{comune} — {label} | CasaZebra', body, lang,
                    f'/{"en" if lang == "it" else "it"}/confronti/{sid}.html',
                    desc, schema)
 
@@ -816,7 +816,7 @@ def index_page(items, sids, lang):
 <div class="grid">{"".join(tiles)}</div>
 <p class="note">✓ = {e(t["verified"].lower())}.</p>
 """
-    return T.shell(f'{t["index_h1"]} | Borgo Vero', body, lang,
+    return T.shell(f'{t["index_h1"]} | CasaZebra', body, lang,
                    f'/{"en" if lang == "it" else "it"}/confronti/',
                    t["index_sub"].format(n=len(items)))
 
@@ -901,7 +901,7 @@ def main():
         # looking like an assertion.
         write(f"{a.out}/{lang}/metodologia.html",
               T.shell(("Il metodo" if lang == "it"
-                       else "The method") + " — Borgo Vero",
+                       else "The method") + " — CasaZebra",
                       METHOD[lang] + index_method(lang), lang,
                       f'/{"en" if lang == "it" else "it"}/metodologia.html',
                       T.T[lang]["declaration"]))

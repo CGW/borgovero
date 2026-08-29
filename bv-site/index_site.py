@@ -251,9 +251,9 @@ def listing_extraction(r, lang):
     elif r["price_eur"]:
         head = (f"{eur0(r['price_eur'], lang)}. " if r["price_eur"] else "")
     if it:
-        p = f"{head}Nessun indice Borgo Vero: {why}. Livello C. Letto il {d}."
+        p = f"{head}Nessun indice CasaZebra: {why}. Livello C. Letto il {d}."
     else:
-        p = f"{head}No Borgo Vero index: {why}. Tier C. Retrieved {d}."
+        p = f"{head}No CasaZebra index: {why}. Tier C. Retrieved {d}."
     return extraction(p, lang)
 
 
@@ -436,7 +436,7 @@ def listing_page(r, band, finding, lang):
         },
     }
     desc_words = strip_words(listing_extraction(r, lang))
-    return shell_nolang(f"{title} | Borgo Vero", body, lang,
+    return shell_nolang(f"{title} | CasaZebra", body, lang,
                         " ".join(desc_words), schema)
 
 
@@ -733,7 +733,7 @@ def comune_page(comune, rows, b, findings, data_date, lang):
     }
     # Comune reports exist fully in both languages: genuine equivalents,
     # so these DO get the hreflang pair.
-    return T.shell(f"{title} | Borgo Vero", body, lang,
+    return T.shell(f"{title} | CasaZebra", body, lang,
                    comune_url(comune, other), desc, schema)
 
 
@@ -763,7 +763,7 @@ def comuni_index(bands, by_comune, data_date, lang):
     body = (f"<h1>{e(h1)}</h1><p class=\"sub\">{e(sub)}</p>"
             f'<div class="grid">{"".join(tiles)}</div>')
     other = "en" if it else "it"
-    return T.shell(f"{h1} | Borgo Vero", body, lang, f"/{other}/comuni/",
+    return T.shell(f"{h1} | CasaZebra", body, lang, f"/{other}/comuni/",
                    sub)
 
 

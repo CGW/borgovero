@@ -1,4 +1,12 @@
-# Borgo Vero — Source of Truth
+# CasaZebra — Source of Truth
+
+**Renamed 2026-08-30 (S007): the product is CasaZebra**, at
+**casazebra.it** (bought; casazebra.com is a dormant Wix shell held until
+2027 — revisit acquiring it then). Borgo Vero was dropped because
+borgovero.it is foreign-held. The repo, its folder, and internal
+identifiers (`bv-site/`, `bvc_m2`, `borgo_vero_price`) keep the old name
+— they are plumbing, not brand. Historical entries below keep the old
+name because they record what was true when they were written.
 
 **Last updated:** 2026-08-30 (S005 — the §17.1 band deadlock resolved as
 **(b)**, measured not argued: interval arithmetic over Tier A+B, the

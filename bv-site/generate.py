@@ -1,4 +1,4 @@
-"""Borgo Vero static site generator.
+"""CasaZebra static site generator.
 
 Reads the clustered listing database, writes a complete static site.
 No server, no build step, no framework. At Valtiberina scale the whole
@@ -246,7 +246,7 @@ def build(db_path, out):
     # so the browser can apply the SAME +/-25% surface filter a listing page
     # uses. Bucketing was close but not close enough — it left divergences
     # up to 62% between the calculator and the property's own page, and a
-    # "Borgo Vero price" that changes depending which page you read it on
+    # "CasaZebra price" that changes depending which page you read it on
     # is not a number anyone can quote.
     #
     # Cost of exactness: two integers per property. At 602 properties that

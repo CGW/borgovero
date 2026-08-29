@@ -1,4 +1,4 @@
-"""Borgo Vero page templates.
+"""CasaZebra page templates.
 
 Design constraints, all downstream of the thesis:
 
@@ -101,7 +101,7 @@ T = {
         # published, which is the exact class of thing it publishes other
         # people for. "Indice indipendente" is both accurate and the term
         # the whole standard is built on.
-        "declaration": "Borgo Vero è un indice indipendente e senza scopo "
+        "declaration": "CasaZebra è un indice indipendente e senza scopo "
                        "di lucro dei prezzi immobiliari in Valtiberina. "
                        "Non è una perizia.",
         "about": "Chi siamo",
@@ -109,7 +109,7 @@ T = {
         "sources_line": "Fasce OMI: Agenzia delle Entrate. Annunci: portali "
                         "pubblici, con link alla fonte. Nessun compenso da "
                         "agenzie, venditori o portali.",
-        "bv_price": "Prezzo Borgo Vero",
+        "bv_price": "Prezzo CasaZebra",
         "vs_ask": "rispetto alla richiesta di",
         "confidence": "affidabilità",
         "computed_from": "Calcolato da:",
@@ -123,7 +123,7 @@ T = {
                        "ridotto il prezzo del",
         "decay_tail": "rispetto alla prima richiesta",
         "properties": "immobili",
-        "not_absolute": "Il prezzo Borgo Vero non tiene conto dei giorni in "
+        "not_absolute": "Il prezzo CasaZebra non tiene conto dei giorni in "
                         "vendita: quello è un dato separato, che riguarda la "
                         "pressione sul venditore, non il valore dell'immobile.",
         "not_advice": "Cifra calcolata da fascia OMI e comparabili in zona, "
@@ -174,7 +174,7 @@ T = {
         "numbers_say": "What the numbers say",
         # See the IT note above. "Assessment" carries the same implication
         # in English that "valutazione" does in Italian.
-        "declaration": "Borgo Vero is an independent, non-profit index of "
+        "declaration": "CasaZebra is an independent, non-profit index of "
                        "property prices in the Valtiberina. "
                        "It is not an appraisal.",
         "about": "About",
@@ -182,7 +182,7 @@ T = {
         "sources_line": "OMI bands: Agenzia delle Entrate. Listings: public "
                         "portals, linked to source. No payment from agencies, "
                         "sellers or portals.",
-        "bv_price": "Borgo Vero price",
+        "bv_price": "CasaZebra price",
         "vs_ask": "against the asking price of",
         "confidence": "confidence",
         "computed_from": "Computed from:",
@@ -196,7 +196,7 @@ T = {
                        "their price by",
         "decay_tail": "from first asking price",
         "properties": "properties",
-        "not_absolute": "The Borgo Vero price ignores days on market — that "
+        "not_absolute": "The CasaZebra price ignores days on market — that "
                         "is a separate figure, about pressure on the seller "
                         "rather than the value of the property.",
         "not_advice": "Computed from the OMI band and local comparables, "
@@ -264,7 +264,7 @@ def shell(title, body, lang, alt_href, desc="", schema=None):
 <body>
 <div class="wrap">
 <header class="site">
-  <a class="brand" href="/{lang}/">Borgo <span>Vero</span></a>
+  <a class="brand" href="/{lang}/">Casa<span>Zebra</span></a>
   <div class="lang noprint">
     <a href="{e(alt_href)}">{other.upper()}</a>
   </div>
@@ -579,7 +579,7 @@ def borgo_vero_price(L, comps):
 
 
 def valuation_block(L, comps, t):
-    """The Borgo Vero price, with the supporting arithmetic beneath it."""
+    """The CasaZebra price, with the supporting arithmetic beneath it."""
     price, mq = L.get("price"), L.get("mq")
     lo, hi = L.get("band_lo"), L.get("band_hi")
     if not (price and mq):
@@ -738,7 +738,7 @@ def listing_page(L, sources, comps, lang):
     }
     alt = f"/{'en' if lang=='it' else 'it'}/immobile/{L['cluster_id']}.html"
     title = (f"{L['address_raw']}, {str(L['comune']).title()} — "
-             f"{eur(price)} — Borgo Vero")
+             f"{eur(price)} — CasaZebra")
     desc = (f"{eur(price)}, {net} m², {dom or '?'} giorni in vendita. "
             f"Confronto con la fascia OMI e immobili comparabili.")
     return shell(title, body, lang, alt, desc, schema)
@@ -782,7 +782,7 @@ def comune_page(comune, rows, stats, lang):
 <div class="grid">{tiles}</div>
 """
     alt = f"/{'en' if lang=='it' else 'it'}/{comune}.html"
-    return shell(f"Prezzi case {str(comune).title()} — Borgo Vero", body, lang,
+    return shell(f"Prezzi case {str(comune).title()} — CasaZebra", body, lang,
                  alt, f"Prezzi, fasce OMI e giorni in vendita a "
                       f"{str(comune).title()}.")
 
@@ -865,7 +865,7 @@ function lookup(ev){{
 
 // Mirrors borgo_vero_price() + comps_for() in the generator exactly:
 // same +/-25% surface filter, same weighting, same rounding. If these
-// two ever drift, the same property gets two different Borgo Vero
+// two ever drift, the same property gets two different CasaZebra
 // prices depending which page you read — so they must not drift.
 function borgoVero(comune, zona, typ, mq){{
   const band = (BANDS[comune]||{{}})[zona] || (BANDS[comune]||{{}})['periferia'];
@@ -934,7 +934,7 @@ function calc(ev){{
 </script>
 """
     alt = f"/{'en' if lang=='it' else 'it'}/"
-    return shell("Borgo Vero — " + t["tagline"], body, lang, alt, t["tagline"])
+    return shell("CasaZebra — " + t["tagline"], body, lang, alt, t["tagline"])
 
 
 # --- Chi siamo / About -------------------------------------------------
@@ -944,7 +944,7 @@ ABOUT = {
 <h1>Chi siamo</h1>
 
 <div class="block">
-  <p style="font-size:18px;margin-top:0"><b>Borgo Vero è un indice
+  <p style="font-size:18px;margin-top:0"><b>CasaZebra è un indice
   indipendente e senza scopo di lucro dei prezzi immobiliari in
   Valtiberina.</b></p>
   <p>L'obiettivo è incoraggiare trasparenza, coerenza e accuratezza nei
@@ -983,7 +983,7 @@ ABOUT = {
     <li>Se un immobile non è più in vendita, segnalacelo e lo marchiamo
         come tale.</li>
   </ul>
-  <p>Scrivi a: <b>correzioni@borgovero.it</b></p>
+  <p>Scrivi a: <b>correzioni@casazebra.it</b></p>
 </div>
 
 <div class="block">
@@ -992,7 +992,7 @@ ABOUT = {
   da compravendite registrate e si aggiornano ogni sei mesi. I giorni in
   vendita sono stimati, e ogni pagina indica con quale metodo e con quale
   affidabilità.</p>
-  <p>Il Prezzo Borgo Vero è aritmetica su dati pubblici, non una perizia.
+  <p>Il Prezzo CasaZebra è aritmetica su dati pubblici, non una perizia.
   Per una valutazione formale serve un tecnico abilitato.</p>
 </div>
 """,
@@ -1000,7 +1000,7 @@ ABOUT = {
 <h1>About</h1>
 
 <div class="block">
-  <p style="font-size:18px;margin-top:0"><b>Borgo Vero is an independent,
+  <p style="font-size:18px;margin-top:0"><b>CasaZebra is an independent,
   non-profit index of property prices in the Valtiberina.</b></p>
   <p>The goal is to encourage transparency, consistency and accuracy in
   property pricing, descriptions and marketing in the area.</p>
@@ -1036,7 +1036,7 @@ ABOUT = {
         inaccurate data immediately.</li>
     <li>If a property is no longer for sale, tell us and we mark it so.</li>
   </ul>
-  <p>Write to: <b>correzioni@borgovero.it</b></p>
+  <p>Write to: <b>correzioni@casazebra.it</b></p>
 </div>
 
 <div class="block">
@@ -1044,7 +1044,7 @@ ABOUT = {
   <p>Asking prices are not sale prices. OMI bands come from registered
   transactions and update twice a year. Days on market are estimated, and
   every page states the method and its confidence.</p>
-  <p>The Borgo Vero price is arithmetic on public data, not a formal
+  <p>The CasaZebra price is arithmetic on public data, not a formal
   valuation. For that you need a qualified surveyor.</p>
 </div>
 """,
@@ -1054,7 +1054,7 @@ ABOUT = {
 def about_page(lang):
     alt = f"/{'en' if lang=='it' else 'it'}/chi-siamo.html"
     t = T[lang]
-    return shell(f"{t['about']} — Borgo Vero", ABOUT[lang], lang, alt,
+    return shell(f"{t['about']} — CasaZebra", ABOUT[lang], lang, alt,
                  t["declaration"])
 
 
@@ -1102,6 +1102,6 @@ def methodology_page(lang):
 </div>
 """
     alt = f"/{'en' if lang=='it' else 'it'}/metodologia.html"
-    return shell("Metodologia — Borgo Vero", body, lang, alt,
-                 "Come Borgo Vero calcola prezzi al m², fasce OMI e "
+    return shell("Metodologia — CasaZebra", body, lang, alt,
+                 "Come CasaZebra calcola prezzi al m², fasce OMI e "
                  "giorni in vendita.")

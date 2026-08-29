@@ -1,4 +1,6 @@
-# Borgovero — Search & Index Specification
+# CasaZebra — Search & Index Specification
+
+*(Renamed from Borgovero, S007; domain casazebra.it.)*
 
 **Status:** adopted, with four measured corrections — **read `docs/SOT.md` §17 first**
 **Companion:** `docs/seo-strategy.html` (the argument; this file is the contract)
@@ -50,7 +52,7 @@ The site does not compete on prices. It competes on **comparability**.
 
 Every portal in Italy publishes €/m². None of them are comparable, because the denominator is defined differently by every agency — proven by the Anghiari Liberty villa, where two agencies asking the same €1,600,000 publish €508/m² and €3,265/m² because one divides by a *commerciale* of 3,150 m² that includes a 2,600 m² park.
 
-Borgovero publishes **one surface standard applied uniformly to every listing in the Valtiberina**, and the contradictions corpus is the evidence that such a standard is necessary.
+CasaZebra publishes **one surface standard applied uniformly to every listing in the Valtiberina**, and the contradictions corpus is the evidence that such a standard is necessary.
 
 Two consequences that drive everything below:
 
@@ -258,7 +260,7 @@ National context worth recording in the methodology page: Banca d'Italia puts th
 
 ### §8.1 Schema.org
 
-- **Do not** use `RealEstateListing` on index pages. It implies Borgovero is offering the property. Use `WebPage` + `mainEntity: Place`, with surfaces as `additionalProperty: QuantitativeValue`, and an explicit `citation` to the source listing URL.
+- **Do not** use `RealEstateListing` on index pages. It implies CasaZebra is offering the property. Use `WebPage` + `mainEntity: Place`, with surfaces as `additionalProperty: QuantitativeValue`, and an explicit `citation` to the source listing URL.
 - **Site level:** `Dataset` describing the index, with `license`, `creator`, `temporalCoverage`, `distribution` pointing at §8.3.
 - **Findings:** `Article` with `ClaimReview`-shaped properties — claim, both sources, review date, verification status.
 - **Method page:** `Dataset` + `HowTo`-style structure for the weighting table.

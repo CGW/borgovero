@@ -72,7 +72,7 @@ def merge_tree(src, dst):
 def build_once(db, out, base_url=""):
     """One complete site into `out`. Returns the merged URL list.
 
-    `base_url` (e.g. https://borgovero.vercel.app, no trailing slash)
+    `base_url` (e.g. https://casazebra.it, no trailing slash)
     makes sitemap.xml and robots.txt use absolute URLs — the sitemap
     protocol requires them, and Search Console rejects path-only <loc>
     entries. Empty keeps paths, which is fine for a local preview and
@@ -160,7 +160,7 @@ def main():
     ap.add_argument("--out", default="dist-site")
     ap.add_argument("--base-url", default="",
                     help="absolute site origin for sitemap/robots, "
-                         "e.g. https://borgovero.vercel.app — REQUIRED "
+                         "e.g. https://casazebra.it — REQUIRED "
                          "for any build that will be deployed")
     a = ap.parse_args()
     db = os.path.abspath(a.db)
@@ -206,6 +206,12 @@ def main():
         for root, _, files in os.walk(a.out):
             for fn in files:
                 rel = os.path.relpath(os.path.join(root, fn), a.out)
+                # Deploy machinery living in the output dir is not stale
+                # site content: .vercel/ is the CLI's project link, and
+                # deleting it silently unlinks the project so the next
+                # deploy creates a duplicate.
+                if rel.split(os.sep)[0].startswith("."):
+                    continue
                 if rel not in wanted:
                     try:
                         os.unlink(os.path.join(root, fn))

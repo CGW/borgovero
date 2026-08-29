@@ -1,4 +1,8 @@
-# Borgo Vero — project instructions
+# CasaZebra (repo: borgovero) — project instructions
+
+The product was renamed **CasaZebra** (casazebra.it) in S007. The repo,
+paths and remote keep the borgovero name deliberately — renaming them
+buys nothing and breaks every session note that cites a path.
 
 **Read `docs/SOT.md` first.** It is the authority on scope, architecture,
 current state and open questions. Do not re-derive or re-explain what it
