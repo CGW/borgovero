@@ -182,3 +182,92 @@ location-disagreement axis. All three are small. After them, the 16 cases
 above are publishable immediately — several are stronger than anything in the
 original headline — and the regenerated full report inherits the same
 discipline.
+
+---
+
+# Second pass — the 19 held-back clusters (same day)
+
+After the fixes, 19 clusters remained unpublished for want of identity
+evidence. Nine had photographs to compare; all nine are settled. The other
+ten are `price+surface`-only and have no shared images, so they need the
+listings read, not the photos looked at — still outstanding.
+
+## Confirmed (8)
+
+| property | agencies | the contradiction |
+|---|---|---|
+| Anghiari, Liberty villa above the centro | Lionard vs Romolini | **550 vs 490 m²** at the same €1.600.000 — and the published €/m² differs **6×** (€508 vs €3.265), because Lionard divides by a *commerciale* of 3.150 m² that swallows the park |
+| Caprese, Fragaiolo (4 listings) | R.E.Volution, Rexer, Marcellini, portal | €75.000–85.000, 115–150 m², terratetto vs colonica |
+| Anghiari, Via della Bozzia (3 listings) | Cortesi + Cortesi Luxury | one property, three listings, 87 vs 105 m², rustico vs villa |
+| Sansepolcro, Via Tiberina Nord | Leonardi vs Marcellini | **200 vs 400 m²**; neither publishes a price |
+| Anghiari, via Infrantoio | T.V.I. vs Marcellini | 1500 vs 1600 m²; T.V.I. asks €2.300.000, Marcellini withholds |
+| Sansepolcro, casa singola | Centogambe vs Marcellini | 180 vs 160 m²; €310.000 vs withheld |
+| Sansepolcro, casa in pietra | Centogambe vs Marcellini | 220 vs 200 m²; €160.000 vs withheld |
+| Badia Tedalda / Sestino, Via Sestinese | Rimmo vs Marcellini | filed under **different comuni** |
+
+**The Anghiari villa is the most instructive case in the project so far.**
+Lionard and Romolini describe the same building in unmistakable detail — an
+early-1900s Liberty villa built for a wealthy Briton, a 2.600 m² park with
+statues, years of use as an art gallery, Impruneta terracotta floors, pietra
+serena door surrounds — and they share **no photographs whatsoever** (best
+hamming 17, against a control of ~22). §16b's "a non-match proves nothing"
+is no longer a caution; it is a documented case with a name.
+
+It also produces the cleanest illustration of why surface basis matters
+(§7): same villa, same asking price, and the €/m² a buyer would compare
+differs by a factor of six.
+
+## Rejected (1)
+
+**Via Casa al Vento.** Three Leonardi listings joined by one identical
+photograph of the **lake view** (hamming 0) — the same panorama from three
+different houses on the same hillside; their surfaces run 200 to 420 m². The
+Marcellini join is a bedroom against a kitchen.
+
+Worth recording *why the guards missed it*: `MAX_LISTINGS_PER_IMAGE` drops
+images appearing in **more than** three listings, and this view appears in
+exactly three. Lowering the threshold would destroy real three-agency
+clusters (the €2,3M estate is three agencies sharing the same aerials), so
+the fix is the verified overlay, not a tuning change. Some false positives
+are only visible to a human, and the design should stop pretending
+otherwise.
+
+## The 81% price gap did not survive
+
+Leonardi lists the same Anghiari villa at €2.900.000 against the other two
+at €1.600.000. But that listing was **last updated in December 2020** and
+its own text offers the sale combined with a second building in the same
+park (13.000 m² in total). An innocent reading exists, so publishing "81%
+apart" would be an accusation the evidence does not support.
+
+This produced `drop` support in `verified_clusters.json`: remove one member
+from an otherwise sound cluster rather than discarding the cluster and the
+real finding with it. **The worst price disagreement the project can stand
+behind is 26% (Citerna), not 81%.**
+
+## Three nondeterminisms, found by rebuilding twice
+
+Comparing two consecutive builds byte for byte — worth doing routinely —
+showed the site churning URLs with no data change:
+
+1. **Page slugs carried a run ordinal**, so every URL shifted whenever any
+   cluster was added, verified or suppressed. Now hashed from the cluster's
+   member ids: a URL changes only when the listings being compared change.
+2. **The comune label came from an arbitrary cluster member.** It flipped
+   between `badia-tedalda-` and `sestino-` on alternate builds — on the one
+   property whose *finding* is that the agencies disagree about the comune.
+   Now most-common, ties alphabetical.
+3. **Equal prices left table row order to chance**, so page content differed
+   between identical builds.
+
+Two consecutive builds are now identical. The generator also reports stale
+pages it could not delete instead of leaving them silently served — a stale
+page here asserts numbers about a named agency that nothing regenerates.
+
+## Correction to a standing warning
+
+`phase0/data/id_anchors.json` **is tracked and pushed** — `.gitignore`
+un-ignores it, it has been in HEAD since `dda2cab`, and its blob hash
+matches the working copy. CLAUDE.md, the SOT and two of this session's own
+handovers said the opposite. The warning had been repeated for months
+without anyone running `git ls-files | grep anchor`.

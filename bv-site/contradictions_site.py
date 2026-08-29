@@ -142,15 +142,49 @@ TXT = {
 }
 
 
-def slug(item, n):
-    """Stable, readable page id: comune-street-n."""
+def slug(item):
+    """Readable page id, stable across rebuilds: comune-street-hash.
+
+    The suffix is derived from the cluster's own member ids, NOT from
+    its position in the run. An ordinal looked tidier and was wrong: it
+    shifts every time a cluster is added, verified or suppressed, so
+    every URL on the site changes whenever anything is learned — dead
+    links for anyone who saved one, and a search engine re-indexing
+    pages it already had. A property's URL now changes only when the
+    set of listings being compared actually changes, which is the one
+    case where it should.
+    """
     import contradictions as C
+    import hashlib
     g = item["group"]
-    base = (g[0]["comune"] or "valtiberina").lower()
+    base = comune_of(g).lower()
     addr = C.best_label(g)
     a = "".join(c if c.isalnum() or c.isspace() else " " for c in addr.lower())
     a = "-".join(a.split()[:4])
-    return f"{base}-{a}-{n}" if a else f"{base}-{n}"
+    h = hashlib.sha1("|".join(sorted(str(r["source_id"]) for r in g))
+                     .encode()).hexdigest()[:6]
+    return f"{base}-{a}-{h}" if a else f"{base}-{h}"
+
+
+def comune_of(group):
+    """The comune to file this property under — deterministically.
+
+    Taking group[0]'s comune churned URLs between rebuilds, because the
+    group is assembled from a set and its order is arbitrary. It showed
+    up on exactly the cluster where two agencies disagree about the
+    comune (Badia Tedalda vs Sestino), which is the finding itself: the
+    page name flipped between the two on alternate builds. Most common
+    label wins, ties broken alphabetically, so the URL is fixed even
+    while the disagreement stands — and the disagreement is still
+    published on the page.
+    """
+    from collections import Counter
+    names = [g["comune"] for g in group if g["comune"]]
+    if not names:
+        return "valtiberina"
+    counts = Counter(names)
+    top = max(counts.values())
+    return sorted(n for n, c in counts.items() if c == top)[0]
 
 
 def agency_of(r):
@@ -173,10 +207,12 @@ def property_page(item, sid, lang):
     import contradictions as C
     g, d = item["group"], item["d"]
     label = C.best_label(g)
-    comune = (g[0]["comune"] or "").replace("-", " ").title()
+    comune = comune_of(g).replace("-", " ").title()
 
     rows = []
-    for r in sorted(g, key=lambda x: -(x["price"] or 0)):
+    for r in sorted(g, key=lambda x: (-(x["price"] or 0),
+                          str(x["agency_name"] or x["source"]),
+                          str(x["source_id"]))):
         link = (f' <a class="src" href="{e(r["url"])}" rel="nofollow noopener"'
                 f' target="_blank">{e(t["source"])} ↗</a>' if r.get("url")
                 else "")
@@ -280,7 +316,7 @@ def index_page(items, sids, lang):
         mark = " ✓" if it.get("verified") else ""
         tiles.append(
             f'<a class="tile" href="/{lang}/confronti/{sid}.html">'
-            f'<b>{e((g[0]["comune"] or "").replace("-", " ").title())} — '
+            f'<b>{e(comune_of(g).replace("-", " ").title())} — '
             f'{e(C.best_label(g))}</b>'
             f'<small>{len(g)} ' +
             ("agenzie · " if lang == "it" else "agencies · ") +
@@ -332,9 +368,20 @@ def main():
         print(f"  {len(items) - len(keep)} held back as unconfirmed "
               f"(--candidates to include them)")
 
+    # Clear the previous build. A stale page is not cosmetic here: a
+    # slug changes whenever a cluster's membership or address changes,
+    # so yesterday's file would sit there asserting numbers about a
+    # named agency that nothing regenerates. If the directory cannot be
+    # removed (the sandbox mount refuses to unlink files the host
+    # created), fall back to deleting file by file, and if even that
+    # fails, say exactly which pages are stale rather than pretending
+    # the build is clean.
     if os.path.isdir(a.out):
-        shutil.rmtree(a.out)
-    sids = [slug(it, n) for n, it in enumerate(keep, 1)]
+        try:
+            shutil.rmtree(a.out)
+        except OSError:
+            pass
+    sids = [slug(it) for it in keep]
 
     urls = []
     for lang in LANGS:
@@ -357,6 +404,28 @@ def main():
           + "</urlset>\n")
     write(f"{a.out}/robots.txt",
           "User-agent: *\nAllow: /\nSitemap: /sitemap.xml\n")
+
+    written = {os.path.normpath(f"{a.out}{u}"
+                                + ("index.html" if u.endswith("/") else ""))
+               for u in urls}
+    stale = []
+    for root, _, files in os.walk(a.out):
+        for fn in files:
+            if not fn.endswith(".html"):
+                continue
+            p = os.path.normpath(os.path.join(root, fn))
+            if p in written or p == os.path.normpath(f"{a.out}/index.html"):
+                continue
+            try:
+                os.unlink(p)
+            except OSError:
+                stale.append(p)
+    if stale:
+        print(f"  !! {len(stale)} STALE page(s) could not be deleted and are "
+              f"still served. Remove them before publishing:")
+        for p in stale:
+            print(f"       {p}")
+
     print(f"{len(urls)} pages -> {a.out}/")
 
 

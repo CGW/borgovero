@@ -58,10 +58,21 @@ changelog row), then the git block above.
 Gitignored and regenerable in under a minute: `cache/`, `*.sqlite`,
 `phase0_results.csv`. A missing database is not lost work.
 
-**`phase0/data/id_anchors.json` is the exception.** It is gitignored, lives
-only on this machine, and represents hours of Wayback harvesting that cannot
-be reconstructed if access to the archive changes. Flag it whenever backups
-or commits come up — a clean `git push` does **not** back it up.
+**`phase0/data/id_anchors.json` is the exception, and it IS tracked.**
+It represents hours of Wayback harvesting that cannot be reconstructed if
+access to the archive changes, so `.gitignore` ignores `**/data/*` and then
+un-ignores this one file with `!**/data/id_anchors.json`. It is committed
+(`dda2cab`), in HEAD, and pushed — verify with `git ls-files | grep anchor`
+rather than assuming either way.
+
+This paragraph used to say the opposite: gitignored, on this machine only,
+not backed up by a push. That was stale for months, and it was repeated as a
+standing warning at the end of session after session without anyone running
+the one command that checks it. **A caution that is never re-tested becomes
+folklore.** The second Wayback harvest nobody needed to do was the cheap
+outcome; the expensive version is a claim about the data itself surviving the
+same way. `phase0/verified_clusters.json` is the other human-measured,
+non-regenerable file — same reasoning, and it is tracked too.
 
 ## Standing cautions
 

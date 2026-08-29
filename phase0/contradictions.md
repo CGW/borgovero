@@ -17,6 +17,21 @@
 
 ---
 
+## Sansepolcro — Via Tiberina Nord
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Leonardi Immobiliare | — | — | 400 m² | rustico |
+| Marcellini | 11014 | *withheld* | 200 m² | Coloniche |
+
+**Surface differs by 100%** (200 vs 400 m²).
+
+**Verified by hand, 2026-08-29** — Same interior — identical photograph of the beamed staircase and kitchen (Marcellini watermark). Leonardi says 400 m², Marcellini 200 m²; neither publishes a price.
+
+<sub>Matched by photo-weak.</sub>
+
+---
+
 ## Sansepolcro — Frazione Montedoglio
 
 | Agency | Ref | Asking | Surface | Type |
@@ -31,25 +46,6 @@
 **Verified by hand, 2026-08-29** — Same villa above the Montedoglio lake — three identical photographs (hamming 0).
 
 <sub>Matched by photo.</sub>
-
----
-
-## Sansepolcro — Via Casa al Vento
-
-| Agency | Ref | Asking | Surface | Type |
-|---|---|---|---|---|
-| Leonardi Immobiliare | — | € 350,000 | 420 m² | villa |
-| Leonardi Immobiliare | — | € 320,000 | 360 m² | villa |
-| Leonardi Immobiliare | — | € 280,000 | 200 m² | villa |
-| Marcellini | 11262 | *withheld* | 400 m² | Appartamenti |
-
-**Surface differs by 110%** (200 vs 420 m²).
-
-**Price differs by 25%** (€ 280,000 vs € 350,000).
-
-**Disagree on property type**: appartamenti vs villa.
-
-<sub>Matched by photo-weak. Candidate — unverified.</sub>
 
 ---
 
@@ -85,32 +81,26 @@
 
 ---
 
-## Sansepolcro — Via Tiberina Nord
+## Caprese-Michelangelo — Strada Comunale Fragaiolo Lama
 
 | Agency | Ref | Asking | Surface | Type |
 |---|---|---|---|---|
-| Leonardi Immobiliare | — | — | 400 m² | rustico |
-| Marcellini | 11014 | *withheld* | 200 m² | Coloniche |
+| R.E.Volution Immobiliare | — | € 85,000 | 115 m² | terratetto |
+| Marcellini | 11077 | € 80,000 | 120 m² | Coloniche |
+| Rexer | — | € 75,000 | 150 m² | terratetto |
+| immobiliare | — | € 75,000 | 150 m² | terratetto |
 
-**Surface differs by 100%** (200 vs 400 m²).
+**Surface differs by 30%** (115 vs 150 m²).
 
-<sub>Matched by photo-weak. Candidate — unverified.</sub>
+**Price differs by 13%** (€ 75,000 vs € 85,000).
 
----
+**Disagree on property type**: coloniche vs terratetto.
 
-## Anghiari — Anghiari, Arezzo, Toscana,
+**Different addresses for the same property**: Strada Comunale Fragaiolo Lama vs via Colle di Fragaiolo.
 
-| Agency | Ref | Asking | Surface | Type |
-|---|---|---|---|---|
-| Leonardi Immobiliare | — | € 2,900,000 | 500 m² | villa |
-| Lionard Luxury Real Estate | — | € 1,600,000 | 550 m² | villa |
-| Agenzia Romolini Immobiliare S.r.l. | — | € 1,600,000 | 490 m² | villa |
+**Verified by hand, 2026-08-29** — Same stone house at Fragaiolo, held by two independent photo pairs: the exterior with its external staircase (R.E.Volution ↔ Rexer) and the bedroom and credenza already checked in S004 (Marcellini ↔ the portal listing). € 75.000 to € 85.000, 115 to 150 m², terratetto or colonica.
 
-**Surface differs by 12%** (490 vs 550 m²).
-
-**Price differs by 81%** (€ 1,600,000 vs € 2,900,000).
-
-<sub>Matched by photo-weak+price+surface. Candidate — unverified.</sub>
+<sub>Matched by photo-weak+price+surface.</sub>
 
 ---
 
@@ -152,8 +142,8 @@
 
 | Agency | Ref | Asking | Surface | Type |
 |---|---|---|---|---|
-| House Immobiliare | — | € 179,000 | 126 m² | villa |
 | Coldwell Banker Futura Group | — | € 179,000 | 154 m² | villa |
+| House Immobiliare | — | € 179,000 | 126 m² | villa |
 
 **Surface differs by 22%** (126 vs 154 m²).
 
@@ -165,12 +155,32 @@
 
 ---
 
+## Anghiari — Via della Bozzia
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 80,000 | 87 m² | rustico |
+| Agenzia Immobiliare Cortesi | — | € 80,000 | 105 m² | rustico |
+| Cortesi Luxury Real Estate | — | € 80,000 | 105 m² | villa |
+
+**Surface differs by 21%** (87 vs 105 m²).
+
+**Disagree on property type**: rustico vs villa.
+
+**Different addresses for the same property**: Via della Bozzia vs Via di Motina.
+
+**Verified by hand, 2026-08-29** — One property listed three times under the Cortesi brand — same stone room with blue floor, same aerial. € 80.000 throughout; 87 m² or 105 m²; rustico or villa.
+
+<sub>Matched by photo-weak.</sub>
+
+---
+
 ## Anghiari — Piazza del Popolo
 
 | Agency | Ref | Asking | Surface | Type |
 |---|---|---|---|---|
-| Great Estate Immobiliare S.R.L. | — | € 2,300,000 | 1061 m² | rustico |
 | Best Realty | — | € 2,300,000 | 1267 m² | rustico |
+| Great Estate Immobiliare S.R.L. | — | € 2,300,000 | 1061 m² | rustico |
 | Luxus | — | € 2,300,000 | 1267 m² | rustico |
 
 **Surface differs by 19%** (1061 vs 1267 m²).
@@ -208,8 +218,8 @@
 
 | Agency | Ref | Asking | Surface | Type |
 |---|---|---|---|---|
-| Cortesi Luxury Real Estate | — | € 590,000 | 262 m² | appartamento |
 | Agenzia Immobiliare Cortesi | — | € 590,000 | 230 m² | appartamento |
+| Cortesi Luxury Real Estate | — | € 590,000 | 262 m² | appartamento |
 
 **Surface differs by 14%** (230 vs 262 m²).
 
@@ -221,12 +231,57 @@
 
 ---
 
+## Sansepolcro — Casa singola in zona residenziale
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Centogambe | 0826 | € 310,000 | 180 m² | — |
+| Marcellini | 11307 | *bracket (unresolved)* | 160 m² | Appartamenti |
+
+**Surface differs by 12%** (160 vs 180 m²).
+
+**Verified by hand, 2026-08-29** — Identical photograph of the same white house and cobbled drive. Centogambe € 310.000 at 180 m²; Marcellini publishes no price and says 160 m².
+
+<sub>Matched by photo-weak.</sub>
+
+---
+
+## Anghiari — Anghiari, Arezzo, Toscana,
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Romolini Immobiliare S.r.l. | — | € 1,600,000 | 490 m² | villa |
+| Lionard Luxury Real Estate | — | € 1,600,000 | 550 m² | villa |
+
+**Surface differs by 12%** (490 vs 550 m²).
+
+**Verified by hand, 2026-08-29** — The same early-1900s Liberty villa above the centro of Anghiari, established from the listings' own text rather than photographs — both describe a villa built for a wealthy Briton, a 2.600 m² park with statues, years of use as an art gallery, Impruneta terracotta floors and pietra serena door surrounds. They share NO photographs at all (best hamming 17), which is worth recording: a non-match proves nothing. Both ask € 1.600.000; Lionard says 550 m², Romolini 490 m². Leonardi lists it too at € 2.900.000, but that listing was last updated in December 2020 and offers the sale combined with a second building in the same park, so its price is not comparable and is excluded rather than published as an 81% gap.
+
+<sub>Matched by photo-weak+price+surface.</sub>
+
+---
+
+## Sansepolcro — Casa singola in pietra con ampio terreno
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Centogambe | 0614 | € 160,000 | 220 m² | — |
+| Marcellini | 11223 | *bracket (unresolved)* | 200 m² | Coloniche |
+
+**Surface differs by 10%** (200 vs 220 m²).
+
+**Verified by hand, 2026-08-29** — Identical photograph of the same stone house and terraced garden. 220 m² vs 200 m².
+
+<sub>Matched by photo-weak.</sub>
+
+---
+
 ## Badia-Tedalda — address not given
 
 | Agency | Ref | Asking | Surface | Type |
 |---|---|---|---|---|
-| Leonardi Immobiliare | — | € 29,000 | 65 m² | appartamento |
 | Centogambe | 0585 | € 29,000 | 70 m² | — |
+| Leonardi Immobiliare | — | € 29,000 | 65 m² | appartamento |
 | Marcellini | 11063 | *meno di € 100.000* | 70 m² | Appartamenti |
 
 **Surface differs by 8%** (65 vs 70 m²).
@@ -237,12 +292,27 @@
 
 ---
 
+## Anghiari — via Infrantoio
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| T.V.I. Toscana Immobiliare | — | € 2,300,000 | 1600 m² | rustico |
+| Marcellini | 11146 | *withheld* | 1500 m² | Poderi |
+
+**Surface differs by 7%** (1500 vs 1600 m²).
+
+**Verified by hand, 2026-08-29** — Identical aerial of the same restored villa complex. T.V.I. asks € 2.300.000 at 1600 m²; Marcellini publishes no price and says 1500 m².
+
+<sub>Matched by photo-weak.</sub>
+
+---
+
 ## Badia-Tedalda — Strada Comunale di Rofelle
 
 | Agency | Ref | Asking | Surface | Type |
 |---|---|---|---|---|
-| immobiliare | — | € 40,000 | 210 m² | terratetto |
 | Rexer | — | € 40,000 | 220 m² | villa |
+| immobiliare | — | € 40,000 | 210 m² | terratetto |
 
 **Surface differs by 5%** (210 vs 220 m²).
 
@@ -303,54 +373,34 @@
 
 ---
 
+## Badia-Tedalda — Via Sestinese
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Rimmo Real Estate | — | € 145,000 | 180 m² | villa |
+| Marcellini | 11240 | *bracket (unresolved)* | — m² | Ville |
+
+**The agencies disagree on the comune**: Badiatedalda vs Sestino.
+
+**Verified by hand, 2026-08-29** — Identical photograph of the same yellow house with a wooden garage door. Filed under different comuni by the two agencies.
+
+<sub>Matched by photo-weak.</sub>
+
+---
+
 ## Sansepolcro — Via della Ginestra, 4, 52037 Gragnano AR, Italia ; Via della Ginestra, 52037 Gragnano AR, Italia, Sansepolcro, AR,
 
 | Agency | Ref | Asking | Surface | Type |
 |---|---|---|---|---|
+| Aste Preaste Investimenti Srl | — | € 110,625 | 133 m² | appartamento |
 | Centro Aste Arezzo | — | € 110,625 | 132 m² | appartamento |
+| Professione Aste | — | € 110,625 | 97 m² | appartamento |
 | Simplex Domus S.R.L. | — | € 110,625 | 90 m² | appartamento |
 | Valerio Pisano - Aste&Investimenti | — | € 110,625 | — m² | appartamento |
-| Aste Preaste Investimenti Srl | — | € 110,625 | 133 m² | appartamento |
-| Professione Aste | — | € 110,625 | 97 m² | appartamento |
 
 **Surface differs by 48%** (90 vs 133 m²).
 
 <sub>Matched by price.</sub>
-
----
-
-## Caprese-Michelangelo — Strada Comunale Fragaiolo Lama
-
-| Agency | Ref | Asking | Surface | Type |
-|---|---|---|---|---|
-| R.E.Volution Immobiliare | — | € 85,000 | 115 m² | terratetto |
-| Marcellini | 11077 | € 80,000 | 120 m² | Coloniche |
-| immobiliare | — | € 75,000 | 150 m² | terratetto |
-| Rexer | — | € 75,000 | 150 m² | terratetto |
-
-**Surface differs by 30%** (115 vs 150 m²).
-
-**Price differs by 13%** (€ 75,000 vs € 85,000).
-
-**Disagree on property type**: coloniche vs terratetto.
-
-<sub>Matched by photo-weak+price+surface. Candidate — unverified.</sub>
-
----
-
-## Anghiari — Via della Bozzia
-
-| Agency | Ref | Asking | Surface | Type |
-|---|---|---|---|---|
-| Cortesi Luxury Real Estate | — | € 80,000 | 105 m² | villa |
-| Agenzia Immobiliare Cortesi | — | € 80,000 | 105 m² | rustico |
-| Agenzia Immobiliare Cortesi | — | € 80,000 | 87 m² | rustico |
-
-**Surface differs by 21%** (87 vs 105 m²).
-
-**Disagree on property type**: rustico vs villa.
-
-<sub>Matched by photo-weak. Candidate — unverified.</sub>
 
 ---
 
@@ -372,8 +422,8 @@
 
 | Agency | Ref | Asking | Surface | Type |
 |---|---|---|---|---|
-| Mancini Re Immobiliare Srl | — | € 580,000 | 285 m² | terratetto |
 | House Immobiliare | — | € 580,000 | 250 m² | villa |
+| Mancini Re Immobiliare Srl | — | € 580,000 | 285 m² | terratetto |
 
 **Surface differs by 14%** (250 vs 285 m²).
 
@@ -402,8 +452,8 @@
 
 | Agency | Ref | Asking | Surface | Type |
 |---|---|---|---|---|
-| Cortesi Luxury Real Estate | — | € 890,000 | 340 m² | villa |
 | Agenzia Romolini Immobiliare S.r.l. | — | € 890,000 | 300 m² | villa |
+| Cortesi Luxury Real Estate | — | € 890,000 | 340 m² | villa |
 
 **Surface differs by 13%** (300 vs 340 m²).
 
@@ -415,8 +465,8 @@
 
 | Agency | Ref | Asking | Surface | Type |
 |---|---|---|---|---|
-| SICASA Immobiliare | — | € 105,000 | 130 m² | appartamento |
 | Marcellini | 10252 | € 105,000 | 115 m² | Coloniche |
+| SICASA Immobiliare | — | € 105,000 | 130 m² | appartamento |
 
 **Surface differs by 13%** (115 vs 130 m²).
 
@@ -439,20 +489,7 @@
 
 ---
 
-## Sansepolcro — Casa singola in zona residenziale
-
-| Agency | Ref | Asking | Surface | Type |
-|---|---|---|---|---|
-| Centogambe | 0826 | € 310,000 | 180 m² | — |
-| Marcellini | 11307 | *bracket (unresolved)* | 160 m² | Appartamenti |
-
-**Surface differs by 12%** (160 vs 180 m²).
-
-<sub>Matched by photo-weak. Candidate — unverified.</sub>
-
----
-
-## Sansepolcro — via tiberina sud
+## Sansepolcro — Via Tiberina Sud
 
 | Agency | Ref | Asking | Surface | Type |
 |---|---|---|---|---|
@@ -478,32 +515,6 @@
 
 ---
 
-## Sansepolcro — Casa singola in pietra con ampio terreno
-
-| Agency | Ref | Asking | Surface | Type |
-|---|---|---|---|---|
-| Centogambe | 0614 | € 160,000 | 220 m² | — |
-| Marcellini | 11223 | *bracket (unresolved)* | 200 m² | Coloniche |
-
-**Surface differs by 10%** (200 vs 220 m²).
-
-<sub>Matched by photo-weak. Candidate — unverified.</sub>
-
----
-
-## Anghiari — via Infrantoio
-
-| Agency | Ref | Asking | Surface | Type |
-|---|---|---|---|---|
-| T.V.I. Toscana Immobiliare | — | € 2,300,000 | 1600 m² | rustico |
-| Marcellini | 11146 | *withheld* | 1500 m² | Poderi |
-
-**Surface differs by 7%** (1500 vs 1600 m²).
-
-<sub>Matched by photo-weak. Candidate — unverified.</sub>
-
----
-
 ## Sansepolcro — Via Martiri Della Resistenza 6
 
 | Agency | Ref | Asking | Surface | Type |
@@ -521,9 +532,9 @@
 
 | Agency | Ref | Asking | Surface | Type |
 |---|---|---|---|---|
-| Valerio Pisano - Aste&Investimenti | — | € 38,535 | 93 m² | appartamento |
 | Aste Preaste Investimenti Srl | — | € 38,535 | 93 m² | appartamento |
 | Simplex Domus S.R.L. | — | € 38,535 | 98 m² | appartamento |
+| Valerio Pisano - Aste&Investimenti | — | € 38,535 | 93 m² | appartamento |
 
 **Surface differs by 5%** (93 vs 98 m²).
 
@@ -562,11 +573,11 @@
 | Agency | Ref | Asking | Surface | Type |
 |---|---|---|---|---|
 | Aste Preaste Investimenti Srl | — | € 56,625 | 178 m² | appartamento |
-| Professione Aste | — | € 56,625 | 178 m² | appartamento |
-| Valerio Pisano - Aste&Investimenti | — | € 56,625 | — m² | appartamento |
-| Simplex Domus S.R.L. | — | € 56,625 | 178 m² | appartamento |
-| Centro Aste Arezzo | — | € 56,625 | 177 m² | appartamento |
 | Astissima | — | € 56,625 | 177 m² | appartamento |
+| Centro Aste Arezzo | — | € 56,625 | 177 m² | appartamento |
+| Professione Aste | — | € 56,625 | 178 m² | appartamento |
+| Simplex Domus S.R.L. | — | € 56,625 | 178 m² | appartamento |
+| Valerio Pisano - Aste&Investimenti | — | € 56,625 | — m² | appartamento |
 
 **Surface differs by 1%** (177 vs 178 m²).
 
@@ -578,8 +589,8 @@
 
 | Agency | Ref | Asking | Surface | Type |
 |---|---|---|---|---|
-| Simplex Domus S.R.L. | — | € 165,375 | 509 m² | villa |
 | Centro Aste Arezzo | — | € 165,375 | 509 m² | appartamento |
+| Simplex Domus S.R.L. | — | € 165,375 | 509 m² | villa |
 | Valerio Pisano - Aste&Investimenti | — | € 165,375 | 509 m² | appartamento |
 | Aste Florio | — | € 165,370 | 509 m² | cielo_terra |
 
@@ -595,25 +606,12 @@
 
 | Agency | Ref | Asking | Surface | Type |
 |---|---|---|---|---|
-| Valerio Pisano - Aste&Investimenti | — | € 26,100 | — m² | appartamento |
 | Centro Aste Arezzo | — | € 26,100 | 31 m² | rustico |
+| Valerio Pisano - Aste&Investimenti | — | € 26,100 | — m² | appartamento |
 
 **Disagree on property type**: appartamento vs rustico.
 
 <sub>Matched by price.</sub>
-
----
-
-## Badia-Tedalda — Via Sestinese
-
-| Agency | Ref | Asking | Surface | Type |
-|---|---|---|---|---|
-| Rimmo Real Estate | — | € 145,000 | 180 m² | villa |
-| Marcellini | 11240 | *bracket (unresolved)* | — m² | Ville |
-
-**The agencies disagree on the comune**: Badiatedalda vs Sestino.
-
-<sub>Matched by photo-weak. Candidate — unverified.</sub>
 
 ---
 
