@@ -25,6 +25,7 @@ phase0/fairprice.csv
 dist/
 # Generated site output — regenerable from the database in seconds.
 dist-contradictions/
+dist-index/
 # S004's corrected DB, delivered as text because the sandbox mount
 # corrupts live sqlite writes. ~2 MB and regenerable from the harvests;
 # keep it out of the repo but DO keep it on disk until it is applied.

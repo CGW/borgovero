@@ -35,6 +35,7 @@ interval and narrows it — but they are an improvement, never a gate.
 """
 
 import csv
+import html as _html
 import json
 import sqlite3
 from collections import defaultdict
@@ -103,7 +104,7 @@ WEIGHTS = [
 # measure"; these are not homes. A residential index that published a
 # shop or a field, even with no number attached, would be wrong in a way
 # no confidence tier repairs.
-OUT_OF_SCOPE = {"commerciale", "terreno"}
+OUT_OF_SCOPE = {"commerciale", "terreno", "garage"}
 
 # Publish gate, §4.3 as amended. The width condition replaces the retired
 # "Tier A only" condition: it fails loudly on a comune whose stock is too
@@ -157,16 +158,26 @@ _RAW_MAP = {
 }
 
 _TEXT_RULES = [
-    ("commerciale", ("locale commerciale", "negozio", "capannone", "ufficio",
-                     "fondo commerciale", "attivit")),
+    ("commerciale", ("locale commerciale", "locali commerciali", "negozi",
+                     "capannone", "ufficio", "fondo commerciale", "attivit",
+                     "laboratorio")),
     ("terreno",     ("terreno", "lotto edificabile", "terreni")),
     ("villa",       ("villa", "villino", "villetta")),
     ("rustico",     ("colonica", "casale", "rustico", "casolare", "podere",
                      "fienile", "annesso")),
+    # Before terratetto: "casa cielo terra" must not fall through to the
+    # generic house words and lose the class its deflator is keyed on.
+    ("cielo_terra", ("cielo terra",)),
     ("terratetto",  ("terratetto", "casa singola", "casa indipendente",
-                     "porzione di casa", "schiera")),
+                     "porzione di casa", "porzione casa", "schiera")),
     ("appartamento", ("appartamento", "bilocale", "trilocale", "quadrilocale",
                       "monolocale", "attico", "mansarda")),
+    # LAST, deliberately: "garage" in a residential listing is an
+    # accessory ("porzione di casa con garage"), and every rule above must
+    # get its chance first. Only a listing whose text offers nothing but
+    # the garage is a garage — and then it is not a home, so it leaves the
+    # residential index entirely (OUT_OF_SCOPE below).
+    ("garage",      ("garage", "box auto", "posto auto", "posti auto")),
 ]
 
 
@@ -177,8 +188,14 @@ def _from_text(*fields):
     title says 'locale commerciale' and whose description mentions an
     'appartamento' upstairs resolves commercial. Under-claiming scope is
     the safe direction.
+
+    The blob is HTML-unescaped (titles arrive with &#8211; in them) and
+    dashes become spaces, so slug-style text matches the same needles as
+    prose: 'porzione-casa-in-pietra' and 'porzione casa in pietra' are the
+    same evidence.
     """
     blob = " ".join(str(f or "") for f in fields).lower()
+    blob = _html.unescape(blob).replace("-", " ")
     if not blob.strip():
         return None
     for typ, needles in _TEXT_RULES:
@@ -188,7 +205,14 @@ def _from_text(*fields):
 
 
 def recover_typology(row):
-    """(typology, provenance). Never invents; returns (None, 'none')."""
+    """(typology, provenance). Never invents; returns (None, 'none').
+
+    S006: the source_id joined the scanned fields. Centogambe's ids ARE
+    slugs — 'appartamento-ristrutturato-a-porta-fiorentina' — so the
+    typology was sitting in a field we already held while the listing sat
+    in Tier C for want of one. Numeric ids (Immobiliare) match nothing and
+    pass through unharmed. No detail page, no new request, no 403.
+    """
     if row["typology"] and row["typology"] not in ("unknown", "progetto"):
         return row["typology"], "source"
 
@@ -196,7 +220,7 @@ def recover_typology(row):
     if raw in _RAW_MAP:
         return _RAW_MAP[raw], "typology_raw"
 
-    guess = _from_text(row["title"], row["description"])
+    guess = _from_text(row["title"], row["description"], row["source_id"])
     if guess:
         return guess, "text"
 

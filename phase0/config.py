@@ -94,10 +94,25 @@ OMI_CSV_PATH = "data/omi_valori.csv"
 # perimeters. So Citerna gets bands but cannot be zoned by
 # point-in-polygon (zones.py), and its listings fall back to the fascia
 # guess that S003 replaced everywhere else. Re-order as QIP to fix.
+# RE-ORDERED 2026-08-29 after `phase0/data/` was deleted. **The AdE order
+# number changes on every order**, so these paths are not stable across a
+# re-download: Arezzo 2025-2 came back as 1422173, not the 1421390 this
+# list named for three sessions. The files were sitting on disk, intact,
+# while `omi.py` exited 1 and the SOT recorded the data as missing — the
+# fault was three stale path strings, not an absent download.
+#
+# If omi.py reports a missing file again, check `ls phase0/data/` BEFORE
+# re-ordering. The directory is the truth; this list is a pointer to it.
 OMI_CSV_PATHS = [
-    "data/QIP1421390_WRDCRS77S02Z404C/QIP_1421390_1_20252_VALORI.csv",  # Arezzo
-    "data/QI1422048_WRDCRS77S02Z404C/QI_1422048_1_20252_VALORI.csv",    # Perugia (Citerna)
+    "data/QIP1422173_WRDCRS77S02Z404C/QIP_1422173_1_20252_VALORI.csv",  # Arezzo 2025-2
+    "data/QI1422048_WRDCRS77S02Z404C/QI_1422048_1_20252_VALORI.csv",    # Perugia (Citerna) 2025-2
 ]
+
+# Arezzo 2021-1, the historical comparison behind S003's finding that
+# Valtiberina bands barely moved (71% identical, mean +1,6%) while Cortona
+# ran +7,7% over the same period. Not loaded by the default run — pass it
+# explicitly when re-testing that.
+OMI_CSV_PATH_2021 = "data/QIP1422174_WRDCRS77S02Z404C/QIP_1422174_1_20211_VALORI.csv"
 # 2025-2 is the latest published semester (confirmed against the web
 # consultation for Sansepolcro B1 on 2026-08-27). There is no 2026-1 yet.
 OMI_SEMESTER = "2025-2"

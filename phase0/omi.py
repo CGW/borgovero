@@ -254,7 +254,14 @@ def main():
     # without translation.
     ap.add_argument("--path", action="append", default=None,
                     help="VALORI csv; repeat for more than one province")
+    # The historical semester loads under its own label or it silently
+    # overwrites the current one — replace_omi deletes per semester.
+    #   python3 omi.py --path "$(python3 -c 'import config;print(config.OMI_CSV_PATH_2021)')" --semester 2021-1
+    ap.add_argument("--semester", default=None,
+                    help="semester label to store under "
+                         f"(default config.OMI_SEMESTER)")
     args = ap.parse_args()
+    semester = args.semester or config.OMI_SEMESTER
 
     paths = args.path or getattr(config, "OMI_CSV_PATHS", None) \
         or [config.OMI_CSV_PATH]
@@ -289,7 +296,7 @@ def main():
 
     rows = []
     for p in paths:
-        got = load(p, config.COMUNI, config.OMI_SEMESTER)
+        got = load(p, config.COMUNI, semester)
         comuni = sorted({r[0] for r in got})   # rows are tuples; comune is [0]
         print(f"  {p}\n    {len(got)} rows: {', '.join(comuni) or 'NONE'}")
         rows += got
@@ -311,9 +318,9 @@ def main():
     report_surface_basis(rows)
 
     conn = db.connect()
-    db.replace_omi(conn, rows, config.OMI_SEMESTER)
+    db.replace_omi(conn, rows, semester)
     conn.commit()
-    print(f"\nStored under semester {config.OMI_SEMESTER}.")
+    print(f"\nStored under semester {semester}.")
 
 
 if __name__ == "__main__":

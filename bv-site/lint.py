@@ -70,6 +70,22 @@ EXCUSED = [
 BAND_PATH = re.compile(r"/(comuni|comune)/")
 INTERVAL_RE = re.compile(r"\d[\d.,]*\s*(?:&ndash;|–|-|to|a)\s*(?:€|&euro;)?\s*\d")
 
+# Listing index pages (§4.2, enforced per §10.3). Scoped by path like the
+# band check, and for the same reason: these requirements are template
+# contracts for one page type, not site-wide heuristics.
+LISTING_PATH = re.compile(r"/immobili/")
+
+# The extraction paragraph is marked in the template (class="estratto")
+# precisely so this check does not have to guess which paragraph is the
+# extractable unit. §8.4: 40 words, self-contained.
+EXTRACT_RE = re.compile(r'<p class="lede estratto">(.*?)</p>', re.S)
+DATE_RE = re.compile(r"\b\d{2}/\d{2}/\d{4}\b")
+
+# A Tier C page publishes the agency's own figures and the reason there is
+# no index — never a normalized interval. An interval attached to a
+# surface or a EUR/m2 on a C page means a normalized figure leaked.
+M2_INTERVAL_RE = re.compile(r"\d[\d.,]*\s*–\s*[\d.,]*\d\s*(?:m²|/m²)")
+
 
 def text_of(path):
     raw = open(path, encoding="utf-8").read()
@@ -107,6 +123,48 @@ def check_bands(path, txt):
              f"a band must never be rendered as a single figure"])
 
 
+def check_listing(path, raw, txt):
+    if not LISTING_PATH.search(path.replace(os.sep, "/")):
+        return []
+    out = []
+
+    # §4.2 item 6: source link, retrieval date, standing line. The
+    # standing line is checked by its negation clause rather than its full
+    # text so an editorial rewording does not silently disable the check —
+    # what must never leave the page is the "not a" claim itself.
+    if 'rel="nofollow' not in raw:
+        out.append(f"{path}: no source link (§4.2.6)")
+    if not ("Letto il" in txt or "Retrieved" in txt):
+        out.append(f"{path}: no retrieval date (§4.2.6)")
+    if not ("Non è una perizia" in txt or "Not a valuation" in txt):
+        out.append(f"{path}: standing not-a-valuation line missing (§4.2.6)")
+
+    m = EXTRACT_RE.search(raw)
+    if not m:
+        out.append(f"{path}: no extraction paragraph (§8.4)")
+        return out
+    words = html.unescape(re.sub(r"<[^>]+>", " ", m.group(1))).split()
+    ex = " ".join(words)
+    if len(words) > 40:
+        out.append(f"{path}: extraction paragraph {len(words)} words, "
+                   f"limit 40 (§8.4)")
+    if not ("Livello" in ex or "Tier" in ex):
+        out.append(f"{path}: extraction paragraph missing tier (§4.2.1)")
+    if not DATE_RE.search(ex):
+        out.append(f"{path}: extraction paragraph missing retrieval "
+                   f"date (§4.2.1)")
+    if "Livello B" in ex or "Tier B" in ex:
+        for tok, name in (("€", "price"), ("m²", "surface"),
+                          ("–", "interval")):
+            if tok not in ex:
+                out.append(f"{path}: Tier B extraction paragraph missing "
+                           f"{name} (§4.2.1)")
+    if ("Livello C" in ex or "Tier C" in ex) and M2_INTERVAL_RE.search(txt):
+        out.append(f"{path}: Tier C page carries a normalized interval — "
+                   f"a C listing publishes no figure of ours (§3.3)")
+    return out
+
+
 def main(root):
     files = sorted(glob.glob(os.path.join(root, "**", "*.html"), recursive=True))
     if not files:
@@ -115,9 +173,11 @@ def main(root):
 
     failures = []
     for f in files:
+        raw = open(f, encoding="utf-8").read()
         txt = text_of(f)
         failures += check_terms(f, txt)
         failures += check_bands(f, txt)
+        failures += check_listing(f, raw, txt)
 
     if failures:
         print(f"LINT FAILED — {len(failures)} problem(s) in {len(files)} pages\n")

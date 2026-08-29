@@ -190,7 +190,7 @@ Replaces the old "home prices in {city}" idea entirely. Contains: normalized ban
 
 This replaces the original "Tier A listings only, n ≥ 8" rule, which could never fire — Tier A is unreachable by script (§17.1) and the corpus is effectively all B and C. Rationale, measured 2026-08-30: the deflator range widens p50 by 14–18%, while the genuine p25–p75 spread of the stock is 55–104%. The uncertainty the old gate was protecting against is a fifth of the variation it was going to publish anyway. **A wide honest band is the product; a point estimate from eight hand-picked listings is the thing this site objects to.**
 
-**Publish gate:** n ≥ 8 active Tier A+B listings AND ≥ 2 distinct agencies AND the p50 interval no wider than 25% of its midpoint. The width condition is what the old tier condition was really trying to express, and it fails loudly on a comune whose stock is too mixed to summarise rather than silently on one that simply lacks decompositions. Below the gate, the comune gets a stub linking to listings, with **no band and no index claims**.
+**Publish gate:** n ≥ 8 active Tier A+B listings AND ≥ 2 distinct agencies AND the p50 interval no wider than the widest single §3.4 deflator range, plus 5% interpolation tolerance — **derived in `normalize.py` as `GATE_MAX_WIDTH_PCT`, currently 28,0%** (rustico's 26,7% × 1,05). An earlier draft fixed this at a flat 25%, which was an invented number: rustico's own deflator range is wider than that, so the gate silently suppressed every farmhouse-dominated comune — it suppressed Monterchi on the first run, and it would have read as rigour. The defensible rule is that a band may not be wider than the worst uncertainty among its own inputs; if mixing typologies pushes it past that, the stock genuinely is too mixed to summarise and the suppression message is true. The width condition is what the old tier condition was really trying to express, and it fails loudly on a comune whose stock is too mixed to summarise rather than silently on one that simply lacks decompositions. Below the gate, the comune gets a stub linking to listings, with **no band and no index claims**.
 
 Every comune report states n, the tier split behind it, and the band width, in the extraction paragraph. A reader must be able to see how much of the range is the market and how much is us.
 
@@ -314,7 +314,7 @@ Byte-identical rebuilds are a contract, not a nicety — add a CI check that bui
 
 ### §10.3 Build lint
 
-Fail the build on: a forbidden §3.5 term in any published copy; a listing page missing source link, retrieval date, or the not-a-valuation line; a comune band published below n=8, below 2 agencies, or with a p50 interval wider than 25% of its midpoint; a comune band rendered as a single figure rather than an interval; a Tier B villa-with-park; a Tier C listing carrying any normalized figure; an extraction paragraph over 40 words or missing a required token.
+Fail the build on: a forbidden §3.5 term in any published copy; a listing page missing source link, retrieval date, or the not-a-valuation line; a comune band published below n=8, below 2 agencies, or with a p50 interval wider than the §4.3 derived gate (`normalize.GATE_MAX_WIDTH_PCT`); a comune band rendered as a single figure rather than an interval; a Tier B villa-with-park; a Tier C listing carrying any normalized figure; an extraction paragraph over 40 words or missing a required token.
 
 The "band rendered as a single figure" check is the load-bearing one. Under §4.3 the band is an interval all the way through the pipeline, and the failure mode is a template collapsing it to a midpoint for tidiness — which would publish exactly the false precision the site exists to object to, in the site's own voice.
 
@@ -359,10 +359,10 @@ Ship `/it/metodo/`, the weighting table, tier definitions, `llms.txt`, dataset e
 
 **Accept when:** method page live in IT and EN; > 90% of existing pages indexed; two consecutive builds byte-identical; build lint enforcing §10.3.
 
-### Phase 2 — Index on three comuni *(weeks 3–8)*
-Normalization pipeline, tier assignment, listing index pages, comune bands for Anghiari, Sansepolcro, and one other clearing n ≥ 8.
+### Phase 2 — Index on all eight comuni *(weeks 3–8)*
+Normalization pipeline, tier assignment, listing index pages, comune bands. *(Rewritten S006: the original targeted "three comuni clearing n ≥ 8" because it predated the S005 gate decision — under the A+B interval gate all eight comuni clear on day one, so three-of-eight was no longer the binding constraint and left as written it described work already exceeded. The pipeline and both page templates shipped S005–S006.)*
 
-**Accept when:** three comune reports live with bands; ≥ 150 listing pages published with correct tiers; hand-audit of 20 random Tier A decompositions passes; GSC impressions rising.
+**Accept when:** eight comune reports live with interval bands; ≥ 700 listing pages published with correct tiers; hand-audit of 20 random Tier B interval computations passes — reproduce `sia` and `eur_sia` from the published price, surface and deflator by hand *(replaces "20 Tier A decompositions": Tier A is empty by measurement, §17.1, so that audit could never run)*; GSC impressions rising. The OMI cross-check (§17.2) has run at least once against the published bands, with divergences either explained or recorded as findings.
 
 ### Phase 3 — Coverage, press, conversion *(weeks 8–16)*
 Extend to the full comune list. Four IT and four EN explainers. Press push on the six-fold villa, framed as consumer protection, offering the dataset. Alert signup live.

@@ -42,20 +42,23 @@ the standard is published; what is missing is the pages.
    wrong so much as no longer the binding constraint, and leaving them
    unread is how a plan quietly stops describing the work.
 
-## Two known-stale things — fix or explicitly defer, do not ignore
+## One stale document, and one bounded gap
 
 - **`docs/seo-strategy.html` is now the stale document.** It still headlines
   "~1.000–3.000 pages", "39 contradictions", "12 comuni" and "29 live". The
   spec and the SOT were corrected in S004/S005 and this was not, so it
   currently disagrees with both. Real numbers: **36 contradictions, 30
   hand-verified, 36 pages live, ~676 index pages, eight comuni.**
-- **The OMI data is still missing.** `phase0/data/` holds only
-  `id_anchors.json`; the orders deleted on 2026-08-29 were never re-placed
-  and `omi.py` exits 1. Re-order **Arezzo 2025-2 (and 2021-1) plus Perugia
-  for Citerna**, choosing the option WITH perimeters so the prefix is
-  `QIP_`. Until then §17.2's "OMI as external cross-check" cannot run and
-  **no band has been checked against any outside source** — worth saying out
-  loud before the bands go on a public page.
+- **The OMI data is back and loading — but Citerna still cannot be zoned.**
+  All three orders are on disk and intact (Arezzo 2025-2 and 2021-1 with
+  perimeters, Perugia 2025-2 without). `omi.py` now loads **133 band rows
+  across all eight comuni**, including 25 for Citerna, which had none for
+  three sessions. The remaining gap: the **Perugia order is `QI_`, not
+  `QIP_`** — quotations without zone perimeters — so Citerna's 69 listings
+  get bands but no point-in-polygon zone and fall back to the fascia guess
+  S003 replaced everywhere else. Re-order Perugia choosing the option
+  **WITH perimeters**, then point `zones.py` at the new zip. Bounded and
+  known; not a blocker for the pages.
 
 ## Already done in S005 — do not redo
 
@@ -78,6 +81,13 @@ the standard is published; what is missing is the pages.
 
 - **`phase0/.gitignore` governs `data/`, not the root one.** Editing the
   root looks like it works. `git check-ignore -v <path>` is the only proof.
+- **The AdE order number changes on every download.** `config.OMI_CSV_PATHS`
+  and `zones.KML_ZIP` name a directory like `QIP1422173_…`; a re-order
+  produces a different number and every one of those paths goes stale at
+  once. S005 recorded the OMI data as *missing* when all three orders were
+  sitting on disk intact and three path strings pointed at a directory that
+  no longer existed. **`ls phase0/data/` before concluding anything is
+  absent.**
 - **The sandbox mount cannot journal sqlite and refuses to unlink
   host-created files.** Work on a copy; deliver as SQL text. Never copy a
   `.sqlite` across it.

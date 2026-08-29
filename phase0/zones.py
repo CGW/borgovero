@@ -35,7 +35,11 @@ from pathlib import Path
 import config
 import db
 
-KML_ZIP = "data/QIP1421390_WRDCRS77S02Z404C/AR20252.zip"
+# Ships inside the Arezzo QIP order beside the VALORI/ZONE csvs. The order
+# number changes on every AdE download — this was 1421390 until the
+# 2026-08-29 re-order made it 1422173 — so keep it in step with
+# config.OMI_CSV_PATHS, which names the same directory.
+KML_ZIP = "data/QIP1422173_WRDCRS77S02Z404C/AR20252.zip"
 
 
 # --- KML parsing -------------------------------------------------------
