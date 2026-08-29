@@ -648,12 +648,18 @@ def price_cell(r, t):
     return f'<span class="lbl">{e(t["not_published"])}</span>'
 
 
-def property_page(item, sid, lang):
+def property_page(item, sid, lang, listing_rows=None):
     t, tt = TXT[lang], T.T[lang]
     import contradictions as C
     g, d = item["group"], item["d"]
     label = C.best_label(g)
     comune = comune_of(g).replace("-", " ").title()
+
+    # §4.4: link each member listing to its index page where one exists.
+    # Lazy import — index_site imports this module at top level, so the
+    # reverse import has to happen at call time, not load time.
+    listing_rows = listing_rows or {}
+    import index_site as IS
 
     rows = []
     for r in sorted(g, key=lambda x: (-(x["price"] or 0),
@@ -662,6 +668,11 @@ def property_page(item, sid, lang):
         link = (f' <a class="src" href="{e(r["url"])}" rel="nofollow noopener"'
                 f' target="_blank">{e(t["source"])} ↗</a>' if r.get("url")
                 else "")
+        nr = listing_rows.get((r["source"], str(r["source_id"])))
+        if nr is not None:
+            link += (f' <a class="src" href="{IS.listing_url(nr, lang)}">'
+                     + ("la nostra scheda" if lang == "it" else "our page")
+                     + "</a>")
         rows.append(
             f'<tr><td><b>{e(agency_of(r))}</b>{link}</td>'
             f'<td class="r">{e(r["agency_ref"] or "—")}</td>'
@@ -745,9 +756,30 @@ def property_page(item, sid, lang):
     desc = f'{comune} — {label}: ' + (
         f'{d["surface"][0]}–{d["surface"][1]} m²' if "surface" in d else
         t["title"])
+
+    # §8.1: Article with ClaimReview-shaped properties. The "claim" is
+    # never ours — it is the set of figures the agencies published; what
+    # we review is whether they concern the same property. Dates are the
+    # static verification date, not build time (§10.2).
+    schema = {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": f"{comune} — {label}",
+        "author": {"@type": "Organization", "name": "Borgo Vero"},
+        "about": {
+            "@type": "Claim",
+            "appearance": [{"@type": "CreativeWork", "url": r["url"]}
+                           for r in sorted(g, key=lambda x: str(x["url"]))
+                           if r.get("url")],
+        },
+        "claimReviewed": desc,
+        "reviewedBy": {"@type": "Organization", "name": "Borgo Vero"},
+        "verificationStatus": ("hand-verified 2026-08-29"
+                               if item.get("verified") else "unconfirmed"),
+    }
     return T.shell(f'{comune} — {label} | Borgo Vero', body, lang,
                    f'/{"en" if lang == "it" else "it"}/confronti/{sid}.html',
-                   desc)
+                   desc, schema)
 
 
 def index_page(items, sids, lang):
@@ -837,6 +869,21 @@ def main():
             pass
     sids = [slug(it) for it in keep]
 
+    # §4.4 backlinks: which listings carry an index page, by index_site's
+    # own publish gate (Tier A/B always; Tier C when it is a member of a
+    # published finding). Rendered from normalize's rows so the URLs
+    # match the index build slug for slug.
+    import normalize as NN
+    nrows, _nb, _ = NN.run(db_path=a.db,
+                           out_dir=os.path.dirname(os.path.abspath(a.db)))
+    kept_keys = {(g["source"], str(g["source_id"]))
+                 for it in keep for g in it["group"]}
+    listing_rows = {}
+    for r in nrows:
+        key = (r["source"], str(r["source_id"]))
+        if r["tier"] in ("A", "B") or key in kept_keys:
+            listing_rows[key] = r
+
     urls = []
     for lang in LANGS:
         write(f"{a.out}/{lang}/confronti/index.html",
@@ -861,7 +908,7 @@ def main():
         urls += [f"/{lang}/chi-siamo.html", f"/{lang}/metodologia.html"]
         for it, sid in zip(keep, sids):
             write(f"{a.out}/{lang}/confronti/{sid}.html",
-                  property_page(it, sid, lang))
+                  property_page(it, sid, lang, listing_rows))
             urls.append(f"/{lang}/confronti/{sid}.html")
 
     for lang in LANGS:

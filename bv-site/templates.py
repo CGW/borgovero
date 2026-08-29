@@ -248,6 +248,8 @@ def shell(title, body, lang, alt_href, desc="", schema=None):
     ld = (f'<script type="application/ld+json">{json.dumps(schema)}</script>'
           if schema else "")
     other = "en" if lang == "it" else "it"
+    data_label = "Dati aperti" if lang == "it" else "Open data"
+    data_href = "/dati/" if lang == "it" else "/en/dati.html"
     return f"""<!doctype html>
 <html lang="{lang}">
 <head>
@@ -272,7 +274,9 @@ def shell(title, body, lang, alt_href, desc="", schema=None):
   <p><b>{e(t['declaration'])}</b></p>
   <p><a href="/{lang}/chi-siamo.html">{e(t['about'])}</a> ·
      <a href="/{lang}/metodologia.html">{e(t['method'])}</a> ·
-     <a href="/{lang}/chi-siamo.html#correzioni">{e(t['corrections'])}</a></p>
+     <a href="/{lang}/comuni/">Comuni</a> ·
+     <a href="{data_href}">{data_label}</a> ·
+     <a href="/{lang}/correzioni/">{e(t['corrections'])}</a></p>
   <p>{e(t['sources_line'])}</p>
 </footer>
 </div>

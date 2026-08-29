@@ -552,34 +552,56 @@ def band_block(b, lang):
             f'<p class="note">{note}</p></div>')
 
 
-def agencies_block(rows_ab, lang):
+def agencies_block(rows, lang):
+    """Per-agency table over ALL in-scope rows of the comune, not only
+    the Tier A/B ones — the 'with a published price' column exists
+    precisely to count the listings the index cannot use, and computing
+    it over the usable subset would define the problem away (a bracket
+    agency would show 100% of its zero priced listings)."""
     it = lang == "it"
     per = {}
-    for r in rows_ab:
+    for r in rows:
         a = r["agency_name"] or r["source"]
-        per.setdefault(a, {"n": 0, "labels": set()})
+        per.setdefault(a, {"n": 0, "priced": 0, "labels": set()})
         per[a]["n"] += 1
+        if r["price_eur"]:
+            per[a]["priced"] += 1
         lab = re.sub(r"[\d.,\s]+", " ", str(r["stated_label"])).strip()
         if lab:
             per[a]["labels"].add(lab)
-    body = "".join(
-        f'<tr><td>{e(a)}</td><td class="r">{d["n"]}</td>'
-        f'<td class="r">{e(", ".join(sorted(d["labels"])) or "—")}</td></tr>'
-        for a, d in sorted(per.items()))
-    head = ("Agenzie attive e convenzioni di superficie" if it else
-            "Active agencies and surface conventions")
-    cols = (("Agenzia", "Annunci", "Etichetta superficie") if it else
-            ("Agency", "Listings", "Surface label"))
-    note = (("Nessuna agenzia definisce la base della superficie che "
-             "pubblica: una cifra sola, con l'etichetta indicata. È il "
-             "motivo per cui la conversione qui sopra esiste.") if it else
-            ("No agency defines the basis of the surface it publishes: a "
-             "single figure, with the label shown. That is why the "
-             "conversion above exists."))
+    body_rows = []
+    for a, d in sorted(per.items()):
+        pct = ("" if d["priced"] == d["n"] else
+               f' <b>({round(d["priced"] / d["n"] * 100)}%)</b>')
+        body_rows.append(
+            f'<tr><td>{e(a)}</td><td class="r">{d["n"]}</td>'
+            f'<td class="r">{d["priced"]}{pct}</td>'
+            f'<td class="r">{e(", ".join(sorted(d["labels"])) or "—")}</td>'
+            f"</tr>")
+    body = "".join(body_rows)
+    head = ("Agenzie attive: prezzi pubblicati e convenzioni di superficie"
+            if it else
+            "Active agencies: published prices and surface conventions")
+    cols = (("Agenzia", "Annunci", "Con prezzo", "Etichetta superficie")
+            if it else
+            ("Agency", "Listings", "With a price", "Surface label"))
+    note = (("Un annuncio senza prezzo pubblicato non è confrontabile e "
+             "non entra nell'indice — il conteggio completo per operatore "
+             "è in <a href=\"/it/guide/prezzi-non-pubblicati/\">chi "
+             "pubblica i prezzi</a>. Nessuna agenzia definisce la base "
+             "della superficie che pubblica: una cifra sola, con "
+             "l'etichetta indicata. È il motivo per cui la conversione "
+             "qui sopra esiste.") if it else
+            ("A listing without a published price cannot be compared and "
+             "does not enter the index — the full per-operator count is "
+             "in <a href=\"/en/guide/prezzi-non-pubblicati/\">who "
+             "publishes prices</a>. No agency defines the basis of the "
+             "surface it publishes: a single figure, with the label "
+             "shown. That is why the conversion above exists."))
+    ths = "".join(f'<th style="text-align:{"left" if i == 0 else "right"}">'
+                  f"{c}</th>" for i, c in enumerate(cols))
     return (f'<div class="block"><h2>{head}</h2><table class="rows">'
-            f'<tr><th style="text-align:left">{cols[0]}</th>'
-            f'<th style="text-align:right">{cols[1]}</th>'
-            f'<th style="text-align:right">{cols[2]}</th></tr>{body}</table>'
+            f"<tr>{ths}</tr>{body}</table>"
             f'<p class="note">{note}</p></div>')
 
 
@@ -687,7 +709,7 @@ def comune_page(comune, rows, b, findings, data_date, lang):
                  band_block(b, lang),
                  two_widths_block(b, lang)]
         if it:
-            parts += [agencies_block(rows_ab, lang),
+            parts += [agencies_block(rows, lang),
                       findings_block(comune, findings, lang),
                       listings_table([r for r in rows_ab if r["tier"] == "B"],
                                      lang),
@@ -713,6 +735,36 @@ def comune_page(comune, rows, b, findings, data_date, lang):
     # so these DO get the hreflang pair.
     return T.shell(f"{title} | Borgo Vero", body, lang,
                    comune_url(comune, other), desc, schema)
+
+
+def comuni_index(bands, by_comune, data_date, lang):
+    """/{lang}/comuni/ — the eight reports, one tile each. Lives under
+    the /comuni/ path, so lint's band check applies: every € on this page
+    is an interval, same as the reports it links."""
+    it = lang == "it"
+    tiles = []
+    for comune in sorted(by_comune):
+        b = bands.get(comune, {})
+        place = comune_title(comune)
+        if b.get("published"):
+            line = (f"€{interval(b['p50_lo'], b['p50_hi'], lang)}/m² "
+                    + ("(mediana, intervallo)" if it else "(median, interval)")
+                    + f" · {b['n']} " + ("annunci" if it else "listings"))
+        else:
+            line = ("nessuna fascia pubblicata" if it else
+                    "no band published")
+        tiles.append(f'<a class="tile" href="{comune_url(comune, lang)}">'
+                     f"<b>{e(place)}</b><small>{line}</small></a>")
+    h1 = ("I comuni della Valtiberina" if it else "The Valtiberina comuni")
+    sub = (("Una fascia per comune, sempre come intervallo, mai come "
+            "numero singolo. Dati al " if it else
+            "One band per comune, always an interval, never a single "
+            "number. Data as of ") + ddate(data_date, lang) + ".")
+    body = (f"<h1>{e(h1)}</h1><p class=\"sub\">{e(sub)}</p>"
+            f'<div class="grid">{"".join(tiles)}</div>')
+    other = "en" if it else "it"
+    return T.shell(f"{h1} | Borgo Vero", body, lang, f"/{other}/comuni/",
+                   sub)
 
 
 # --- Build -------------------------------------------------------------
@@ -788,6 +840,11 @@ def build(db_path, out):
             write(p, comune_page(comune, by_comune[comune], band,
                                  findings, data_date, lang))
             pages.append(comune_url(comune, lang))
+
+    for lang in LANGS:
+        write(f"{out}/{lang}/comuni/index.html",
+              comuni_index(bands, by_comune, data_date, lang))
+        pages.append(f"/{lang}/comuni/")
 
     # Sitemap fragment only. This build merges into the same web root as
     # dist-contradictions at deploy; robots.txt and the root redirect
