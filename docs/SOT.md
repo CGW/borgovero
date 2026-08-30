@@ -998,6 +998,23 @@ before the first request. And the standing rule is unchanged: publish
 the discrepancy, never the accusation — a mapping table is data, not a
 verdict.
 
+**Also in S008 — the candidate-pair deep photo pass.** Christopher
+flagged 80620571 (SICASA) / 126557887 (House) as an obvious duplicate:
+same street, identical €149.000, surfaces 110/115. The matcher held it
+back correctly — round price is weak evidence, floor (2°/3°) and vani
+(3/5) disagree, and the hashed photos are unrelated (closest cross-pair
+hamming 19). But only the FIRST 8 of 21/25 photos are hashed
+(`PHOTOS_PER_LISTING`), so shared images deeper in the galleries are
+invisible. Build a second pass: for pairs that already match on
+price+surface+street but lack identity evidence, hash the FULL
+galleries and re-test at hamming ≤ 5. Scoped to candidates it is a
+handful of pairs per ingest; raising the cap corpus-wide is the §10.1
+superlinear trap and stays off the table. Note the ceiling: two
+agencies shooting the same flat separately can never be joined by
+hashes — those pairs end at the §16d human look, where this one sits
+now. The same NOW/Romolini own-site URLs Christopher supplied for this
+flat are harvester inputs (above).
+
 **Also open after S007, smaller:** the archive layer (§6 — delisted
 pages currently 404, and every ingest without it deletes history), the
 weekly ingest heartbeat with §10.4 alerts, per-listing interval graphic
