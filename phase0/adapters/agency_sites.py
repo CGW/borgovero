@@ -1,4 +1,4 @@
-"""Agency-site link harvester — the four portal agencies' OWN websites.
+"""Agency-site link harvester — the portal agencies' OWN websites.
 
 WHAT THIS IS (SOT §15, S008)
 
@@ -8,13 +8,17 @@ so portal listings can carry an alternate URL (`url_alt`). This is NOT a
 new listing source: no new pages, no new typologies, nothing enters a
 band. It is a mapping table.
 
-WHY THESE FOUR
+COVERAGE (Christopher's list, 2026-08-30)
 
-Corpus weight on Immobiliare: Leonardi 159, House 127, Romolini 93,
-Cortesi 78+9 (two brands). itcasa/NOW/SICASA only if these go fast.
-Lancisi has ZERO portal rows — establish why before adding it anywhere.
+First wave, by corpus weight: Leonardi 159, House 127, Romolini 93,
+Cortesi 78+9 (two brands). Second wave, same session: NOW 36, SICASA
+35, ImmobilInvest 11, Lancisi (ZERO portal rows — the harvest is how
+"establish why" gets answered), and **Tiber Immobiliare has NO own
+website** (38 portal rows; Facebook and portals only) — an agency whose
+only public channel is other people's platforms, recorded here so
+nobody goes looking again.
 
-ACCESS — CHECKED 2026-08-30, BEFORE THE FIRST REQUEST
+ACCESS — CHECKED PER SITE, BEFORE THE FIRST REQUEST
 
     leonardiimmobiliare.it   robots.txt empty — everything permitted.
                              Toolset Views pagination on /ricerca/.
@@ -26,31 +30,35 @@ ACCESS — CHECKED 2026-08-30, BEFORE THE FIRST REQUEST
                              query strings is off the table. Path-based
                              per-comune index pages are allowed:
                              /it/comune/<comune>.php.
-    immobiliarecortesi.net   robots.txt empty. Per-comune pages
-                             /case-in-vendita-a-<comune>/ + /page/N/.
-                             NOTE: index cards carry NO surface — the
-                             matcher may fetch a single detail page for
-                             a unique price+comune candidate (the §15
+    immobiliarecortesi.net   robots.txt empty. Località archives from
+                             the sitemap. Index cards carry NO surface —
+                             the matcher may fetch a single detail page
+                             for a unique price+comune candidate (§15's
                              "unless a match is impossible without the
                              detail" clause), never in bulk.
+    nowestate.it             robots: wp-admin only. CPT `estate`, pages
+                             under /proprieta/; /citt/sansepolcro/ is
+                             the one città archive. Cards carry price
+                             but rarely mq — detail clause as Cortesi.
+    sicasaimmobiliare.info   robots.txt empty. House's theme family:
+                             /localita-immobile/<comune>/, cards carry
+                             "80 mq ca." and "Rif: 0857".
+    immobiliarelancisi.it    robots.txt empty. Same family:
+                             /localita-immobile/<comune>/, cards carry
+                             "94 mq" and "Rif. 4478" — and the price is
+                             often "Info in agenzia".
+    immobilinvestre.altervista.org
+                             robots.txt empty. Static HTML: listings sit
+                             INLINE on compravendite.html ("Rif. 687 -
+                             Vendesi villetta … di 140 mq - € 200.000"),
+                             no per-listing URLs — url_alt points at the
+                             catalog page, site_ref carries the Rif.
 
-These are four small businesses, not portals. Politeness is the
-agencies.py doctrine: long delay, identifiable UA, on-disk cache so a
-reparse never refetches, one retry with a hard backoff, and
-fetcher.robots_status() consulted per URL — a "disallowed" answer skips
-the URL and says so, it does not get worked around.
-
-WHAT EACH INDEX CARD GIVES (verified on live pages, 2026-08-30)
-
-    leonardi   #7893 | VILLETTA SINGOLA CON GIARDINO | Località:
-               San Giustino (Provincia di Perugia) | Prezzo: € 250.000 |
-               Superficie: 150 mq  → ref, price, mq, comune
-    house      Appartamento ristrutturato … | Rif. 6346 - Sansepolcro -
-               … | € 168.000 or "Info in agenzia" | 88 m²
-    romolini   Rif. 2253 | Casale | Baldaccio | € 560.000 | Interni:
-               230 mq | Esterni: 7,60 ha  (ref == the URL's id suffix)
-    cortesi    Casa Singola con Giardino. | Sansepolcro zona Aboca |
-               € 100.000 | BCS/265 | categories | camere/bagni — NO mq
+These are small businesses, not portals. Politeness is the agencies.py
+doctrine: long delay, identifiable UA, on-disk cache so a reparse never
+refetches, one retry with a hard backoff, and fetcher.robots_status()
+consulted per URL — a "disallowed" answer skips the URL and says so, it
+does not get worked around.
 """
 
 import re
@@ -71,14 +79,28 @@ LEONARDI = "https://www.leonardiimmobiliare.it"
 HOUSE = "https://www.houseimmobiliare.info"
 ROMOLINI = "https://www.romolini.com"
 CORTESI = "https://www.immobiliarecortesi.net"
+NOW = "https://nowestate.it"
+SICASA = "https://www.sicasaimmobiliare.info"
+LANCISI = "https://www.immobiliarelancisi.it"
+IMMOBILINVEST = "http://www.immobilinvestre.altervista.org"
 
-# site key -> portal agency_name values it must match against
+# site key -> portal agency_name values it must match against. The
+# spellings are the PORTAL'S, verified against the database — "Now
+# Immobilare srl" really is missing an i there.
 PORTAL_AGENCIES = {
     "leonardi": ["Leonardi Immobiliare"],
     "house": ["House Immobiliare"],
     "romolini": ["Agenzia Romolini Immobiliare S.r.l."],
     "cortesi": ["Agenzia Immobiliare Cortesi", "Cortesi Luxury Real Estate"],
+    "now": ["Now Immobilare srl"],
+    "sicasa": ["SICASA Immobiliare"],
+    "lancisi": [],   # zero portal rows — the harvest itself is the answer
+    "immobilinvest": ["Immobilinvest Real Estate"],
 }
+
+# No own website (checked 2026-08-30): Tiber Immobiliare (38 portal
+# rows) — Facebook and portals only. Not a harvester bug; a fact.
+NO_OWN_SITE = {"Tiberimmobiliare": "tiberimmobiliare — no own website"}
 
 # Anything under €10.000 on an agency index is a rent (Leonardi shows
 # "€ 650" monthly beside €250.000 sales). Kept in the harvest, flagged,
@@ -118,6 +140,25 @@ def resolve_comune(raw):
     return n
 
 
+def comune_in_text(s):
+    """The corpus comune a free-text phrase names, or None. Substring
+    search over the normalized text ('APPARTAMENTO PIEVE SANTO STEFANO'
+    → pieve-santo-stefano); non-corpus places resolve to None, never to
+    a half-match."""
+    n = config.norm_comune(s)
+    if not n:
+        return None
+    corpus = {config.norm_comune(c) for c in config.COMUNI}
+    for slug, needles in _COMUNE_ALIASES:
+        target = config.norm_comune(slug)
+        if target not in corpus:
+            continue
+        for needle in needles:
+            if needle in n:
+                return slug if "-" in slug else slug
+    return None
+
+
 def _get(url):
     """Polite fetch: robots first, cache-aware, extra delay when live."""
     status = fetcher.robots_status(url)
@@ -142,6 +183,37 @@ def _strip(html):
 def _price(seg):
     m = re.search(r"€\s*([\d.]{4,})", seg)
     return int(m.group(1).replace(".", "")) if m else None
+
+
+def _merge_windows(html, urls, u, parse):
+    """Parse EVERY window a card's link opens, and merge the fields.
+
+    These themes render one card as two or three anchors to the same
+    listing — photo wrapper, info block, "dettaglio immobile" button —
+    and the figures do not all live behind the same one. House's data
+    sits behind the last, SICASA splits price/Rif from title/mq across
+    two, and NOW puts everything behind the MIDDLE anchor with empty
+    windows either side. Picking one occurrence is a guess that silently
+    yields all-None rows (NOW harvested 50 cards and 0 prices that way);
+    merging field-by-field lets the decoy windows contribute nothing and
+    costs one extra regex pass over text already in memory.
+    """
+    merged = None
+    for m in re.finditer(re.escape(u), html):
+        pos = m.start()
+        nxt = len(html)
+        for v in urls:
+            p = html.find(v, pos + 1)
+            if p != -1 and p > pos:
+                nxt = min(nxt, p)
+        got = parse(_strip(html[pos:min(nxt, pos + 9000)]))
+        if merged is None:
+            merged = got
+            continue
+        for k, val in got.items():
+            if merged.get(k) in (None, 0) and val not in (None, 0):
+                merged[k] = val
+    return merged or {}
 
 
 def _row(site, url, ref=None, price=None, mq=None, comune=None, title=None,
@@ -219,59 +291,75 @@ def _parse_leonardi_page(html):
     return out
 
 
-# --- House -------------------------------------------------------------
+# --- The localita-immobile family: House, SICASA, Lancisi --------------
+#
+# Three agencies, one WordPress theme family, one archive shape:
+# /localita-immobile/<comune>/page/N/. Card details differ slightly
+# ('88 m²' vs '80 mq ca.', 'Rif. 6346' vs 'Rif: 0857') and the regexes
+# below accept all of them.
 
-def harvest_house(max_pages=30):
+def _harvest_localita(site, base, max_pages=30):
     rows = {}
     for comune in config.COMUNI:
         for n in range(1, max_pages + 1):
-            url = (f"{HOUSE}/localita-immobile/{comune}/" if n == 1 else
-                   f"{HOUSE}/localita-immobile/{comune}/page/{n}/")
+            url = (f"{base}/localita-immobile/{comune}/" if n == 1 else
+                   f"{base}/localita-immobile/{comune}/page/{n}/")
             html = _get(url)
             if not html:
                 break
-            got = _parse_house_page(html, comune)
+            got = _parse_localita_page(site, base, html, comune)
             new = [r for r in got if r["url"] not in rows]
             for r in got:
                 rows[r["url"]] = r
-            print(f"  house {comune} page {n}: {len(got)} cards "
+            print(f"  {site} {comune} page {n}: {len(got)} cards "
                   f"({len(new)} new), {len(rows)} total")
             if not got or not new:
                 break
     return list(rows.values())
 
 
-def _parse_house_page(html, comune):
+def _parse_localita_page(site, base, html, comune):
+    """One card per /immobile/ link; fields merged across every window
+    that link opens (see _merge_windows — the themes disagree about
+    which anchor carries the figures)."""
     out = []
     urls = list(dict.fromkeys(re.findall(
-        r'href="(' + re.escape(HOUSE) + r'/immobile/[^"]+)"', html)))
-    for u in urls:
-        # The info card is the LAST occurrence of the link — earlier
-        # ones wrap the photo and the favourites widget.
-        pos = html.rfind(u)
-        nxt = len(html)
-        for v in urls:
-            if v == u:
-                continue
-            p = html.find(v, pos + 1)
-            if p != -1:
-                nxt = min(nxt, p)
-        t = _strip(html[pos:min(nxt, pos + 9000)])
+        r'href="(' + re.escape(base) + r'/immobile/[^"]+)"', html)))
+
+    def parse(t):
         mr = re.search(r"Rif\.?\s*[:.]?\s*([\w/-]+)", t)
-        # The theme renders '88 m²' as '88|m|2' once tags collapse to
-        # pipes — allow pipe or space between the number and the unit.
-        ms = re.search(r"(\d+)[\s|]*m[\s|]*[²2]", t)
-        mt = re.search(r'([A-ZÀ-Ù][^|]{4,140}?)\s*\|\s*Rif',
-                       t.replace("\n", " "))
-        withheld = 1 if "Info in agenzia" in t else 0
-        out.append(_row(
-            "house", u, ref=mr.group(1) if mr else None,
-            price=_price(t), price_withheld=withheld,
-            mq=int(ms.group(1)) if ms else None,
-            comune=comune,
-            title=mt.group(1) if mt else None,
-        ))
+        # '88 m²' collapses to '88|m|2' once tags become pipes; SICASA
+        # and Lancisi write '80 mq ca.' / '94 mq' instead. Accept both.
+        ms = re.search(r"(\d+)[\s|]*m[\s|]*[²2]|(\d+)\s*mq", t)
+        mt = re.search(r'([A-ZÀ-Ù][^|]{4,140}?)\s*\|', t.replace("\n", " "))
+        return {
+            "ref": mr.group(1) if mr else None,
+            "price": _price(t),
+            "price_withheld": 1 if "Info in agenzia" in t else 0,
+            "mq": int(ms.group(1) or ms.group(2)) if ms else None,
+            "title": mt.group(1) if mt else None,
+        }
+
+    for u in urls:
+        out.append(_row(site, u, comune=comune,
+                        **_merge_windows(html, urls, u, parse)))
     return out
+
+
+def harvest_house(max_pages=30):
+    return _harvest_localita("house", HOUSE, max_pages)
+
+
+def harvest_sicasa(max_pages=30):
+    return _harvest_localita("sicasa", SICASA, max_pages)
+
+
+def harvest_lancisi(max_pages=30):
+    """Lancisi has ZERO portal rows, so nothing here can ever match —
+    the harvest exists to answer WHY an agency with a full catalog is
+    absent from the portal corpus (SOT §15). Count the withheld prices:
+    the first card read said 'Info in agenzia'."""
+    return _harvest_localita("lancisi", LANCISI, max_pages)
 
 
 # --- Romolini ----------------------------------------------------------
@@ -411,14 +499,111 @@ def _parse_cortesi_page(html, comune):
 
 def cortesi_detail_mq(url):
     """The sanctioned single-detail-page exception (SOT §15): fetch ONE
-    Cortesi detail page to read the surface for a unique price+comune
-    candidate. Never called in bulk — the matcher gates it."""
+    detail page to read the surface for a unique price+comune candidate.
+    Never called in bulk — the matcher gates it. Named for Cortesi,
+    where the need first arose; NOW's cards have the same gap."""
     html = _get(url)
     if not html:
         return None
     t = _strip(html)
-    m = re.search(r"(\d+)\s*m\s*[²2]|Superficie\D{0,20}(\d+)|(\d+)\s*mq", t)
+    m = re.search(r"(\d+)[\s|]*m[\s|]*[²2]|Superficie\D{0,20}(\d+)|"
+                  r"(\d+)\s*mq", t)
     return int(next(g for g in m.groups() if g)) if m else None
+
+
+# --- NOW (nowestate.it) -------------------------------------------------
+
+def harvest_now(max_pages=30):
+    """NOW's only server-rendered index is the HOMEPAGE.
+
+    Checked 2026-08-30: /properties/ and /citt/sansepolcro/ each return
+    ~117 KB of chrome with ZERO listing links — those archives are built
+    client-side — and the estate sitemap holds a single loc. The
+    homepage carries ~50 real cards, so that is what gets harvested.
+    Rendering JS to reach the rest is the line this project has already
+    declined at Immobiliare's detail pages and Idealista (§9, §12.4):
+    partial coverage, said out loud, is the honest outcome."""
+    rows = {}
+    html = _get(f"{NOW}/")
+    if html:
+        for r in _parse_now_page(html):
+            rows[r["url"]] = r
+    print(f"  now: {len(rows)} cards off the homepage — /properties/ and "
+          f"/citt/ render client-side and serve none")
+    return list(rows.values())
+
+
+def _parse_now_page(html):
+    out = []
+    urls = list(dict.fromkeys(re.findall(
+        r'href="(' + re.escape(NOW) + r'/proprieta/[^"]+)"', html)))
+    def parse(t):
+        ms = re.search(r"(\d+)[\s|]*m[\s|]*[²2]|(\d+)\s*mq", t)
+        mt = re.search(r"\|(?:Vendita|Affitto)\|([^|]{4,140})\|", t)
+        return {
+            "ref": None,
+            "price": _price(t),
+            "price_withheld": 0,
+            "mq": int(ms.group(1) or ms.group(2)) if ms else None,
+            "title": mt.group(1) if mt else None,
+        }
+
+    for u in urls:
+        fields = _merge_windows(html, urls, u, parse)
+        # The comune is in the anchors' title attributes
+        # (title="APPARTAMENTO SAN GIUSTINO") more reliably than in the
+        # card body — and the three anchors of one card do not all
+        # carry the same title, so read them all. Non-corpus places
+        # (San Giustino, Perugia) resolve to None, never a half-match.
+        comune = None
+        for m in re.finditer(re.escape(u) + r'"[^>]*?title="([^"]+)"', html):
+            comune = comune_in_text(m.group(1))
+            if comune:
+                break
+        rent = bool(re.search(re.escape(u) + r'[\s\S]{0,400}?Affitto', html))
+        out.append(_row("now", u, comune=comune, **fields)
+                   | ({"is_rent": 1} if rent else {}))
+    return out
+
+
+# --- ImmobilInvest (static altervista pages) ---------------------------
+
+def harvest_immobilinvest():
+    """Listings sit INLINE on compravendite.html — no per-listing URLs
+    exist, so every row's url is the catalog page and the Rif is the
+    identity. The €-sign arrives mojibake'd ('â¬') from the host's
+    charset mismatch; normalized before parsing."""
+    url = f"{IMMOBILINVEST}/compravendite.html"
+    html = _get(url)
+    if not html:
+        return []
+    # UTF-8 '€' (e2 82 ac) read as latin-1 arrives as 'â\x82¬'.
+    html = (html.replace("â¬", "€")
+                .replace("â¬", "€").replace("&euro;", "€"))
+    t = _strip(html)
+    out = []
+    marks = list(re.finditer(r"Rif\.?\s*(\d+)\s*[-–]\s*", t))
+    for i, m in enumerate(marks):
+        end = marks[i + 1].start() if i + 1 < len(marks) else len(t)
+        seg = t[m.start():end]
+        ms = re.search(r"di\s+(\d+)\s*mq|(\d+)\s*mq", seg)
+        comune = comune_in_text(seg[:200])
+        rent = bool(re.search(r"affitt", seg.lower()[:80]))
+        # All inline listings share one page; the fragment keeps each
+        # row unique in the (site, url) primary key and is harmless in
+        # a browser. No such anchor exists on the page — the Rif column
+        # is the real identity.
+        out.append(_row(
+            "immobilinvest", f"{url}#rif-{m.group(1)}", ref=m.group(1),
+            price=_price(seg),
+            mq=int(ms.group(1) or ms.group(2)) if ms else None,
+            comune=comune,
+            title=seg[m.end() - m.start():][:80].split("|")[0].strip()
+                  or None,
+        ) | ({"is_rent": 1} if rent else {}))
+    print(f"  immobilinvest: {len(out)} inline listings on "
+          f"compravendite.html")
+    return out
 
 
 HARVESTERS = {
@@ -426,4 +611,8 @@ HARVESTERS = {
     "house": harvest_house,
     "romolini": harvest_romolini,
     "cortesi": harvest_cortesi,
+    "now": harvest_now,
+    "sicasa": harvest_sicasa,
+    "lancisi": harvest_lancisi,
+    "immobilinvest": harvest_immobilinvest,
 }

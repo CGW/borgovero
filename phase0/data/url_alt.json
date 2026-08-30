@@ -9,7 +9,7 @@
   "site_price": 92000,
   "site_mq": 165,
   "site_comune": "sansepolcro",
-  "site_title": null
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -21,7 +21,7 @@
   "site_price": 275000,
   "site_mq": 180,
   "site_comune": "capresemichelangelo",
-  "site_title": "Porzioni di casolari con terreno e annessi"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -33,7 +33,7 @@
   "site_price": 80000,
   "site_mq": 250,
   "site_comune": "pievesantostefano",
-  "site_title": "Terra-cielo con garage in posizione centrale"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -201,7 +201,7 @@
   "site_price": 370000,
   "site_mq": 110,
   "site_comune": "monterchi",
-  "site_title": "Villetta moderna con giardino"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -249,7 +249,7 @@
   "site_price": 130000,
   "site_mq": 90,
   "site_comune": "anghiari",
-  "site_title": "Porzione di casale con ampio terreno"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -273,7 +273,31 @@
   "site_price": 200000,
   "site_mq": 150,
   "site_comune": "sansepolcro",
-  "site_title": "Cielo-terra completamente ristrutturato nel centro storico"
+  "site_title": "Vendita"
+ },
+ {
+  "source": "immobiliare",
+  "source_id": "109886017",
+  "site": "sicasa",
+  "url_alt": "https://www.sicasaimmobiliare.info/immobile/porzione-di-casolare-in-pietra/",
+  "match_route": "price+surface+comune",
+  "site_ref": "0314",
+  "site_price": 350000,
+  "site_mq": 110,
+  "site_comune": "pievesantostefano",
+  "site_title": "Porzione di casolare in pietra"
+ },
+ {
+  "source": "immobiliare",
+  "source_id": "110244985",
+  "site": "sicasa",
+  "url_alt": "https://www.sicasaimmobiliare.info/immobile/casa-singola-con-terreno-2-54218/",
+  "match_route": "price+surface+comune",
+  "site_ref": "0684",
+  "site_price": 220000,
+  "site_mq": 130,
+  "site_comune": "sansepolcro",
+  "site_title": "Casa singola con terreno"
  },
  {
   "source": "immobiliare",
@@ -309,7 +333,7 @@
   "site_price": 129000,
   "site_mq": 130,
   "site_comune": "sansepolcro",
-  "site_title": "Appartamento con tre camere su palazzina con ascensore"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -321,7 +345,7 @@
   "site_price": 140000,
   "site_mq": 150,
   "site_comune": "sansepolcro",
-  "site_title": "Cielo-terra indipendente di 150mq"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -397,6 +421,18 @@
  },
  {
   "source": "immobiliare",
+  "source_id": "112943269",
+  "site": "sicasa",
+  "url_alt": "https://www.sicasaimmobiliare.info/immobile/appartamento-oroscopo-56203/",
+  "match_route": "price+surface+comune",
+  "site_ref": "0705",
+  "site_price": 128000,
+  "site_mq": 90,
+  "site_comune": "sansepolcro",
+  "site_title": "Appartamento in ottima zona panoramica e residenziale"
+ },
+ {
+  "source": "immobiliare",
   "source_id": "113010535",
   "site": "house",
   "url_alt": "https://www.houseimmobiliare.info/immobile/appartamento-di-recente-costruzione-231773/",
@@ -405,7 +441,7 @@
   "site_price": 235000,
   "site_mq": 156,
   "site_comune": "sansepolcro",
-  "site_title": "Appartamento in bifamiliare di recente costruzione"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -429,7 +465,7 @@
   "site_price": 250000,
   "site_mq": 120,
   "site_comune": "capresemichelangelo",
-  "site_title": "Villetta singola con ampio terreno"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -465,7 +501,7 @@
   "site_price": 98000,
   "site_mq": 110,
   "site_comune": "sansepolcro",
-  "site_title": "Terra-cielo nel centro storico"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -477,7 +513,7 @@
   "site_price": 120000,
   "site_mq": 270,
   "site_comune": "badiatedalda",
-  "site_title": "Porzione di casolare con tre appartamenti e piscina"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -489,7 +525,19 @@
   "site_price": 50000,
   "site_mq": 280,
   "site_comune": "badiatedalda",
-  "site_title": "Casa singola da ristrutturare"
+  "site_title": "Vendita"
+ },
+ {
+  "source": "immobiliare",
+  "source_id": "114884409",
+  "site": "sicasa",
+  "url_alt": "https://www.sicasaimmobiliare.info/immobile/appartamento-in-centro-storico-3-58325/",
+  "match_route": "price+surface+comune",
+  "site_ref": "0728",
+  "site_price": 135000,
+  "site_mq": 90,
+  "site_comune": "sansepolcro",
+  "site_title": "Appartamento in centro storico"
  },
  {
   "source": "immobiliare",
@@ -501,7 +549,7 @@
   "site_price": 130000,
   "site_mq": 135,
   "site_comune": "sansepolcro",
-  "site_title": "Appartamento con balconi e garage"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -513,7 +561,7 @@
   "site_price": 85000,
   "site_mq": 80,
   "site_comune": "capresemichelangelo",
-  "site_title": "Porzione di casolare in pietra con terreno"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -537,7 +585,19 @@
   "site_price": 335000,
   "site_mq": 215,
   "site_comune": "anghiari",
-  "site_title": "Porzione di casolare con giardino e piscina"
+  "site_title": "Vendita"
+ },
+ {
+  "source": "immobiliare",
+  "source_id": "116633903",
+  "site": "sicasa",
+  "url_alt": "https://www.sicasaimmobiliare.info/immobile/cieloterra-in-zona-collinare-59956/",
+  "match_route": "price+surface+comune",
+  "site_ref": "0758",
+  "site_price": 38000,
+  "site_mq": 70,
+  "site_comune": "pievesantostefano",
+  "site_title": "Cieloterra in zona collinare"
  },
  {
   "source": "immobiliare",
@@ -547,9 +607,9 @@
   "match_route": "price+surface+comune",
   "site_ref": "5351",
   "site_price": 175000,
-  "site_mq": 115,
+  "site_mq": 110,
   "site_comune": "anghiari",
-  "site_title": "Casa singola in campagna con annessi e terreno"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -561,7 +621,7 @@
   "site_price": 40000,
   "site_mq": 200,
   "site_comune": "pievesantostefano",
-  "site_title": "Rudere con terreno"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -573,7 +633,7 @@
   "site_price": 58000,
   "site_mq": 100,
   "site_comune": "capresemichelangelo",
-  "site_title": "Appartamento ristrutturato con vista panoramica"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -613,6 +673,18 @@
  },
  {
   "source": "immobiliare",
+  "source_id": "119085433",
+  "site": "sicasa",
+  "url_alt": "https://www.sicasaimmobiliare.info/immobile/appartamento-in-ottima-posizione-fuori-le-mura-2-61555/",
+  "match_route": "price+surface+comune",
+  "site_ref": "0777",
+  "site_price": 90000,
+  "site_mq": 75,
+  "site_comune": "sansepolcro",
+  "site_title": "Appartamento in ottima posizione fuori le mura"
+ },
+ {
+  "source": "immobiliare",
   "source_id": "119144259",
   "site": "cortesi",
   "url_alt": "https://www.immobiliarecortesi.net/immobile/cielo-terra-di-mq160-con-ampio-fondo-e-resede-esclusivo-centro-storico-sansepolcro-208904/",
@@ -633,7 +705,19 @@
   "site_price": 105000,
   "site_mq": 75,
   "site_comune": "capresemichelangelo",
-  "site_title": "Appartamento con ingresso indipendente in bifamiliare"
+  "site_title": "Vendita"
+ },
+ {
+  "source": "immobiliare",
+  "source_id": "119601919",
+  "site": "sicasa",
+  "url_alt": "https://www.sicasaimmobiliare.info/immobile/cielo-terra-con-quattro-camere-62533/",
+  "match_route": "price+surface+comune",
+  "site_ref": "0791",
+  "site_price": 154000,
+  "site_mq": 130,
+  "site_comune": "sansepolcro",
+  "site_title": "Porzione cielo-terra con ingresso indipendente e quattro camere"
  },
  {
   "source": "immobiliare",
@@ -681,7 +765,7 @@
   "site_price": 179000,
   "site_mq": 127,
   "site_comune": "capresemichelangelo",
-  "site_title": "Villa in legno panoramica con terreno"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -693,7 +777,31 @@
   "site_price": 265000,
   "site_mq": 250,
   "site_comune": "monterchi",
-  "site_title": "Casa singola con giardino"
+  "site_title": "Vendita"
+ },
+ {
+  "source": "immobiliare",
+  "source_id": "119914626",
+  "site": "sicasa",
+  "url_alt": "https://www.sicasaimmobiliare.info/immobile/casa-singola-con-giardino-privato-62934/",
+  "match_route": "price+surface+comune",
+  "site_ref": "0799",
+  "site_price": 190000,
+  "site_mq": 85,
+  "site_comune": "sansepolcro",
+  "site_title": "Casa singola con giardino privato"
+ },
+ {
+  "source": "immobiliare",
+  "source_id": "120074522",
+  "site": "sicasa",
+  "url_alt": "https://www.sicasaimmobiliare.info/immobile/trilocale-ristrutturato-in-centro-storico-63014/",
+  "match_route": "price+surface+comune",
+  "site_ref": "0800",
+  "site_price": 90000,
+  "site_mq": 60,
+  "site_comune": "sansepolcro",
+  "site_title": "Trilocale completamente ristrutturato in centro storico"
  },
  {
   "source": "immobiliare",
@@ -705,7 +813,7 @@
   "site_price": 490000,
   "site_mq": 540,
   "site_comune": "sansepolcro",
-  "site_title": "Casale storico ristrutturato con ampio terreno"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -717,7 +825,7 @@
   "site_price": 59000,
   "site_mq": 100,
   "site_comune": "monterchi",
-  "site_title": "Cielo-terra in centro storico da ristrutturare"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -729,7 +837,7 @@
   "site_price": 195000,
   "site_mq": 250,
   "site_comune": "sansepolcro",
-  "site_title": "Cielo-terra in centro storico da ristrutturare"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -741,7 +849,19 @@
   "site_price": 145000,
   "site_mq": 100,
   "site_comune": "sansepolcro",
-  "site_title": "Appartamento di 100mq con garage e soffitta"
+  "site_title": "Vendita"
+ },
+ {
+  "source": "immobiliare",
+  "source_id": "120698434",
+  "site": "now",
+  "url_alt": "https://nowestate.it/proprieta/dimora-storica-2025009",
+  "match_route": "price+surface+comune (detail)",
+  "site_ref": null,
+  "site_price": 425000,
+  "site_mq": 350,
+  "site_comune": null,
+  "site_title": null
  },
  {
   "source": "immobiliare",
@@ -753,7 +873,7 @@
   "site_price": 78000,
   "site_mq": 80,
   "site_comune": "badiatedalda",
-  "site_title": "Porzione di casolare in pietra immersa nel verde"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -763,9 +883,9 @@
   "match_route": "price+surface+comune",
   "site_ref": "5648",
   "site_price": 430000,
-  "site_mq": 240,
+  "site_mq": 205,
   "site_comune": "anghiari",
-  "site_title": "Casa singola con due appartamenti indipendenti"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -777,7 +897,7 @@
   "site_price": 45000,
   "site_mq": 70,
   "site_comune": "pievesantostefano",
-  "site_title": "Cielo-terra con giardino e terrazzo"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -789,7 +909,7 @@
   "site_price": 295000,
   "site_mq": 190,
   "site_comune": "sansepolcro",
-  "site_title": "Casa singola panoramica con giardino e garage doppio"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -817,6 +937,18 @@
  },
  {
   "source": "immobiliare",
+  "source_id": "121724518",
+  "site": "now",
+  "url_alt": "https://nowestate.it/proprieta/appartamento-nel-cuore-di-anghiari-fascino-storico-vista-mozzafiato-e-versatilit---abitativa-2025013",
+  "match_route": "price+surface+comune",
+  "site_ref": null,
+  "site_price": 230000,
+  "site_mq": 140,
+  "site_comune": "anghiari",
+  "site_title": null
+ },
+ {
+  "source": "immobiliare",
   "source_id": "121971040",
   "site": "house",
   "url_alt": "https://www.houseimmobiliare.info/immobile/appartamento-da-ristrutturare-in-centro-storico-a-sansepolcro-110-mq-con-cantina-e-fondo-325960/",
@@ -825,7 +957,7 @@
   "site_price": 64000,
   "site_mq": 110,
   "site_comune": "sansepolcro",
-  "site_title": "Appartamento da ristrutturare nel centro storico"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -837,7 +969,7 @@
   "site_price": 235000,
   "site_mq": 120,
   "site_comune": "anghiari",
-  "site_title": "Casa singola con annesso e 3 ettari di terreno"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -849,7 +981,7 @@
   "site_price": 25000,
   "site_mq": 40,
   "site_comune": "monterchi",
-  "site_title": "Appartamento con ingresso indipendente"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -945,7 +1077,7 @@
   "site_price": 128000,
   "site_mq": 95,
   "site_comune": "sansepolcro",
-  "site_title": "Appartamento in posizione collinare con garage e giardino"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -981,7 +1113,7 @@
   "site_price": 30000,
   "site_mq": 110,
   "site_comune": "pievesantostefano",
-  "site_title": "Casa singola da ristrutturare con terreno"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -993,7 +1125,31 @@
   "site_price": 69000,
   "site_mq": 45,
   "site_comune": "sansepolcro",
-  "site_title": "Terreno panoramico con annesso abitativo"
+  "site_title": "Vendita"
+ },
+ {
+  "source": "immobiliare",
+  "source_id": "122838394",
+  "site": "sicasa",
+  "url_alt": "https://www.sicasaimmobiliare.info/immobile/cielo-terra-diviso-in-due-unita-abitative-in-centro-storico-64606/",
+  "match_route": "price+surface+comune",
+  "site_ref": "0815",
+  "site_price": 110000,
+  "site_mq": 180,
+  "site_comune": "sansepolcro",
+  "site_title": "Cielo terra diviso in due unità abitative in centro storico"
+ },
+ {
+  "source": "immobiliare",
+  "source_id": "123314597",
+  "site": "now",
+  "url_alt": "https://nowestate.it/proprieta/appartamento-luminoso-di-recente-costruzione-2025020",
+  "match_route": "price+surface+comune",
+  "site_ref": null,
+  "site_price": 218000,
+  "site_mq": 95,
+  "site_comune": null,
+  "site_title": null
  },
  {
   "source": "immobiliare",
@@ -1005,7 +1161,7 @@
   "site_price": 218000,
   "site_mq": 88,
   "site_comune": "sansepolcro",
-  "site_title": "Luminoso appartamento di recente costruzione"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -1017,7 +1173,7 @@
   "site_price": 167000,
   "site_mq": 105,
   "site_comune": "sansepolcro",
-  "site_title": "Appartamento con terrazza abitabile e garage"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -1029,7 +1185,7 @@
   "site_price": 140000,
   "site_mq": 300,
   "site_comune": "pievesantostefano",
-  "site_title": "Cielo-terra di ampie dimensioni con terrazzo panoramico"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -1041,7 +1197,7 @@
   "site_price": 250000,
   "site_mq": 125,
   "site_comune": "anghiari",
-  "site_title": "Luminoso appartamento ristrutturato con vista panoramica"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -1065,7 +1221,7 @@
   "site_price": 180000,
   "site_mq": 360,
   "site_comune": "sansepolcro",
-  "site_title": "Casolare indipendente al grezzo"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -1113,7 +1269,7 @@
   "site_price": 250000,
   "site_mq": 246,
   "site_comune": "sansepolcro",
-  "site_title": "Porzione di casa colonica con giardino privato"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -1125,7 +1281,7 @@
   "site_price": 135000,
   "site_mq": 90,
   "site_comune": "sansepolcro",
-  "site_title": "Appartamento con ampio giardino e ingresso indipendente"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -1209,7 +1365,7 @@
   "site_price": 280000,
   "site_mq": 180,
   "site_comune": "sansepolcro",
-  "site_title": "Casa indipendente su tre lati con giardino e garage"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -1257,7 +1413,7 @@
   "site_price": 130000,
   "site_mq": 180,
   "site_comune": "anghiari",
-  "site_title": "Casolare con giardino di 180mq"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -1281,7 +1437,7 @@
   "site_price": 39000,
   "site_mq": 150,
   "site_comune": "monterchi",
-  "site_title": "Cielo-terra di 150 mq da ristrutturare"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -1293,7 +1449,19 @@
   "site_price": 185000,
   "site_mq": 130,
   "site_comune": "sansepolcro",
-  "site_title": "Ampio appartamento con mansarda e terrazza panoramica"
+  "site_title": "Vendita"
+ },
+ {
+  "source": "immobiliare",
+  "source_id": "126280385",
+  "site": "house",
+  "url_alt": "https://www.houseimmobiliare.info/immobile/cielo-terra-indipendente-con-giardino-privato-382926/",
+  "match_route": "price+surface+comune",
+  "site_ref": "6061",
+  "site_price": 75000,
+  "site_mq": 100,
+  "site_comune": "capresemichelangelo",
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -1317,7 +1485,7 @@
   "site_price": 14900,
   "site_mq": 35,
   "site_comune": "pievesantostefano",
-  "site_title": "Appartamento in zona collinare con posto auto"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -1341,7 +1509,19 @@
   "site_price": 45000,
   "site_mq": 120,
   "site_comune": "sansepolcro",
-  "site_title": "Casolare da ristrutturare con giardino"
+  "site_title": "Vendita"
+ },
+ {
+  "source": "immobiliare",
+  "source_id": "126625735",
+  "site": "now",
+  "url_alt": "https://nowestate.it/proprieta/appartamento-esclusivo-2025027",
+  "match_route": "price+surface+comune",
+  "site_ref": null,
+  "site_price": 370000,
+  "site_mq": 150,
+  "site_comune": null,
+  "site_title": null
  },
  {
   "source": "immobiliare",
@@ -1353,7 +1533,7 @@
   "site_price": 140000,
   "site_mq": 85,
   "site_comune": "sansepolcro",
-  "site_title": "Appartamento in centro storico con ingresso indipendente"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -1417,6 +1597,30 @@
  },
  {
   "source": "immobiliare",
+  "source_id": "127018939",
+  "site": "house",
+  "url_alt": "https://www.houseimmobiliare.info/immobile/appartamento-in-trifamiliare-150-mq-con-giardino-e-mansarda-393248/",
+  "match_route": "price+surface+comune",
+  "site_ref": "6109",
+  "site_price": 260000,
+  "site_mq": 150,
+  "site_comune": "sansepolcro",
+  "site_title": "Vendita"
+ },
+ {
+  "source": "immobiliare",
+  "source_id": "127019929",
+  "site": "house",
+  "url_alt": "https://www.houseimmobiliare.info/immobile/nuda-proprieta-casa-singola-con-due-appartamenti-di-200mq-393255/",
+  "match_route": "price+surface+comune",
+  "site_ref": "6107",
+  "site_price": 198000,
+  "site_mq": 200,
+  "site_comune": "sansepolcro",
+  "site_title": "Vendita"
+ },
+ {
+  "source": "immobiliare",
   "source_id": "127220797",
   "site": "romolini",
   "url_alt": "https://www.romolini.com/it/cieloterra-ristrutturato-in-vendita-sansepolcro-2956",
@@ -1426,6 +1630,30 @@
   "site_mq": 205,
   "site_comune": "sansepolcro",
   "site_title": "CIELOTERRA FINEMENTE RISTRUTTURATO IN VENDITA A SANSEPOLCRO, TOSCANA"
+ },
+ {
+  "source": "immobiliare",
+  "source_id": "127243191",
+  "site": "now",
+  "url_alt": "https://nowestate.it/proprieta/appartamento-in-piazza-torre-di-berta-2026002",
+  "match_route": "price+surface+comune",
+  "site_ref": null,
+  "site_price": 149000,
+  "site_mq": 115,
+  "site_comune": null,
+  "site_title": null
+ },
+ {
+  "source": "immobiliare",
+  "source_id": "127250915",
+  "site": "now",
+  "url_alt": "https://nowestate.it/proprieta/complesso-immobiliare-2026003",
+  "match_route": "price+comune",
+  "site_ref": null,
+  "site_price": 45000,
+  "site_mq": 0,
+  "site_comune": null,
+  "site_title": null
  },
  {
   "source": "immobiliare",
@@ -1473,7 +1701,7 @@
   "site_price": 380000,
   "site_mq": 170,
   "site_comune": "sansepolcro",
-  "site_title": "Porzione con due appartamenti e giardino privato"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -1509,7 +1737,7 @@
   "site_price": 178000,
   "site_mq": 110,
   "site_comune": "sansepolcro",
-  "site_title": "Appartamento in bifamiliare con garage e giardino"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -1533,7 +1761,7 @@
   "site_price": 370000,
   "site_mq": 210,
   "site_comune": "sansepolcro",
-  "site_title": "Casa singola con due appartamenti, giardino e garage"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -1557,7 +1785,7 @@
   "site_price": 96000,
   "site_mq": 130,
   "site_comune": "monterchi",
-  "site_title": "Casa libera su tre lati con possibilità di due unità"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -1593,7 +1821,7 @@
   "site_price": 150000,
   "site_mq": 115,
   "site_comune": "anghiari",
-  "site_title": "Appartamento a piano primo con garage e rata d&#8217;orto"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -1621,15 +1849,15 @@
  },
  {
   "source": "immobiliare",
-  "source_id": "128651060",
-  "site": "house",
-  "url_alt": "https://www.houseimmobiliare.info/immobile/villa-indipendente-con-piscina-e-terreno-privato-411152/",
+  "source_id": "128603268",
+  "site": "sicasa",
+  "url_alt": "https://www.sicasaimmobiliare.info/immobile/cielo-terra-completamente-ristrutturato-in-posizione-centralissima-67412/",
   "match_route": "price+surface+comune",
-  "site_ref": "6194",
-  "site_price": 580000,
-  "site_mq": 288,
-  "site_comune": "monterchi",
-  "site_title": "Villa indipendente con piscina e terreno privato"
+  "site_ref": "0845",
+  "site_price": 130000,
+  "site_mq": 105,
+  "site_comune": "sansepolcro",
+  "site_title": "Cielo terra completamente ristrutturato in posizione centralissima"
  },
  {
   "source": "immobiliare",
@@ -1641,7 +1869,7 @@
   "site_price": 75000,
   "site_mq": 140,
   "site_comune": "badiatedalda",
-  "site_title": "Casa indipendente panoramica con terreno"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -1654,6 +1882,78 @@
   "site_mq": 160,
   "site_comune": "sansepolcro",
   "site_title": "VILLETTA COMPLETAMENTE RESTAURATA"
+ },
+ {
+  "source": "immobiliare",
+  "source_id": "128802976",
+  "site": "immobilinvest",
+  "url_alt": "http://www.immobilinvestre.altervista.org/compravendite.html#rif-846",
+  "match_route": "price+surface+comune",
+  "site_ref": "846",
+  "site_price": 150000,
+  "site_mq": 120,
+  "site_comune": "sansepolcro",
+  "site_title": "Vendesi appartamento a Sansepolcro di 120 mq - € 150.000"
+ },
+ {
+  "source": "immobiliare",
+  "source_id": "128803004",
+  "site": "immobilinvest",
+  "url_alt": "http://www.immobilinvestre.altervista.org/compravendite.html#rif-826",
+  "match_route": "price+surface+comune",
+  "site_ref": "826",
+  "site_price": 200000,
+  "site_mq": 120,
+  "site_comune": "sansepolcro",
+  "site_title": "Vendesi bellissimo appartamento a Sansepolcro di 120 mq - € 200.000"
+ },
+ {
+  "source": "immobiliare",
+  "source_id": "128803006",
+  "site": "immobilinvest",
+  "url_alt": "http://www.immobilinvestre.altervista.org/compravendite.html#rif-793",
+  "match_route": "price+surface+comune",
+  "site_ref": "793",
+  "site_price": 120000,
+  "site_mq": 140,
+  "site_comune": "anghiari",
+  "site_title": "Vendesi casale ad Anghiari di 140 mq - € 120.000"
+ },
+ {
+  "source": "immobiliare",
+  "source_id": "128803018",
+  "site": "immobilinvest",
+  "url_alt": "http://www.immobilinvestre.altervista.org/compravendite.html#rif-741",
+  "match_route": "price+surface+comune",
+  "site_ref": "741",
+  "site_price": 129000,
+  "site_mq": 120,
+  "site_comune": "sansepolcro",
+  "site_title": "Vendesi luminoso appartamento a Sansepolcro di 120 mq - € 129.000"
+ },
+ {
+  "source": "immobiliare",
+  "source_id": "128803024",
+  "site": "immobilinvest",
+  "url_alt": "http://www.immobilinvestre.altervista.org/compravendite.html#rif-765",
+  "match_route": "price+surface+comune",
+  "site_ref": "765",
+  "site_price": 140000,
+  "site_mq": 135,
+  "site_comune": "sansepolcro",
+  "site_title": "Vendesi appartamento a Sansepolcro di 135 mq - €140.000"
+ },
+ {
+  "source": "immobiliare",
+  "source_id": "128803038",
+  "site": "immobilinvest",
+  "url_alt": "http://www.immobilinvestre.altervista.org/compravendite.html#rif-369",
+  "match_route": "price+surface+comune",
+  "site_ref": "369",
+  "site_price": 180000,
+  "site_mq": 160,
+  "site_comune": "sansepolcro",
+  "site_title": "Vendesi elegante appartamento a Sansepolcro di 160 mq - € 180.000"
  },
  {
   "source": "immobiliare",
@@ -1677,7 +1977,19 @@
   "site_price": 250000,
   "site_mq": 170,
   "site_comune": "sansepolcro",
-  "site_title": "Appartamento in bifamiliare a piano terra"
+  "site_title": "Vendita"
+ },
+ {
+  "source": "immobiliare",
+  "source_id": "129121380",
+  "site": "sicasa",
+  "url_alt": "https://www.sicasaimmobiliare.info/immobile/appartamento-ristrutturato-in-palazzo-signorile-67676/",
+  "match_route": "price+surface+comune",
+  "site_ref": "0848",
+  "site_price": 165000,
+  "site_mq": 90,
+  "site_comune": "sansepolcro",
+  "site_title": "Appartamento ristrutturato in palazzo signorile"
  },
  {
   "source": "immobiliare",
@@ -1761,7 +2073,7 @@
   "site_price": 130000,
   "site_mq": 120,
   "site_comune": "sansepolcro",
-  "site_title": "Cielo-terra ristrutturato"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -1809,7 +2121,7 @@
   "site_price": 52000,
   "site_mq": 45,
   "site_comune": "pievesantostefano",
-  "site_title": "Comodo appartamento di 45mq al secondo piano"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -1881,7 +2193,7 @@
   "site_price": 230000,
   "site_mq": 110,
   "site_comune": "sansepolcro",
-  "site_title": "Casa singola con giardino e garage"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -1893,7 +2205,7 @@
   "site_price": 118000,
   "site_mq": 85,
   "site_comune": "sansepolcro",
-  "site_title": "Appartamento in casa colonica"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -1917,7 +2229,7 @@
   "site_price": 220000,
   "site_mq": 100,
   "site_comune": "anghiari",
-  "site_title": "Appartamento ristrutturato con giardino e garage"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -1929,7 +2241,19 @@
   "site_price": 99000,
   "site_mq": 80,
   "site_comune": "anghiari",
-  "site_title": "Appartamento al primo piano in centro storico"
+  "site_title": "Vendita"
+ },
+ {
+  "source": "immobiliare",
+  "source_id": "130662744",
+  "site": "sicasa",
+  "url_alt": "https://www.sicasaimmobiliare.info/immobile/cielo-terra-indipendente-nel-cuore-del-centro-storico-68602/",
+  "match_route": "price+surface+comune",
+  "site_ref": "0856",
+  "site_price": 85000,
+  "site_mq": 66,
+  "site_comune": "sansepolcro",
+  "site_title": "Cielo terra indipendente nel cuore del centro storico"
  },
  {
   "source": "immobiliare",
@@ -1941,7 +2265,7 @@
   "site_price": 180000,
   "site_mq": 100,
   "site_comune": "sansepolcro",
-  "site_title": "Appartamento ristrutturato con ascensore e garage"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -1954,6 +2278,18 @@
   "site_mq": 200,
   "site_comune": "anghiari",
   "site_title": "Anghiari"
+ },
+ {
+  "source": "immobiliare",
+  "source_id": "130944642",
+  "site": "sicasa",
+  "url_alt": "https://www.sicasaimmobiliare.info/immobile/luminoso-appartamento-a-piano-rialzato-di-quadrifamiliare-68696/",
+  "match_route": "price+surface+comune",
+  "site_ref": "0857",
+  "site_price": 129000,
+  "site_mq": 85,
+  "site_comune": "sansepolcro",
+  "site_title": "Luminoso appartamento a piano rialzato di quadrifamiliare"
  },
  {
   "source": "immobiliare",
@@ -1977,7 +2313,7 @@
   "site_price": 430000,
   "site_mq": 350,
   "site_comune": "sansepolcro",
-  "site_title": "Casa singola con due appartamenti"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -1989,7 +2325,7 @@
   "site_price": 590000,
   "site_mq": 300,
   "site_comune": "anghiari",
-  "site_title": "Casale in pietra panoramico con annesso e terreno"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -2001,7 +2337,7 @@
   "site_price": 29000,
   "site_mq": 70,
   "site_comune": "pievesantostefano",
-  "site_title": "Appartamento alle Valdazze con garage"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -2013,7 +2349,7 @@
   "site_price": 188000,
   "site_mq": 200,
   "site_comune": "sansepolcro",
-  "site_title": "Laboratorio di 200 mq"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -2025,7 +2361,7 @@
   "site_price": 88000,
   "site_mq": 95,
   "site_comune": "sansepolcro",
-  "site_title": "Appartamento con terrazza abitabile nel cuore del centro storico"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -2085,7 +2421,7 @@
   "site_price": 880000,
   "site_mq": 370,
   "site_comune": "sansepolcro",
-  "site_title": "Villa signorile nelle campagne di Sansepolcro"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -2169,7 +2505,7 @@
   "site_price": 490000,
   "site_mq": 255,
   "site_comune": "sansepolcro",
-  "site_title": "Villetta signorile libera su tre lati con giardino"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -2281,6 +2617,42 @@
  },
  {
   "source": "immobiliare",
+  "source_id": "80620519",
+  "site": "sicasa",
+  "url_alt": "https://www.sicasaimmobiliare.info/immobile/appartamento-di-recente-ristrutturazione-20286/",
+  "match_route": "price+surface+comune",
+  "site_ref": "0798",
+  "site_price": 170000,
+  "site_mq": 120,
+  "site_comune": "sansepolcro",
+  "site_title": "Appartamento completamente ristrutturato in centro storico"
+ },
+ {
+  "source": "immobiliare",
+  "source_id": "80620557",
+  "site": "sicasa",
+  "url_alt": "https://www.sicasaimmobiliare.info/immobile/cielo-terra-con-terrazzo-panoramico-in-centro-22135/",
+  "match_route": "price+surface+comune",
+  "site_ref": "0113",
+  "site_price": 220000,
+  "site_mq": 100,
+  "site_comune": "sansepolcro",
+  "site_title": "Cielo terra con terrazzo panoramico"
+ },
+ {
+  "source": "immobiliare",
+  "source_id": "80620627",
+  "site": "sicasa",
+  "url_alt": "https://www.sicasaimmobiliare.info/immobile/cielo-terra-completamente-ristrutturato-ottime-rifiniture-20978/",
+  "match_route": "price+surface+comune",
+  "site_ref": "0773",
+  "site_price": 200000,
+  "site_mq": 100,
+  "site_comune": "sansepolcro",
+  "site_title": "Appartamento completamente ristrutturato in centro storico"
+ },
+ {
+  "source": "immobiliare",
   "source_id": "81892712",
   "site": "leonardi",
   "url_alt": "https://www.leonardiimmobiliare.it/immobile/appartamento-due-camere-con-garage-4/",
@@ -2337,7 +2709,7 @@
   "site_price": 60000,
   "site_mq": 100,
   "site_comune": "pievesantostefano",
-  "site_title": "Porzione di casolare immersa nel verde"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -2349,7 +2721,7 @@
   "site_price": 199000,
   "site_mq": 100,
   "site_comune": "sansepolcro",
-  "site_title": "Cielo-terra ristrutturato con affaccio sul corso"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -2373,7 +2745,7 @@
   "site_price": 250000,
   "site_mq": 250,
   "site_comune": "monterchi",
-  "site_title": "Casa singola bifamiliare con due appartamenti indipendenti"
+  "site_title": "Vendita"
  },
  {
   "source": "immobiliare",
@@ -2421,6 +2793,18 @@
   "site_price": 190000,
   "site_mq": 180,
   "site_comune": "sansepolcro",
-  "site_title": "Casolare indipendente con giardino e annesso"
+  "site_title": "Vendita"
+ },
+ {
+  "source": "immobiliare",
+  "source_id": "98918504",
+  "site": "sicasa",
+  "url_alt": "https://www.sicasaimmobiliare.info/immobile/appartamento-con-ingresso-indipendente-e-rata-di-giardino-2/",
+  "match_route": "price+surface+comune",
+  "site_ref": "0534",
+  "site_price": 250000,
+  "site_mq": 200,
+  "site_comune": "anghiari",
+  "site_title": "Appartamento con ingresso indipendente e rata di giardino"
  }
 ]

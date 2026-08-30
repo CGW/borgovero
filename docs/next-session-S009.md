@@ -54,18 +54,30 @@ agency's caption.
    were never published because each needs reading. Decide whether the
    Leonardi case (and how many of the 45 caption-override rows) become
    a finding page, through the §16d gate as always.
-2. **itcasa / NOW / SICASA site harvesters** — the first four went
-   fine, and the €149k pair shows why NOW's own-site slugs matter
-   (Piazza Torre di Berta vs Via XX Settembre). Same rules: robots
-   first, index only, no-coin-flip. Note Lancisi still has ZERO portal
-   rows — establish why before adding it anywhere.
+2. **itcasa (40 portal rows) and the harvest's known gaps.** All nine
+   of Christopher's named agencies are done (S008 second wave); itcasa
+   is the largest agency still unharvested. The gaps worth revisiting,
+   each measured rather than assumed: **NOW** yields only its homepage
+   (50 cards) because `/properties/` and `/citt/` render client-side —
+   revisit only if NOW ever ships server-rendered archives, not by
+   adding a headless browser; **Romolini** is capped by its robots.txt
+   forbidding query-param pagination; **Cortesi/NOW** index cards carry
+   no surface, so each unique candidate spends one detail fetch.
+   **Tiber has no website at all** and **Lancisi has 68 own-site
+   listings and zero portal rows** — both are recorded findings now,
+   not to-dos.
 3. **Archive layer (§6)** — now URGENT-adjacent: S008 just deliberately
    churned 45 URLs and had nowhere to point their history. Every
    ingest without it deletes history, and the heartbeat multiplies
    ingests.
-4. **Weekly heartbeat** — the parser count is now **7** (immobiliare,
-   marcellini, centogambe, + four site indices). The harvester should
-   join the weekly task the way photomatch did.
+4. **Weekly heartbeat** — the parser count is now **11** (immobiliare,
+   marcellini, centogambe, + eight agency-site indices). Each is
+   weekly maintenance forever, and small-business WordPress themes get
+   re-skinned without notice, so the heartbeat needs a per-site
+   "harvested N, matched M" alert: a theme change shows up as a site
+   silently dropping to zero cards, which is exactly what NOW looked
+   like before `_merge_windows` (50 cards, 0 prices — a parse failure
+   that reported success).
 
 ## Cautions carried forward
 

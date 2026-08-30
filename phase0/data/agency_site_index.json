@@ -887,7 +887,7 @@
   "price_withheld": 0,
   "mq": 130,
   "comune": "sansepolcro",
-  "title": "Ampio appartamento con mansarda e terrazza panoramica",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -898,7 +898,7 @@
   "price_withheld": 0,
   "mq": 380,
   "comune": "sansepolcro",
-  "title": "Ampio capannone in zona industriale",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -909,7 +909,7 @@
   "price_withheld": 0,
   "mq": 130,
   "comune": "anghiari",
-  "title": "Annesso con ampio terreno",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -920,7 +920,7 @@
   "price_withheld": 0,
   "mq": 250,
   "comune": "monterchi",
-  "title": "Casa singola con giardino",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -931,7 +931,7 @@
   "price_withheld": 0,
   "mq": 105,
   "comune": "sansepolcro",
-  "title": "Appartamento con terrazza abitabile e garage",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -942,7 +942,7 @@
   "price_withheld": 0,
   "mq": 115,
   "comune": "anghiari",
-  "title": "Appartamento a piano primo con garage e rata d&#8217;orto",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -953,7 +953,7 @@
   "price_withheld": 0,
   "mq": 80,
   "comune": "anghiari",
-  "title": "Appartamento al primo piano in centro storico",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -964,7 +964,7 @@
   "price_withheld": 0,
   "mq": 85,
   "comune": "sansepolcro",
-  "title": "Appartamento in casa colonica",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -975,7 +975,7 @@
   "price_withheld": 0,
   "mq": 70,
   "comune": "pievesantostefano",
-  "title": "Appartamento alle Valdazze con garage",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -986,7 +986,7 @@
   "price_withheld": 1,
   "mq": 110,
   "comune": "anghiari",
-  "title": "Appartamento in centro storico con vista su Anghiari",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -997,7 +997,7 @@
   "price_withheld": 0,
   "mq": 90,
   "comune": "sansepolcro",
-  "title": "Appartamento con ampio giardino e ingresso indipendente",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1006,9 +1006,9 @@
   "ref": "5970",
   "price": 170000,
   "price_withheld": 0,
-  "mq": 120,
+  "mq": 200,
   "comune": "sansepolcro",
-  "title": "Appartamento con ampio giardino esclusivo",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1019,7 +1019,7 @@
   "price_withheld": 0,
   "mq": 195,
   "comune": "sansepolcro",
-  "title": "Appartamento con ingresso indipendente",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1030,7 +1030,7 @@
   "price_withheld": 0,
   "mq": 75,
   "comune": "capresemichelangelo",
-  "title": "Appartamento con ingresso indipendente in bifamiliare",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1041,7 +1041,7 @@
   "price_withheld": 0,
   "mq": 70,
   "comune": "pievesantostefano",
-  "title": "Cielo-terra con giardino e terrazzo",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1052,7 +1052,7 @@
   "price_withheld": 0,
   "mq": 120,
   "comune": "sansepolcro",
-  "title": "Appartamento indipendente con giardino e garage",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1063,7 +1063,7 @@
   "price_withheld": 0,
   "mq": 40,
   "comune": "monterchi",
-  "title": "Appartamento con ingresso indipendente",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1074,7 +1074,7 @@
   "price_withheld": 0,
   "mq": 95,
   "comune": "sansepolcro",
-  "title": "Appartamento con terrazza abitabile nel cuore del centro storico",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1085,7 +1085,7 @@
   "price_withheld": 0,
   "mq": 120,
   "comune": "sansepolcro",
-  "title": "Appartamento di 120mq con ampio terrazzo",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1096,7 +1096,7 @@
   "price_withheld": 1,
   "mq": 116,
   "comune": "sansepolcro",
-  "title": "Appartamento di prestigio con terrazzo panoramico",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1107,7 +1107,7 @@
   "price_withheld": 0,
   "mq": 110,
   "comune": "sansepolcro",
-  "title": "Appartamento da ristrutturare nel centro storico",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1118,7 +1118,7 @@
   "price_withheld": 1,
   "mq": 140,
   "comune": "sansepolcro",
-  "title": "Appartamento in bifamiliare di ampia metratura",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1129,7 +1129,7 @@
   "price_withheld": 0,
   "mq": 135,
   "comune": "sansepolcro",
-  "title": "Appartamento con balconi e garage",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1140,7 +1140,7 @@
   "price_withheld": 0,
   "mq": 120,
   "comune": "sansepolcro",
-  "title": "Appartamento di ampia metratura al primo piano",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1151,7 +1151,7 @@
   "price_withheld": 0,
   "mq": 156,
   "comune": "sansepolcro",
-  "title": "Appartamento in bifamiliare di recente costruzione",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1162,7 +1162,7 @@
   "price_withheld": 0,
   "mq": 170,
   "comune": "sansepolcro",
-  "title": "Appartamento in bifamiliare a piano terra",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1173,7 +1173,7 @@
   "price_withheld": 0,
   "mq": 110,
   "comune": "sansepolcro",
-  "title": "Appartamento in bifamiliare con garage e giardino",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1184,7 +1184,7 @@
   "price_withheld": 0,
   "mq": 85,
   "comune": "sansepolcro",
-  "title": "Appartamento in centro storico con ingresso indipendente",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1195,7 +1195,7 @@
   "price_withheld": 0,
   "mq": 35,
   "comune": "pievesantostefano",
-  "title": "Appartamento in zona collinare con posto auto",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1206,7 +1206,7 @@
   "price_withheld": 0,
   "mq": 130,
   "comune": "sansepolcro",
-  "title": "Appartamento con tre camere su palazzina con ascensore",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1217,7 +1217,7 @@
   "price_withheld": 0,
   "mq": 95,
   "comune": "sansepolcro",
-  "title": "Appartamento in posizione collinare con garage e giardino",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1226,9 +1226,9 @@
   "ref": "6109",
   "price": 260000,
   "price_withheld": 0,
-  "mq": 187,
+  "mq": 150,
   "comune": "sansepolcro",
-  "title": "Appartamento in trifamiliare con giardino e garage",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1239,7 +1239,7 @@
   "price_withheld": 1,
   "mq": 140,
   "comune": "sansepolcro",
-  "title": "Ampio appartamento con balconi e garage",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1250,7 +1250,7 @@
   "price_withheld": 0,
   "mq": 88,
   "comune": "sansepolcro",
-  "title": "Luminoso appartamento di recente costruzione",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1261,7 +1261,7 @@
   "price_withheld": 0,
   "mq": 90,
   "comune": "anghiari",
-  "title": "Appartamento in trifamiliare con garage e giardino",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1272,7 +1272,7 @@
   "price_withheld": 0,
   "mq": 120,
   "comune": "sansepolcro",
-  "title": "Appartamento ristrutturato nel centro storico",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1283,7 +1283,7 @@
   "price_withheld": 0,
   "mq": 100,
   "comune": "capresemichelangelo",
-  "title": "Appartamento ristrutturato a Caprese Michelangelo",
+  "title": "Affitto",
   "is_rent": 0
  },
  {
@@ -1294,7 +1294,7 @@
   "price_withheld": 0,
   "mq": 100,
   "comune": "capresemichelangelo",
-  "title": "Appartamento ristrutturato con vista panoramica",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1305,7 +1305,7 @@
   "price_withheld": 0,
   "mq": 100,
   "comune": "sansepolcro",
-  "title": "Appartamento ristrutturato con ascensore e garage",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1316,7 +1316,7 @@
   "price_withheld": 0,
   "mq": 150,
   "comune": "sansepolcro",
-  "title": "Appartamento ristrutturato di 150 mq in bifamiliare",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1327,7 +1327,7 @@
   "price_withheld": 0,
   "mq": 100,
   "comune": "anghiari",
-  "title": "Appartamento ristrutturato con giardino e garage",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1338,7 +1338,7 @@
   "price_withheld": 1,
   "mq": 88,
   "comune": "sansepolcro",
-  "title": "Appartamento ristrutturato con ingresso indipendente, terrazzo e garage",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1349,7 +1349,7 @@
   "price_withheld": 0,
   "mq": 185,
   "comune": "sansepolcro",
-  "title": "Appartamento in palazzo storico del &#8216;600 con soffitta abitabile",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1360,7 +1360,7 @@
   "price_withheld": 0,
   "mq": 100,
   "comune": "sansepolcro",
-  "title": "Appartamento di 100mq con garage e soffitta",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1371,7 +1371,7 @@
   "price_withheld": 0,
   "mq": 200,
   "comune": "sansepolcro",
-  "title": "Cielo-terra in classe A4 con garage e resede esclusiva",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1380,9 +1380,9 @@
   "ref": "6212",
   "price": 190000,
   "price_withheld": 0,
-  "mq": 100,
+  "mq": 104,
   "comune": "sansepolcro",
-  "title": "Attività di pasticceria con laboratorio attrezzato",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1393,7 +1393,7 @@
   "price_withheld": 0,
   "mq": 360,
   "comune": "anghiari",
-  "title": "Capannone",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1404,7 +1404,7 @@
   "price_withheld": 1,
   "mq": 400,
   "comune": "sansepolcro",
-  "title": "Capannone industriale con resede esclusivo",
+  "title": "Affitto",
   "is_rent": 0
  },
  {
@@ -1415,7 +1415,7 @@
   "price_withheld": 0,
   "mq": 267,
   "comune": "pievesantostefano",
-  "title": "Casa colonica panoramica con ampio giardino",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1426,7 +1426,7 @@
   "price_withheld": 0,
   "mq": 246,
   "comune": "sansepolcro",
-  "title": "Porzione di casa colonica con giardino privato",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1437,7 +1437,7 @@
   "price_withheld": 0,
   "mq": 120,
   "comune": "anghiari",
-  "title": "Casa singola con annesso e 3 ettari di terreno",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1448,7 +1448,7 @@
   "price_withheld": 0,
   "mq": 190,
   "comune": "sansepolcro",
-  "title": "Casa singola panoramica con giardino e garage doppio",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1459,7 +1459,7 @@
   "price_withheld": 0,
   "mq": 140,
   "comune": "badiatedalda",
-  "title": "Casa indipendente panoramica con terreno",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1470,7 +1470,7 @@
   "price_withheld": 0,
   "mq": 180,
   "comune": "sansepolcro",
-  "title": "Casa indipendente su tre lati con giardino e garage",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1481,7 +1481,7 @@
   "price_withheld": 0,
   "mq": 130,
   "comune": "monterchi",
-  "title": "Casa libera su tre lati con possibilità di due unità",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1492,7 +1492,7 @@
   "price_withheld": 0,
   "mq": 300,
   "comune": "sansepolcro",
-  "title": "Casa singola al grezzo avanzato con giardino",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1503,7 +1503,7 @@
   "price_withheld": 0,
   "mq": 250,
   "comune": "monterchi",
-  "title": "Casa singola bifamiliare con due appartamenti indipendenti",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1514,7 +1514,7 @@
   "price_withheld": 0,
   "mq": 350,
   "comune": "sansepolcro",
-  "title": "Casa singola con due appartamenti",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1525,7 +1525,7 @@
   "price_withheld": 0,
   "mq": 210,
   "comune": "sansepolcro",
-  "title": "Casa singola con due appartamenti, giardino e garage",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1534,9 +1534,9 @@
   "ref": "5648",
   "price": 430000,
   "price_withheld": 0,
-  "mq": 240,
+  "mq": 205,
   "comune": "anghiari",
-  "title": "Casa singola con due appartamenti indipendenti",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1547,7 +1547,7 @@
   "price_withheld": 0,
   "mq": 300,
   "comune": "capresemichelangelo",
-  "title": "Casa singola con giardino e dependance",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1558,7 +1558,7 @@
   "price_withheld": 0,
   "mq": 110,
   "comune": "sansepolcro",
-  "title": "Casa singola con giardino e garage",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1569,7 +1569,7 @@
   "price_withheld": 0,
   "mq": 195,
   "comune": "sansepolcro",
-  "title": "Casa singola con giardino privato",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1580,7 +1580,7 @@
   "price_withheld": 0,
   "mq": 120,
   "comune": "capresemichelangelo",
-  "title": "Villetta singola con ampio terreno",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1589,9 +1589,9 @@
   "ref": "5351",
   "price": 175000,
   "price_withheld": 0,
-  "mq": 115,
+  "mq": 110,
   "comune": "anghiari",
-  "title": "Casa singola in campagna con annessi e terreno",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1602,7 +1602,7 @@
   "price_withheld": 0,
   "mq": 150,
   "comune": "capresemichelangelo",
-  "title": "Casa singola libera su quattro lati in zona centrale",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1613,7 +1613,7 @@
   "price_withheld": 0,
   "mq": 110,
   "comune": "pievesantostefano",
-  "title": "Casa singola da ristrutturare con terreno",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1624,7 +1624,7 @@
   "price_withheld": 0,
   "mq": 280,
   "comune": "badiatedalda",
-  "title": "Casa singola da ristrutturare",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1635,7 +1635,7 @@
   "price_withheld": 0,
   "mq": 190,
   "comune": "pievesantostefano",
-  "title": "Casa singola da ristrutturare con giardino",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1646,7 +1646,7 @@
   "price_withheld": 0,
   "mq": 540,
   "comune": "sansepolcro",
-  "title": "Casale storico ristrutturato con ampio terreno",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1657,7 +1657,7 @@
   "price_withheld": 0,
   "mq": 180,
   "comune": "anghiari",
-  "title": "Casolare con giardino di 180mq",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1668,7 +1668,7 @@
   "price_withheld": 0,
   "mq": 180,
   "comune": "sansepolcro",
-  "title": "Casolare indipendente con giardino e annesso",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1679,7 +1679,7 @@
   "price_withheld": 0,
   "mq": 120,
   "comune": "sansepolcro",
-  "title": "Casolare da ristrutturare con giardino",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1690,7 +1690,7 @@
   "price_withheld": 0,
   "mq": 547,
   "comune": "pievesantostefano",
-  "title": "Casolare in pietra con terreno da ristrutturare",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1701,7 +1701,7 @@
   "price_withheld": 0,
   "mq": 360,
   "comune": "sansepolcro",
-  "title": "Casolare indipendente al grezzo",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1712,7 +1712,7 @@
   "price_withheld": 0,
   "mq": 300,
   "comune": "anghiari",
-  "title": "Casale in pietra panoramico con annesso e terreno",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1723,7 +1723,7 @@
   "price_withheld": 0,
   "mq": 180,
   "comune": "capresemichelangelo",
-  "title": "Porzioni di casolari con terreno e annessi",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1734,7 +1734,7 @@
   "price_withheld": 0,
   "mq": 250,
   "comune": "sansepolcro",
-  "title": "Cielo-terra in centro storico da ristrutturare",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1745,7 +1745,7 @@
   "price_withheld": 0,
   "mq": 185,
   "comune": "anghiari",
-  "title": "Cielo-terra da ristrutturare ad Anghiari",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1756,7 +1756,7 @@
   "price_withheld": 0,
   "mq": 150,
   "comune": "monterchi",
-  "title": "Cielo-terra di 150 mq da ristrutturare",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1767,7 +1767,7 @@
   "price_withheld": 0,
   "mq": 150,
   "comune": "sansepolcro",
-  "title": "Cielo-terra allo stato grezzo diviso in due unità",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1778,7 +1778,7 @@
   "price_withheld": 0,
   "mq": 100,
   "comune": "monterchi",
-  "title": "Cielo-terra in centro storico da ristrutturare",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1787,9 +1787,9 @@
   "ref": "6061",
   "price": 75000,
   "price_withheld": 0,
-  "mq": 150,
+  "mq": 100,
   "comune": "capresemichelangelo",
-  "title": "Cielo-terra indipendente con giardino privato",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1800,7 +1800,7 @@
   "price_withheld": 0,
   "mq": 150,
   "comune": "sansepolcro",
-  "title": "Cielo-terra completamente ristrutturato nel centro storico",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1811,7 +1811,7 @@
   "price_withheld": 0,
   "mq": 120,
   "comune": "sansepolcro",
-  "title": "Cielo-terra ristrutturato",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1822,7 +1822,7 @@
   "price_withheld": 0,
   "mq": 100,
   "comune": "sansepolcro",
-  "title": "Cielo-terra ristrutturato con affaccio sul corso",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1833,7 +1833,7 @@
   "price_withheld": 0,
   "mq": 45,
   "comune": "pievesantostefano",
-  "title": "Comodo appartamento di 45mq al secondo piano",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1844,7 +1844,7 @@
   "price_withheld": 0,
   "mq": 30,
   "comune": "sansepolcro",
-  "title": "Garage nel centro storico di Sansepolcro",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1855,7 +1855,7 @@
   "price_withheld": 0,
   "mq": 200,
   "comune": "sansepolcro",
-  "title": "Laboratorio di 200 mq",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1866,7 +1866,7 @@
   "price_withheld": 1,
   "mq": 160,
   "comune": "sansepolcro",
-  "title": "Locale commerciale di 160mq",
+  "title": "Affitto",
   "is_rent": 0
  },
  {
@@ -1877,7 +1877,7 @@
   "price_withheld": 0,
   "mq": 125,
   "comune": "anghiari",
-  "title": "Luminoso appartamento ristrutturato con vista panoramica",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1886,9 +1886,9 @@
   "ref": "6107",
   "price": 198000,
   "price_withheld": 0,
-  "mq": 225,
+  "mq": 200,
   "comune": "sansepolcro",
-  "title": "Nuda Proprietà – Casa Singola Bifamiliare di 225 mq",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1899,7 +1899,7 @@
   "price_withheld": 0,
   "mq": 300,
   "comune": "pievesantostefano",
-  "title": "Cielo-terra di ampie dimensioni con terrazzo panoramico",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1910,7 +1910,7 @@
   "price_withheld": 0,
   "mq": 150,
   "comune": "sansepolcro",
-  "title": "Cielo-terra indipendente di 150mq",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1919,9 +1919,9 @@
   "ref": "5968",
   "price": 190000,
   "price_withheld": 0,
-  "mq": 193,
+  "mq": 315,
   "comune": "sansepolcro",
-  "title": "Porzione cielo-terra con ampio giardino",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1932,7 +1932,7 @@
   "price_withheld": 0,
   "mq": 170,
   "comune": "sansepolcro",
-  "title": "Porzione con due appartamenti e giardino privato",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1943,7 +1943,7 @@
   "price_withheld": 0,
   "mq": 125,
   "comune": "anghiari",
-  "title": "Porzione di bifamiliare con due unità al grezzo",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1954,7 +1954,7 @@
   "price_withheld": 0,
   "mq": 120,
   "comune": "sansepolcro",
-  "title": "Porzione di bifamiliare con ingresso indipendente e giardino",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1965,7 +1965,7 @@
   "price_withheld": 0,
   "mq": 165,
   "comune": "sansepolcro",
-  "title": null,
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1976,7 +1976,7 @@
   "price_withheld": 0,
   "mq": 80,
   "comune": "badiatedalda",
-  "title": "Porzione di casolare in pietra immersa nel verde",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1987,7 +1987,7 @@
   "price_withheld": 0,
   "mq": 90,
   "comune": "anghiari",
-  "title": "Porzione di casale con ampio terreno",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -1998,7 +1998,7 @@
   "price_withheld": 0,
   "mq": 80,
   "comune": "capresemichelangelo",
-  "title": "Porzione di casolare in pietra con terreno",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -2009,7 +2009,7 @@
   "price_withheld": 1,
   "mq": 225,
   "comune": "pievesantostefano",
-  "title": "Porzione di casolare con annesso ristrutturato e giardino",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -2020,7 +2020,7 @@
   "price_withheld": 0,
   "mq": 215,
   "comune": "anghiari",
-  "title": "Porzione di casolare con giardino e piscina",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -2031,7 +2031,7 @@
   "price_withheld": 0,
   "mq": 160,
   "comune": "monterchi",
-  "title": "Porzione indipendente con corte esclusiva ed ampio terreno",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -2042,7 +2042,7 @@
   "price_withheld": 0,
   "mq": 200,
   "comune": "pievesantostefano",
-  "title": "Rudere con terreno",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -2053,7 +2053,7 @@
   "price_withheld": 0,
   "mq": 270,
   "comune": "badiatedalda",
-  "title": "Porzione di casolare con tre appartamenti e piscina",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -2064,7 +2064,7 @@
   "price_withheld": 0,
   "mq": 100,
   "comune": "pievesantostefano",
-  "title": "Porzione di casolare immersa nel verde",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -2073,9 +2073,9 @@
   "ref": "5242",
   "price": 250000,
   "price_withheld": 0,
-  "mq": 6600,
+  "mq": 5000,
   "comune": "sansepolcro",
-  "title": "Scuderia per equitazione",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -2086,7 +2086,7 @@
   "price_withheld": 0,
   "mq": 950,
   "comune": "sansepolcro",
-  "title": "Villa sul lago con ampio terreno",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -2097,7 +2097,7 @@
   "price_withheld": 0,
   "mq": 110,
   "comune": "sansepolcro",
-  "title": "Terra-cielo nel centro storico",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -2108,7 +2108,7 @@
   "price_withheld": 0,
   "mq": 250,
   "comune": "pievesantostefano",
-  "title": "Terra-cielo con garage in posizione centrale",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -2117,9 +2117,9 @@
   "ref": "3907",
   "price": null,
   "price_withheld": 1,
-  "mq": 900,
+  "mq": 100,
   "comune": "monterchi",
-  "title": "Terreni edificabili",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -2130,7 +2130,7 @@
   "price_withheld": 0,
   "mq": 4500,
   "comune": "anghiari",
-  "title": "Terreno agricolo",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -2141,7 +2141,7 @@
   "price_withheld": 0,
   "mq": 20000,
   "comune": "pievesantostefano",
-  "title": "Terreno con uliveto e annesso",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -2152,7 +2152,7 @@
   "price_withheld": 0,
   "mq": 45,
   "comune": "sansepolcro",
-  "title": "Terreno panoramico con annesso abitativo",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -2163,7 +2163,7 @@
   "price_withheld": 0,
   "mq": 139,
   "comune": "sansepolcro",
-  "title": "Ufficio di ampia metratura",
+  "title": "Affitto",
   "is_rent": 0
  },
  {
@@ -2174,7 +2174,7 @@
   "price_withheld": 1,
   "mq": 300,
   "comune": "anghiari",
-  "title": "Villa d’epoca con terreno e campo da tennis",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -2185,7 +2185,7 @@
   "price_withheld": 0,
   "mq": 127,
   "comune": "capresemichelangelo",
-  "title": "Villa in legno panoramica con terreno",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -2194,9 +2194,9 @@
   "ref": "6194",
   "price": 580000,
   "price_withheld": 0,
-  "mq": 288,
+  "mq": 300,
   "comune": "monterchi",
-  "title": "Villa indipendente con piscina e terreno privato",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -2207,7 +2207,7 @@
   "price_withheld": 0,
   "mq": 370,
   "comune": "sansepolcro",
-  "title": "Villa signorile nelle campagne di Sansepolcro",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -2218,7 +2218,7 @@
   "price_withheld": 1,
   "mq": 250,
   "comune": "anghiari",
-  "title": "Villa singola panoramica a pochi passi dal centro",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -2227,9 +2227,9 @@
   "ref": "5907",
   "price": 160000,
   "price_withheld": 0,
-  "mq": 190,
+  "mq": null,
   "comune": "sansepolcro",
-  "title": "Villa singola con 9.000 mq di terreno e mansarda abitabile",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -2240,7 +2240,7 @@
   "price_withheld": 0,
   "mq": 335,
   "comune": "anghiari",
-  "title": "Villa singola di 335mq con giardino privato",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -2251,7 +2251,7 @@
   "price_withheld": 0,
   "mq": 115,
   "comune": "sansepolcro",
-  "title": "Villetta a schiera con giardino",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -2262,7 +2262,7 @@
   "price_withheld": 0,
   "mq": 110,
   "comune": "monterchi",
-  "title": "Villetta moderna con giardino",
+  "title": "Vendita",
   "is_rent": 0
  },
  {
@@ -2273,7 +2273,997 @@
   "price_withheld": 0,
   "mq": 255,
   "comune": "sansepolcro",
-  "title": "Villetta signorile libera su tre lati con giardino",
+  "title": "Vendita",
+  "is_rent": 0
+ },
+ {
+  "site": "immobilinvest",
+  "url": "http://www.immobilinvestre.altervista.org/compravendite.html#rif-244",
+  "ref": "244",
+  "price": 200000,
+  "price_withheld": 0,
+  "mq": null,
+  "comune": "capresemichelangelo",
+  "title": "Villetta in frazione di Caprese Michelangelo (AR) - € 200.000",
+  "is_rent": 0
+ },
+ {
+  "site": "immobilinvest",
+  "url": "http://www.immobilinvestre.altervista.org/compravendite.html#rif-369",
+  "ref": "369",
+  "price": 180000,
+  "price_withheld": 0,
+  "mq": 160,
+  "comune": "sansepolcro",
+  "title": "Vendesi elegante appartamento a Sansepolcro di 160 mq - € 180.000",
+  "is_rent": 0
+ },
+ {
+  "site": "immobilinvest",
+  "url": "http://www.immobilinvestre.altervista.org/compravendite.html#rif-386",
+  "ref": "386",
+  "price": 330000,
+  "price_withheld": 0,
+  "mq": 240,
+  "comune": "monterchi",
+  "title": "Vendesi casale su due livelli, con terreno e annesso, nelle campagne di Monterch",
+  "is_rent": 0
+ },
+ {
+  "site": "immobilinvest",
+  "url": "http://www.immobilinvestre.altervista.org/compravendite.html#rif-406",
+  "ref": "406",
+  "price": 240000,
+  "price_withheld": 0,
+  "mq": 150,
+  "comune": "capresemichelangelo",
+  "title": "Vendesi graziosa villetta con terreno circostante a Caprese Michelangelo (AR) -",
+  "is_rent": 0
+ },
+ {
+  "site": "immobilinvest",
+  "url": "http://www.immobilinvestre.altervista.org/compravendite.html#rif-425",
+  "ref": "425",
+  "price": 170000,
+  "price_withheld": 0,
+  "mq": 1500,
+  "comune": null,
+  "title": "€ 170.000",
+  "is_rent": 0
+ },
+ {
+  "site": "immobilinvest",
+  "url": "http://www.immobilinvestre.altervista.org/compravendite.html#rif-613",
+  "ref": "613",
+  "price": 160000,
+  "price_withheld": 0,
+  "mq": 180,
+  "comune": "sansepolcro",
+  "title": "Vendesi appartamento in centro storico a Sansepolcro di 180 mq - € 160.000",
+  "is_rent": 0
+ },
+ {
+  "site": "immobilinvest",
+  "url": "http://www.immobilinvestre.altervista.org/compravendite.html#rif-687",
+  "ref": "687",
+  "price": 200000,
+  "price_withheld": 0,
+  "mq": 140,
+  "comune": null,
+  "title": "Vendesi villetta a Monte Santa Maria Tiberina di 140 mq - € 200.000",
+  "is_rent": 0
+ },
+ {
+  "site": "immobilinvest",
+  "url": "http://www.immobilinvestre.altervista.org/compravendite.html#rif-741",
+  "ref": "741",
+  "price": 129000,
+  "price_withheld": 0,
+  "mq": 120,
+  "comune": "sansepolcro",
+  "title": "Vendesi luminoso appartamento a Sansepolcro di 120 mq - € 129.000",
+  "is_rent": 0
+ },
+ {
+  "site": "immobilinvest",
+  "url": "http://www.immobilinvestre.altervista.org/compravendite.html#rif-765",
+  "ref": "765",
+  "price": 140000,
+  "price_withheld": 0,
+  "mq": 135,
+  "comune": "sansepolcro",
+  "title": "Vendesi appartamento a Sansepolcro di 135 mq - €140.000",
+  "is_rent": 0
+ },
+ {
+  "site": "immobilinvest",
+  "url": "http://www.immobilinvestre.altervista.org/compravendite.html#rif-793",
+  "ref": "793",
+  "price": 120000,
+  "price_withheld": 0,
+  "mq": 140,
+  "comune": "anghiari",
+  "title": "Vendesi casale ad Anghiari di 140 mq - € 120.000",
+  "is_rent": 0
+ },
+ {
+  "site": "immobilinvest",
+  "url": "http://www.immobilinvestre.altervista.org/compravendite.html#rif-820",
+  "ref": "820",
+  "price": 480000,
+  "price_withheld": 0,
+  "mq": 200,
+  "comune": "sansepolcro",
+  "title": "Vendesi NUDA PROPRIETA&#39; di bellissima villa a Sansepolcro di 200 mq - € 480.",
+  "is_rent": 0
+ },
+ {
+  "site": "immobilinvest",
+  "url": "http://www.immobilinvestre.altervista.org/compravendite.html#rif-822",
+  "ref": "822",
+  "price": 600000,
+  "price_withheld": 0,
+  "mq": 360,
+  "comune": null,
+  "title": "Vendesi bellissima struttura di 360 mq a San Giustino - € 600.000",
+  "is_rent": 0
+ },
+ {
+  "site": "immobilinvest",
+  "url": "http://www.immobilinvestre.altervista.org/compravendite.html#rif-825",
+  "ref": "825",
+  "price": 230000,
+  "price_withheld": 0,
+  "mq": 100,
+  "comune": "sansepolcro",
+  "title": "Vendesi elegante appartamento a Sansepolcro di 100 mq - € 230.000",
+  "is_rent": 0
+ },
+ {
+  "site": "immobilinvest",
+  "url": "http://www.immobilinvestre.altervista.org/compravendite.html#rif-826",
+  "ref": "826",
+  "price": 200000,
+  "price_withheld": 0,
+  "mq": 120,
+  "comune": "sansepolcro",
+  "title": "Vendesi bellissimo appartamento a Sansepolcro di 120 mq - € 200.000",
+  "is_rent": 0
+ },
+ {
+  "site": "immobilinvest",
+  "url": "http://www.immobilinvestre.altervista.org/compravendite.html#rif-827",
+  "ref": "827",
+  "price": 230000,
+  "price_withheld": 0,
+  "mq": 182,
+  "comune": "sansepolcro",
+  "title": "Vendesi a Sansepolcro bellissimo attico di 182 mq - € 230.000",
+  "is_rent": 0
+ },
+ {
+  "site": "immobilinvest",
+  "url": "http://www.immobilinvestre.altervista.org/compravendite.html#rif-830",
+  "ref": "830",
+  "price": 145000,
+  "price_withheld": 0,
+  "mq": 108,
+  "comune": null,
+  "title": "Vendesi bellissimo appartamento a San Giustino di 108 mq - € 145.000",
+  "is_rent": 0
+ },
+ {
+  "site": "immobilinvest",
+  "url": "http://www.immobilinvestre.altervista.org/compravendite.html#rif-846",
+  "ref": "846",
+  "price": 150000,
+  "price_withheld": 0,
+  "mq": 120,
+  "comune": "sansepolcro",
+  "title": "Vendesi appartamento a Sansepolcro di 120 mq - € 150.000",
+  "is_rent": 0
+ },
+ {
+  "site": "immobilinvest",
+  "url": "http://www.immobilinvestre.altervista.org/compravendite.html#rif-847",
+  "ref": "847",
+  "price": 55000,
+  "price_withheld": 0,
+  "mq": 50,
+  "comune": "sansepolcro",
+  "title": "Vendesi locale a Sansepolcro di 50 mq- € 55.000",
+  "is_rent": 0
+ },
+ {
+  "site": "immobilinvest",
+  "url": "http://www.immobilinvestre.altervista.org/compravendite.html#rif-848",
+  "ref": "848",
+  "price": 180000,
+  "price_withheld": 0,
+  "mq": 120,
+  "comune": "sansepolcro",
+  "title": "Vendesi porzione di bifamiliare a Sansepolcro di 120 mq - € 180.000",
+  "is_rent": 0
+ },
+ {
+  "site": "immobilinvest",
+  "url": "http://www.immobilinvestre.altervista.org/compravendite.html#rif-864",
+  "ref": "864",
+  "price": 65000,
+  "price_withheld": 0,
+  "mq": 90,
+  "comune": "sansepolcro",
+  "title": "Vendesi casa terratetto localitÃ  Montagna di 90 mq - € 65.000",
+  "is_rent": 0
+ },
+ {
+  "site": "immobilinvest",
+  "url": "http://www.immobilinvestre.altervista.org/compravendite.html#rif-868",
+  "ref": "868",
+  "price": 100000,
+  "price_withheld": 0,
+  "mq": 85,
+  "comune": "pievesantostefano",
+  "title": "Vendesi casa terratetto localitÃ  Valsavignone di 85 mq - €100.000",
+  "is_rent": 0
+ },
+ {
+  "site": "immobilinvest",
+  "url": "http://www.immobilinvestre.altervista.org/compravendite.html#rif-910",
+  "ref": "910",
+  "price": null,
+  "price_withheld": 0,
+  "mq": 85,
+  "comune": "pievesantostefano",
+  "title": "Vendesi a Pieve Santo Stefano un ampio appartamento su un palazzo storico, edifi",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/affascinante-trilocale-con-studio-nel-cuore-del-centro-storico-55144/",
+  "ref": "4461",
+  "price": 50000,
+  "price_withheld": 0,
+  "mq": 70,
+  "comune": "sansepolcro",
+  "title": "Rif. 4461",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/ampio-e-luminoso-appartamento-e-in-zona-residenziale-55621/",
+  "ref": "4467",
+  "price": 160000,
+  "price_withheld": 0,
+  "mq": 120,
+  "comune": "sansepolcro",
+  "title": "Rif. 4467",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/appartamento-cielo-terra-indipendente-su-bifamiliare-nuda-proprieta-52421/",
+  "ref": "4427",
+  "price": null,
+  "price_withheld": 1,
+  "mq": 120,
+  "comune": "anghiari",
+  "title": "Rif. 4427",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/appartamento-con-ampio-terrazzo-e-garage-54440/",
+  "ref": "4455",
+  "price": 130000,
+  "price_withheld": 0,
+  "mq": 80,
+  "comune": "sansepolcro",
+  "title": "Rif. 4455",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/appartamento-con-giardino-49647/",
+  "ref": "4372",
+  "price": 195000,
+  "price_withheld": 0,
+  "mq": 90,
+  "comune": "anghiari",
+  "title": "Rif. 4372",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/appartamento-con-terrazzo-e-fondo/",
+  "ref": "4228",
+  "price": 30000,
+  "price_withheld": 0,
+  "mq": 70,
+  "comune": "badiatedalda",
+  "title": "Rif. 4228",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/appartamento-di-grandi-dimensioni-con-vista-panoramica-e-garage-54609/",
+  "ref": "4458",
+  "price": 250000,
+  "price_withheld": 0,
+  "mq": 140,
+  "comune": "sansepolcro",
+  "title": "Rif. 4458",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/appartamento-di-nuova-costruzione-da-personalizzare-56030/",
+  "ref": "4471",
+  "price": 170000,
+  "price_withheld": 0,
+  "mq": 145,
+  "comune": "sansepolcro",
+  "title": "Rif. 4471",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/appartamento-di-recente-costruzione-indipendente-con-giardino-53418/",
+  "ref": "4439",
+  "price": 245000,
+  "price_withheld": 0,
+  "mq": 100,
+  "comune": "sansepolcro",
+  "title": "Rif. 4439",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/appartamento-in-splendida-posizione-panoramica-20605/",
+  "ref": "3127",
+  "price": 135000,
+  "price_withheld": 0,
+  "mq": 89,
+  "comune": "monterchi",
+  "title": "Rif. 3127",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/appartamento-in-zona-di-pregio-51901/",
+  "ref": "4420",
+  "price": 230000,
+  "price_withheld": 0,
+  "mq": 95,
+  "comune": "sansepolcro",
+  "title": "Rif. 4420",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/appartamento-su-bifamiliare-44195-2/",
+  "ref": "4313",
+  "price": null,
+  "price_withheld": 0,
+  "mq": null,
+  "comune": "capresemichelangelo",
+  "title": "Rif. 4313 A",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/appartamento-su-bifamiliare-44195/",
+  "ref": "4313",
+  "price": 95000,
+  "price_withheld": 0,
+  "mq": 100,
+  "comune": "capresemichelangelo",
+  "title": "Rif. 4313",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/appartamento-su-borghetto-antico/",
+  "ref": "4174",
+  "price": 68000,
+  "price_withheld": 0,
+  "mq": 103,
+  "comune": "pievesantostefano",
+  "title": "Prezzo ribassato",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/appartamento-su-palazzo-antico-21170/",
+  "ref": "3973",
+  "price": 98000,
+  "price_withheld": 0,
+  "mq": 85,
+  "comune": "pievesantostefano",
+  "title": "Rif. 3973",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/ben-avviata-attivita-di-vendita-ortofrutta-funghi-e-tartufi-e-generi-alimentari-44300/",
+  "ref": "4314",
+  "price": 135000,
+  "price_withheld": 0,
+  "mq": null,
+  "comune": "monterchi",
+  "title": "Rif. 4314",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/capannone-zona-santa-fiora/",
+  "ref": "4198",
+  "price": 750000,
+  "price_withheld": 0,
+  "mq": 1250,
+  "comune": "sansepolcro",
+  "title": "Rif. 4198",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/caratteristica-casa-nel-borgo-antico-con-vista-panoramica/",
+  "ref": "4203",
+  "price": 150000,
+  "price_withheld": 0,
+  "mq": 85,
+  "comune": "anghiari",
+  "title": "Rif. 4203",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/caratteristico-appartamento-finemente-ristrutturato-21038/",
+  "ref": "3839",
+  "price": 155000,
+  "price_withheld": 0,
+  "mq": 78,
+  "comune": "monterchi",
+  "title": "Rif. 3839",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/caratteristico-appartamento-vicino-alla-piazza-principale-20504/",
+  "ref": "1449",
+  "price": 165000,
+  "price_withheld": 0,
+  "mq": 120,
+  "comune": "anghiari",
+  "title": "Rif. 1449",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/casa-colonica-in-pietra-con-ampio-terreno-circostante-20971/",
+  "ref": "3767",
+  "price": null,
+  "price_withheld": 1,
+  "mq": 360,
+  "comune": "anghiari",
+  "title": "Rif. 3767",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/casa-con-terreno-vicina-al-lago-di-montedoglio-44452/",
+  "ref": "4317",
+  "price": 600000,
+  "price_withheld": 0,
+  "mq": 230,
+  "comune": "pievesantostefano",
+  "title": "Rif. 4317",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/casa-in-pietra-con-ampio-giardino-53386/",
+  "ref": "4438",
+  "price": 319000,
+  "price_withheld": 0,
+  "mq": 224,
+  "comune": "capresemichelangelo",
+  "title": "Rif. 4438",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/casa-in-pietra-nelle-vicinanze-di-citerna-20781/",
+  "ref": "3480",
+  "price": 60000,
+  "price_withheld": 0,
+  "mq": 105,
+  "comune": "citerna",
+  "title": "Rif. 3480",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/casa-indipendente-con-due-appartamenti-e-giardino-49248/",
+  "ref": "4367",
+  "price": 430000,
+  "price_withheld": 0,
+  "mq": 180,
+  "comune": "anghiari",
+  "title": "Rif. 4367",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/casa-indipendente-con-giardino-e-due-appartamenti-41859/",
+  "ref": "4283",
+  "price": 295000,
+  "price_withheld": 0,
+  "mq": 220,
+  "comune": "pievesantostefano",
+  "title": "Rif. 4283",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/casa-indipendente-con-giardino-ed-annesso-53649/",
+  "ref": "4441",
+  "price": 150000,
+  "price_withheld": 0,
+  "mq": 206,
+  "comune": "anghiari",
+  "title": "Rif. 4441",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/casa-indipendente-con-parco-recintato-53790/",
+  "ref": "4444",
+  "price": 320000,
+  "price_withheld": 0,
+  "mq": 175,
+  "comune": "sansepolcro",
+  "title": "Rif. 4444",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/casa-indipendente-duplex-51204/",
+  "ref": "4411",
+  "price": 198000,
+  "price_withheld": 0,
+  "mq": 160,
+  "comune": "pievesantostefano",
+  "title": "Prezzo ribassato",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/casa-indipendente-in-pietra-con-tre-appartamenti-45183/",
+  "ref": "4332",
+  "price": 635000,
+  "price_withheld": 0,
+  "mq": 350,
+  "comune": "capresemichelangelo",
+  "title": "Rif. 4332",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/casa-singola-con-due-appartamenti-ed-ampio-terreno-circostante-55850/",
+  "ref": "4470",
+  "price": 250000,
+  "price_withheld": 0,
+  "mq": 190,
+  "comune": "pievesantostefano",
+  "title": "Rif. 4470",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/casa-singola-con-girdino-2/",
+  "ref": "4226",
+  "price": 220000,
+  "price_withheld": 0,
+  "mq": 90,
+  "comune": "anghiari",
+  "title": "Rif. 4226",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/casa-singola-in-pietra-54345/",
+  "ref": "4453",
+  "price": 85000,
+  "price_withheld": 0,
+  "mq": 95,
+  "comune": "pievesantostefano",
+  "title": "Rif. 4453",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/casa-singola-in-viale-fatti-53780/",
+  "ref": "4443",
+  "price": 360000,
+  "price_withheld": 0,
+  "mq": 154,
+  "comune": "sansepolcro",
+  "title": "Rif. 4443",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/casa-singola-vicino-al-centro-52353/",
+  "ref": "4425",
+  "price": 230000,
+  "price_withheld": 0,
+  "mq": 110,
+  "comune": "sansepolcro",
+  "title": "Rif. 4425",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/casetta-indipendente-vicina-alle-mura/",
+  "ref": "4222",
+  "price": 38000,
+  "price_withheld": 0,
+  "mq": 50,
+  "comune": "monterchi",
+  "title": "Rif. 4222",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/casolare-anghiari-20431/",
+  "ref": "233",
+  "price": 200000,
+  "price_withheld": 0,
+  "mq": 620,
+  "comune": "anghiari",
+  "title": "Rif. 233",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/casolare-con-annessi-e-terreno/",
+  "ref": "4233",
+  "price": 270000,
+  "price_withheld": 0,
+  "mq": 500,
+  "comune": "citerna",
+  "title": "Rif. 4233",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/casolare-con-giardino-in-un-borgo-antico-44992/",
+  "ref": "4327",
+  "price": 130000,
+  "price_withheld": 0,
+  "mq": 180,
+  "comune": "anghiari",
+  "title": "Rif. 4327",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/cielo-terra-in-centro-storico-52537/",
+  "ref": "4430",
+  "price": 60000,
+  "price_withheld": 0,
+  "mq": 90,
+  "comune": "sansepolcro",
+  "title": "Rif. 4430",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/complesso-di-due-case-in-pietra-immerse-nel-verde-20554/",
+  "ref": "3039",
+  "price": 250000,
+  "price_withheld": 0,
+  "mq": 400,
+  "comune": "monterchi",
+  "title": "Rif. 3039",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/elegante-appartamento-con-giardino-e-ingresso-indipendente-56399/",
+  "ref": "4481",
+  "price": null,
+  "price_withheld": 1,
+  "mq": 94,
+  "comune": "sansepolcro",
+  "title": "Rif. 4481",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/elegante-appartamento-con-taverna-in-zona-residenziale-di-pregio-a-due-passi-dal-centro-56168/",
+  "ref": "4478",
+  "price": 180000,
+  "price_withheld": 0,
+  "mq": 90,
+  "comune": "sansepolcro",
+  "title": "Rif. 4478",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/fabbricato-con-terreno-immerso-nel-verde-38673/",
+  "ref": "4244",
+  "price": 80000,
+  "price_withheld": 0,
+  "mq": 130,
+  "comune": "anghiari",
+  "title": "Rif. 4244",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/grande-locale-ad-uso-pizzeria-e-ristorante-55254/",
+  "ref": "4464",
+  "price": 250000,
+  "price_withheld": 0,
+  "mq": 190,
+  "comune": "anghiari",
+  "title": "Rif. 4464",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/industriale-anghiari-20521/",
+  "ref": "2963",
+  "price": null,
+  "price_withheld": 1,
+  "mq": 250,
+  "comune": "anghiari",
+  "title": "Rif. 2963",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/locale-commerciale-con-piazzale-esclusivo-27542-2/",
+  "ref": "4081A",
+  "price": null,
+  "price_withheld": 1,
+  "mq": 460,
+  "comune": "anghiari",
+  "title": "Rif. 4081A",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/locale-commerciale-con-piazzale-esclusivo-27542/",
+  "ref": "4081",
+  "price": null,
+  "price_withheld": 1,
+  "mq": 460,
+  "comune": "anghiari",
+  "title": "Rif. 4081",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/locali-commerciali-in-zona-centrale-2/",
+  "ref": "4437",
+  "price": 220000,
+  "price_withheld": 0,
+  "mq": 200,
+  "comune": "sansepolcro",
+  "title": "Rif. 4437",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/luminoso-bilocale-in-contesto-residenziale-esclusivo-completo-di-garage-54630/",
+  "ref": "4459",
+  "price": 80000,
+  "price_withheld": 0,
+  "mq": 45,
+  "comune": "sansepolcro",
+  "title": "Rif. 4459",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/porzione-di-casolare-in-montagna-20242/",
+  "ref": "2332",
+  "price": 55000,
+  "price_withheld": 0,
+  "mq": 74,
+  "comune": "pievesantostefano",
+  "title": "Rif. 2332",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/prestigiosa-villa-indipendente-con-giardino-esclusiva-zona-collinare-a-due-passi-dal-centro-55741-2/",
+  "ref": "4468",
+  "price": 600000,
+  "price_withheld": 0,
+  "mq": 280,
+  "comune": "sansepolcro",
+  "title": "Rif. 4468",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/splendida-porzione-di-villa-con-giardino-privato-e-vista-panoramica-56299/",
+  "ref": "4480",
+  "price": 210000,
+  "price_withheld": 0,
+  "mq": 137,
+  "comune": "anghiari",
+  "title": "Rif. 4480",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/splendido-appartamento-con-finiture-di-prestigio-e-garage-zona-servita-54250/",
+  "ref": "4451",
+  "price": 180000,
+  "price_withheld": 0,
+  "mq": 103,
+  "comune": "sansepolcro",
+  "title": "Rif. 4451",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/splendido-appartamento-con-garage-in-zona-centrale-55240/",
+  "ref": "4463",
+  "price": 320000,
+  "price_withheld": 0,
+  "mq": 135,
+  "comune": "sansepolcro",
+  "title": "Rif. 4463",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/storica-attivita-di-alimentari-52536/",
+  "ref": "4429",
+  "price": null,
+  "price_withheld": 1,
+  "mq": null,
+  "comune": "sansepolcro",
+  "title": "Rif. 4429",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/terra-tetto-nelle-vicinanze-di-caprese-michelangelo-21089/",
+  "ref": "3890",
+  "price": 40000,
+  "price_withheld": 0,
+  "mq": 90,
+  "comune": "capresemichelangelo",
+  "title": "Rif. 3890",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/terratetto-con-giardino-51717/",
+  "ref": "4417",
+  "price": 45000,
+  "price_withheld": 0,
+  "mq": 80,
+  "comune": "pievesantostefano",
+  "title": "Rif. 4417",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/terreno-agricolo-20447/",
+  "ref": "1167",
+  "price": 20000,
+  "price_withheld": 0,
+  "mq": 8900,
+  "comune": "anghiari",
+  "title": "Rif. 1167",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/terreno-agricolo-6-50815/",
+  "ref": "4402",
+  "price": 96000,
+  "price_withheld": 0,
+  "mq": 30000,
+  "comune": "monterchi",
+  "title": "Rif. 4402",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/terreno-edificabile-2-51980/",
+  "ref": "4421",
+  "price": 65000,
+  "price_withheld": 0,
+  "mq": 400,
+  "comune": "sansepolcro",
+  "title": "Rif. 4421",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/terreno-edificabile/",
+  "ref": "4145",
+  "price": 100000,
+  "price_withheld": 0,
+  "mq": 5700,
+  "comune": "capresemichelangelo",
+  "title": "Rif. 4145",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/terreno-industriale-39690/",
+  "ref": "4261",
+  "price": null,
+  "price_withheld": 1,
+  "mq": 5250,
+  "comune": "citerna",
+  "title": "Rif. 4261",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/ufficio-in-comoda-posizione-centrale-56157/",
+  "ref": "4477",
+  "price": 51000,
+  "price_withheld": 0,
+  "mq": 51,
+  "comune": "sansepolcro",
+  "title": "Rif. 4477",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/villa-indipendente-con-giardino-in-posizione-panoramica-ad-anghiari-50935/",
+  "ref": "4407",
+  "price": 650000,
+  "price_withheld": 0,
+  "mq": 220,
+  "comune": "anghiari",
+  "title": "Rif. 4407",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/villa-storica-20164/",
+  "ref": "2289",
+  "price": 700000,
+  "price_withheld": 0,
+  "mq": 388,
+  "comune": "sansepolcro",
+  "title": "Rif. 2289",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/villa-storica-20948/",
+  "ref": "3737",
+  "price": 1800000,
+  "price_withheld": 0,
+  "mq": 870,
+  "comune": "pievesantostefano",
+  "title": "Rif. 3737",
+  "is_rent": 0
+ },
+ {
+  "site": "lancisi",
+  "url": "https://www.immobiliarelancisi.it/immobile/villetta-panoramica-di-recente-cotruzione-52700/",
+  "ref": "4432",
+  "price": 300000,
+  "price_withheld": 0,
+  "mq": 160,
+  "comune": "sansepolcro",
+  "title": "Rif. 4432",
   "is_rent": 0
  },
  {
@@ -10527,6 +11517,556 @@
   "is_rent": 0
  },
  {
+  "site": "now",
+  "url": "https://nowestate.it/proprieta/agriturismo-belvedere-2024045",
+  "ref": null,
+  "price": 1950000,
+  "price_withheld": 0,
+  "mq": 1000,
+  "comune": null,
+  "title": null,
+  "is_rent": 0
+ },
+ {
+  "site": "now",
+  "url": "https://nowestate.it/proprieta/appartamento-al-piano-terra-23026001",
+  "ref": null,
+  "price": 79000,
+  "price_withheld": 0,
+  "mq": null,
+  "comune": null,
+  "title": null,
+  "is_rent": 0
+ },
+ {
+  "site": "now",
+  "url": "https://nowestate.it/proprieta/appartamento-con-giardino-esclusivo-2026026",
+  "ref": null,
+  "price": 130000,
+  "price_withheld": 0,
+  "mq": 70,
+  "comune": null,
+  "title": null,
+  "is_rent": 0
+ },
+ {
+  "site": "now",
+  "url": "https://nowestate.it/proprieta/appartamento-con-giardino-nel-centro-storico-2025034",
+  "ref": null,
+  "price": 339000,
+  "price_withheld": 0,
+  "mq": null,
+  "comune": null,
+  "title": null,
+  "is_rent": 0
+ },
+ {
+  "site": "now",
+  "url": "https://nowestate.it/proprieta/appartamento-con-giardino-terrazza-e-garage-2026023",
+  "ref": null,
+  "price": 190000,
+  "price_withheld": 0,
+  "mq": null,
+  "comune": null,
+  "title": null,
+  "is_rent": 0
+ },
+ {
+  "site": "now",
+  "url": "https://nowestate.it/proprieta/appartamento-di-pregio-2025037",
+  "ref": null,
+  "price": 220000,
+  "price_withheld": 0,
+  "mq": null,
+  "comune": null,
+  "title": null,
+  "is_rent": 0
+ },
+ {
+  "site": "now",
+  "url": "https://nowestate.it/proprieta/appartamento-esclusivo-2025027",
+  "ref": null,
+  "price": 370000,
+  "price_withheld": 0,
+  "mq": 150,
+  "comune": null,
+  "title": null,
+  "is_rent": 0
+ },
+ {
+  "site": "now",
+  "url": "https://nowestate.it/proprieta/appartamento-in-palazzo-storico-2025030",
+  "ref": null,
+  "price": 430000,
+  "price_withheld": 0,
+  "mq": 140,
+  "comune": null,
+  "title": null,
+  "is_rent": 0
+ },
+ {
+  "site": "now",
+  "url": "https://nowestate.it/proprieta/appartamento-in-piazza-torre-di-berta-2026002",
+  "ref": null,
+  "price": 149000,
+  "price_withheld": 0,
+  "mq": 115,
+  "comune": null,
+  "title": null,
+  "is_rent": 0
+ },
+ {
+  "site": "now",
+  "url": "https://nowestate.it/proprieta/appartamento-in-zona-residenziale-2026018",
+  "ref": null,
+  "price": 159000,
+  "price_withheld": 0,
+  "mq": null,
+  "comune": null,
+  "title": null,
+  "is_rent": 0
+ },
+ {
+  "site": "now",
+  "url": "https://nowestate.it/proprieta/appartamento-indipendente-2026012",
+  "ref": null,
+  "price": 159000,
+  "price_withheld": 0,
+  "mq": null,
+  "comune": null,
+  "title": null,
+  "is_rent": 0
+ },
+ {
+  "site": "now",
+  "url": "https://nowestate.it/proprieta/appartamento-indipendente-nel-centro-di-gubbio-2025029",
+  "ref": null,
+  "price": 383000,
+  "price_withheld": 0,
+  "mq": null,
+  "comune": null,
+  "title": null,
+  "is_rent": 0
+ },
+ {
+  "site": "now",
+  "url": "https://nowestate.it/proprieta/appartamento-luminoso-di-recente-costruzione-2025020",
+  "ref": null,
+  "price": 218000,
+  "price_withheld": 0,
+  "mq": 95,
+  "comune": null,
+  "title": null,
+  "is_rent": 0
+ },
+ {
+  "site": "now",
+  "url": "https://nowestate.it/proprieta/appartamento-nel-centro-storico-2025036",
+  "ref": null,
+  "price": 326000,
+  "price_withheld": 0,
+  "mq": null,
+  "comune": null,
+  "title": null,
+  "is_rent": 0
+ },
+ {
+  "site": "now",
+  "url": "https://nowestate.it/proprieta/appartamento-nel-cuore-di-anghiari-fascino-storico-vista-mozzafiato-e-versatilit---abitativa-2025013",
+  "ref": null,
+  "price": 230000,
+  "price_withheld": 0,
+  "mq": 140,
+  "comune": "anghiari",
+  "title": null,
+  "is_rent": 0
+ },
+ {
+  "site": "now",
+  "url": "https://nowestate.it/proprieta/appartamento-nuda-proprieta-2026020",
+  "ref": null,
+  "price": 60000,
+  "price_withheld": 0,
+  "mq": null,
+  "comune": null,
+  "title": null,
+  "is_rent": 0
+ },
+ {
+  "site": "now",
+  "url": "https://nowestate.it/proprieta/appartamento-ristrutturato-2025034",
+  "ref": null,
+  "price": 240000,
+  "price_withheld": 0,
+  "mq": null,
+  "comune": null,
+  "title": null,
+  "is_rent": 0
+ },
+ {
+  "site": "now",
+  "url": "https://nowestate.it/proprieta/capotesta-villetta-a-schiera-2026010",
+  "ref": null,
+  "price": 280000,
+  "price_withheld": 0,
+  "mq": null,
+  "comune": null,
+  "title": null,
+  "is_rent": 0
+ },
+ {
+  "site": "now",
+  "url": "https://nowestate.it/proprieta/casa-di-campagna-con-giardino-2026007",
+  "ref": null,
+  "price": 210000,
+  "price_withheld": 0,
+  "mq": null,
+  "comune": null,
+  "title": null,
+  "is_rent": 0
+ },
+ {
+  "site": "now",
+  "url": "https://nowestate.it/proprieta/casa-indipendente-con-giardino-2026021",
+  "ref": null,
+  "price": 79000,
+  "price_withheld": 0,
+  "mq": null,
+  "comune": null,
+  "title": null,
+  "is_rent": 0
+ },
+ {
+  "site": "now",
+  "url": "https://nowestate.it/proprieta/casa-indipendente-con-giardino-2026024",
+  "ref": null,
+  "price": 530000,
+  "price_withheld": 0,
+  "mq": 600,
+  "comune": null,
+  "title": null,
+  "is_rent": 0
+ },
+ {
+  "site": "now",
+  "url": "https://nowestate.it/proprieta/casolare-antico-con-vista-panoramica-2026011",
+  "ref": null,
+  "price": 240000,
+  "price_withheld": 0,
+  "mq": null,
+  "comune": null,
+  "title": null,
+  "is_rent": 0
+ },
+ {
+  "site": "now",
+  "url": "https://nowestate.it/proprieta/casolare-storico-e-terreno-edificabile-2024052",
+  "ref": null,
+  "price": 200000,
+  "price_withheld": 0,
+  "mq": null,
+  "comune": null,
+  "title": null,
+  "is_rent": 0
+ },
+ {
+  "site": "now",
+  "url": "https://nowestate.it/proprieta/casolare-storico-immerso-nel-verde-2026009",
+  "ref": null,
+  "price": 440000,
+  "price_withheld": 0,
+  "mq": null,
+  "comune": null,
+  "title": null,
+  "is_rent": 0
+ },
+ {
+  "site": "now",
+  "url": "https://nowestate.it/proprieta/cielo-terra-in-piccolo-borgo-toscano-2024054",
+  "ref": null,
+  "price": 25000,
+  "price_withheld": 0,
+  "mq": 70,
+  "comune": null,
+  "title": null,
+  "is_rent": 0
+ },
+ {
+  "site": "now",
+  "url": "https://nowestate.it/proprieta/cielo-terra-ristrutturato-in-posizione-strategica-2025032",
+  "ref": null,
+  "price": 320000,
+  "price_withheld": 0,
+  "mq": null,
+  "comune": null,
+  "title": null,
+  "is_rent": 0
+ },
+ {
+  "site": "now",
+  "url": "https://nowestate.it/proprieta/complesso-immobiliare-2026003",
+  "ref": null,
+  "price": 45000,
+  "price_withheld": 0,
+  "mq": null,
+  "comune": null,
+  "title": null,
+  "is_rent": 0
+ },
+ {
+  "site": "now",
+  "url": "https://nowestate.it/proprieta/complesso-immobiliare-nella-toscana-piu-autentica-2026017",
+  "ref": null,
+  "price": 195000,
+  "price_withheld": 0,
+  "mq": null,
+  "comune": null,
+  "title": null,
+  "is_rent": 0
+ },
+ {
+  "site": "now",
+  "url": "https://nowestate.it/proprieta/dimora-storica-2025009",
+  "ref": null,
+  "price": 425000,
+  "price_withheld": 0,
+  "mq": null,
+  "comune": null,
+  "title": null,
+  "is_rent": 0
+ },
+ {
+  "site": "now",
+  "url": "https://nowestate.it/proprieta/elegante-propriet---nelle-colline-marchigiane-2025002",
+  "ref": null,
+  "price": 655000,
+  "price_withheld": 0,
+  "mq": null,
+  "comune": null,
+  "title": null,
+  "is_rent": 0
+ },
+ {
+  "site": "now",
+  "url": "https://nowestate.it/proprieta/ex-convento-ristrutturato-2025018",
+  "ref": null,
+  "price": 550000,
+  "price_withheld": 0,
+  "mq": null,
+  "comune": null,
+  "title": null,
+  "is_rent": 0
+ },
+ {
+  "site": "now",
+  "url": "https://nowestate.it/proprieta/locale-commerciale-2024049",
+  "ref": null,
+  "price": 260000,
+  "price_withheld": 0,
+  "mq": null,
+  "comune": null,
+  "title": null,
+  "is_rent": 0
+ },
+ {
+  "site": "now",
+  "url": "https://nowestate.it/proprieta/luminosa-villa-a-ponte-buriano-2025001",
+  "ref": null,
+  "price": 310000,
+  "price_withheld": 0,
+  "mq": null,
+  "comune": null,
+  "title": null,
+  "is_rent": 0
+ },
+ {
+  "site": "now",
+  "url": "https://nowestate.it/proprieta/palazzo-storico-2026008",
+  "ref": null,
+  "price": 430000,
+  "price_withheld": 0,
+  "mq": null,
+  "comune": null,
+  "title": null,
+  "is_rent": 0
+ },
+ {
+  "site": "now",
+  "url": "https://nowestate.it/proprieta/podere-di-fragaiolo-2025011",
+  "ref": null,
+  "price": 590000,
+  "price_withheld": 0,
+  "mq": 290,
+  "comune": null,
+  "title": null,
+  "is_rent": 0
+ },
+ {
+  "site": "now",
+  "url": "https://nowestate.it/proprieta/podere-nel-cuore-del-chianti-2025031",
+  "ref": null,
+  "price": 990000,
+  "price_withheld": 0,
+  "mq": null,
+  "comune": null,
+  "title": null,
+  "is_rent": 0
+ },
+ {
+  "site": "now",
+  "url": "https://nowestate.it/proprieta/porzione-di-casolare-2025010",
+  "ref": null,
+  "price": 150000,
+  "price_withheld": 0,
+  "mq": null,
+  "comune": null,
+  "title": null,
+  "is_rent": 0
+ },
+ {
+  "site": "now",
+  "url": "https://nowestate.it/proprieta/porzione-di-casolare-2025016",
+  "ref": null,
+  "price": null,
+  "price_withheld": 0,
+  "mq": null,
+  "comune": null,
+  "title": null,
+  "is_rent": 0
+ },
+ {
+  "site": "now",
+  "url": "https://nowestate.it/proprieta/propriet---unica-e-versatile-2024052",
+  "ref": null,
+  "price": 550000,
+  "price_withheld": 0,
+  "mq": 800,
+  "comune": null,
+  "title": null,
+  "is_rent": 0
+ },
+ {
+  "site": "now",
+  "url": "https://nowestate.it/proprieta/tenuta-di-prestigio-nelle-colline-di-castrocaro-terme-2026016",
+  "ref": null,
+  "price": 1100000,
+  "price_withheld": 0,
+  "mq": null,
+  "comune": null,
+  "title": null,
+  "is_rent": 0
+ },
+ {
+  "site": "now",
+  "url": "https://nowestate.it/proprieta/terreno-con-uliveto-bosco-e-anesso-agricolo-2026022",
+  "ref": null,
+  "price": 109000,
+  "price_withheld": 0,
+  "mq": null,
+  "comune": null,
+  "title": null,
+  "is_rent": 0
+ },
+ {
+  "site": "now",
+  "url": "https://nowestate.it/proprieta/un-rifugio-di-charme-tra-le-colline-della-romagna-2026015",
+  "ref": null,
+  "price": 550000,
+  "price_withheld": 0,
+  "mq": null,
+  "comune": null,
+  "title": null,
+  "is_rent": 0
+ },
+ {
+  "site": "now",
+  "url": "https://nowestate.it/proprieta/villa-2026004",
+  "ref": null,
+  "price": 580000,
+  "price_withheld": 0,
+  "mq": 300,
+  "comune": null,
+  "title": null,
+  "is_rent": 0
+ },
+ {
+  "site": "now",
+  "url": "https://nowestate.it/proprieta/villa-con-anessi-in-posizione-panoramica-2025017",
+  "ref": null,
+  "price": 2300000,
+  "price_withheld": 0,
+  "mq": null,
+  "comune": null,
+  "title": null,
+  "is_rent": 0
+ },
+ {
+  "site": "now",
+  "url": "https://nowestate.it/proprieta/villa-con-vista-panoramica-2026005",
+  "ref": null,
+  "price": 695000,
+  "price_withheld": 0,
+  "mq": 160,
+  "comune": null,
+  "title": null,
+  "is_rent": 0
+ },
+ {
+  "site": "now",
+  "url": "https://nowestate.it/proprieta/villa-di-nuova-costruzione-2025029",
+  "ref": null,
+  "price": 540000,
+  "price_withheld": 0,
+  "mq": null,
+  "comune": null,
+  "title": null,
+  "is_rent": 0
+ },
+ {
+  "site": "now",
+  "url": "https://nowestate.it/proprieta/villa-in-posizione-centrale-2026014",
+  "ref": null,
+  "price": 530000,
+  "price_withheld": 0,
+  "mq": null,
+  "comune": null,
+  "title": null,
+  "is_rent": 0
+ },
+ {
+  "site": "now",
+  "url": "https://nowestate.it/proprieta/villa-indipendente-con-piscina-e-giardino-2026019",
+  "ref": null,
+  "price": 385000,
+  "price_withheld": 0,
+  "mq": 220,
+  "comune": null,
+  "title": null,
+  "is_rent": 0
+ },
+ {
+  "site": "now",
+  "url": "https://nowestate.it/proprieta/villa-moderna-in-posizione-strategica-2025007",
+  "ref": null,
+  "price": null,
+  "price_withheld": 0,
+  "mq": null,
+  "comune": null,
+  "title": null,
+  "is_rent": 0
+ },
+ {
+  "site": "now",
+  "url": "https://nowestate.it/proprieta/villa-signorile-2026012",
+  "ref": null,
+  "price": 590000,
+  "price_withheld": 0,
+  "mq": null,
+  "comune": null,
+  "title": null,
+  "is_rent": 0
+ },
+ {
   "site": "romolini",
   "url": "https://www.romolini.com/it/appartamento-giardino-in-vendita-anghiari-3083",
   "ref": "3083",
@@ -10964,6 +12504,314 @@
   "mq": 125,
   "comune": "capresemichelangelo",
   "title": "VILLETTA CON GIARDINO E RUSCELLO IN VENDITA IN TOSCANA",
+  "is_rent": 0
+ },
+ {
+  "site": "sicasa",
+  "url": "https://www.sicasaimmobiliare.info/immobile/appartamento-con-ingresso-indipendente-e-giardino-privato-2-66321/",
+  "ref": "0831",
+  "price": 140000,
+  "price_withheld": 0,
+  "mq": 120,
+  "comune": "sansepolcro",
+  "title": "Appartamento con ingresso indipendente e giardino privato",
+  "is_rent": 0
+ },
+ {
+  "site": "sicasa",
+  "url": "https://www.sicasaimmobiliare.info/immobile/appartamento-con-ingresso-indipendente-e-rata-di-giardino-2/",
+  "ref": "0534",
+  "price": 250000,
+  "price_withheld": 0,
+  "mq": 200,
+  "comune": "anghiari",
+  "title": "Appartamento con ingresso indipendente e rata di giardino",
+  "is_rent": 0
+ },
+ {
+  "site": "sicasa",
+  "url": "https://www.sicasaimmobiliare.info/immobile/appartamento-di-recente-ristrutturazione-20286/",
+  "ref": "0798",
+  "price": 170000,
+  "price_withheld": 0,
+  "mq": 120,
+  "comune": "sansepolcro",
+  "title": "Appartamento completamente ristrutturato in centro storico",
+  "is_rent": 0
+ },
+ {
+  "site": "sicasa",
+  "url": "https://www.sicasaimmobiliare.info/immobile/appartamento-in-centro-storico-3-58325/",
+  "ref": "0728",
+  "price": 135000,
+  "price_withheld": 0,
+  "mq": 90,
+  "comune": "sansepolcro",
+  "title": "Appartamento in centro storico",
+  "is_rent": 0
+ },
+ {
+  "site": "sicasa",
+  "url": "https://www.sicasaimmobiliare.info/immobile/appartamento-in-ottima-posizione-fuori-le-mura-2-61555/",
+  "ref": "0777",
+  "price": 90000,
+  "price_withheld": 0,
+  "mq": 75,
+  "comune": "sansepolcro",
+  "title": "Appartamento in ottima posizione fuori le mura",
+  "is_rent": 0
+ },
+ {
+  "site": "sicasa",
+  "url": "https://www.sicasaimmobiliare.info/immobile/appartamento-oroscopo-56203/",
+  "ref": "0705",
+  "price": 128000,
+  "price_withheld": 0,
+  "mq": 90,
+  "comune": "sansepolcro",
+  "title": "Appartamento in ottima zona panoramica e residenziale",
+  "is_rent": 0
+ },
+ {
+  "site": "sicasa",
+  "url": "https://www.sicasaimmobiliare.info/immobile/appartamento-ristrutturato-a-pochi-passi-dalla-piazza-21590/",
+  "ref": "0768",
+  "price": null,
+  "price_withheld": 1,
+  "mq": 92,
+  "comune": "sansepolcro",
+  "title": "Appartamento completamente ristrutturato a pochi passi dalla piazza",
+  "is_rent": 0
+ },
+ {
+  "site": "sicasa",
+  "url": "https://www.sicasaimmobiliare.info/immobile/appartamento-ristrutturato-in-palazzo-signorile-67676/",
+  "ref": "0848",
+  "price": 165000,
+  "price_withheld": 0,
+  "mq": 90,
+  "comune": "sansepolcro",
+  "title": "Appartamento ristrutturato in palazzo signorile",
+  "is_rent": 0
+ },
+ {
+  "site": "sicasa",
+  "url": "https://www.sicasaimmobiliare.info/immobile/bilocale-da-ristrutturare-ottimo-per-uso-investimento/",
+  "ref": "0376",
+  "price": 30000,
+  "price_withheld": 0,
+  "mq": 65,
+  "comune": "sansepolcro",
+  "title": "Bilocale da ristrutturare ottimo per uso investimento",
+  "is_rent": 0
+ },
+ {
+  "site": "sicasa",
+  "url": "https://www.sicasaimmobiliare.info/immobile/bilocale-ristrutturato-con-ingresso-indipendente/",
+  "ref": "0853",
+  "price": 41000,
+  "price_withheld": 0,
+  "mq": 35,
+  "comune": "capresemichelangelo",
+  "title": "Bilocale ristrutturato con ingresso indipendente",
+  "is_rent": 0
+ },
+ {
+  "site": "sicasa",
+  "url": "https://www.sicasaimmobiliare.info/immobile/casa-singola-con-giardino-privato-62934/",
+  "ref": "0799",
+  "price": 190000,
+  "price_withheld": 0,
+  "mq": 85,
+  "comune": "sansepolcro",
+  "title": "Casa singola con giardino privato",
+  "is_rent": 0
+ },
+ {
+  "site": "sicasa",
+  "url": "https://www.sicasaimmobiliare.info/immobile/casa-singola-con-terreno-2-54218/",
+  "ref": "0684",
+  "price": 220000,
+  "price_withheld": 0,
+  "mq": 130,
+  "comune": "sansepolcro",
+  "title": "Casa singola con terreno",
+  "is_rent": 0
+ },
+ {
+  "site": "sicasa",
+  "url": "https://www.sicasaimmobiliare.info/immobile/cielo-terra-completamente-ristrutturato-in-posizione-centralissima-67412/",
+  "ref": "0845",
+  "price": 130000,
+  "price_withheld": 0,
+  "mq": 105,
+  "comune": "sansepolcro",
+  "title": "Cielo terra completamente ristrutturato in posizione centralissima",
+  "is_rent": 0
+ },
+ {
+  "site": "sicasa",
+  "url": "https://www.sicasaimmobiliare.info/immobile/cielo-terra-completamente-ristrutturato-ottime-rifiniture-20978/",
+  "ref": "0773",
+  "price": 200000,
+  "price_withheld": 0,
+  "mq": 100,
+  "comune": "sansepolcro",
+  "title": "Appartamento completamente ristrutturato in centro storico",
+  "is_rent": 0
+ },
+ {
+  "site": "sicasa",
+  "url": "https://www.sicasaimmobiliare.info/immobile/cielo-terra-con-quattro-camere-62533/",
+  "ref": "0791",
+  "price": 154000,
+  "price_withheld": 0,
+  "mq": 130,
+  "comune": "sansepolcro",
+  "title": "Porzione cielo-terra con ingresso indipendente e quattro camere",
+  "is_rent": 0
+ },
+ {
+  "site": "sicasa",
+  "url": "https://www.sicasaimmobiliare.info/immobile/cielo-terra-con-terrazzo-panoramico-in-centro-22135/",
+  "ref": "0113",
+  "price": 220000,
+  "price_withheld": 0,
+  "mq": 100,
+  "comune": "sansepolcro",
+  "title": "Cielo terra con terrazzo panoramico",
+  "is_rent": 0
+ },
+ {
+  "site": "sicasa",
+  "url": "https://www.sicasaimmobiliare.info/immobile/cielo-terra-di-due-unita-abitative-con-giardino-52031/",
+  "ref": "0646",
+  "price": null,
+  "price_withheld": 1,
+  "mq": 200,
+  "comune": "sansepolcro",
+  "title": "Cielo terra di due unità abitative con giardino",
+  "is_rent": 0
+ },
+ {
+  "site": "sicasa",
+  "url": "https://www.sicasaimmobiliare.info/immobile/cielo-terra-diviso-in-due-unita-abitative-in-centro-storico-64606/",
+  "ref": "0815",
+  "price": 110000,
+  "price_withheld": 0,
+  "mq": 180,
+  "comune": "sansepolcro",
+  "title": "Cielo terra diviso in due unità abitative in centro storico",
+  "is_rent": 0
+ },
+ {
+  "site": "sicasa",
+  "url": "https://www.sicasaimmobiliare.info/immobile/cielo-terra-indipendente-nel-cuore-del-centro-storico-68602/",
+  "ref": "0856",
+  "price": 85000,
+  "price_withheld": 0,
+  "mq": 66,
+  "comune": "sansepolcro",
+  "title": "Cielo terra indipendente nel cuore del centro storico",
+  "is_rent": 0
+ },
+ {
+  "site": "sicasa",
+  "url": "https://www.sicasaimmobiliare.info/immobile/cielo-terra-ottimo-come-struttura-ricettiva-56641/",
+  "ref": "0711",
+  "price": 95000,
+  "price_withheld": 0,
+  "mq": 100,
+  "comune": "sansepolcro",
+  "title": "Cielo terra ottimo come struttura ricettiva",
+  "is_rent": 0
+ },
+ {
+  "site": "sicasa",
+  "url": "https://www.sicasaimmobiliare.info/immobile/cieloterra-in-zona-collinare-59956/",
+  "ref": "0758",
+  "price": 38000,
+  "price_withheld": 0,
+  "mq": 70,
+  "comune": "pievesantostefano",
+  "title": "Cieloterra in zona collinare",
+  "is_rent": 0
+ },
+ {
+  "site": "sicasa",
+  "url": "https://www.sicasaimmobiliare.info/immobile/locale-commerciale-2-64187/",
+  "ref": "018AC",
+  "price": null,
+  "price_withheld": 0,
+  "mq": 75,
+  "comune": "sansepolcro",
+  "title": "Locale commerciale",
+  "is_rent": 0
+ },
+ {
+  "site": "sicasa",
+  "url": "https://www.sicasaimmobiliare.info/immobile/locale-commerciale-in-ottima-posizione-55395/",
+  "ref": "C013",
+  "price": 95000,
+  "price_withheld": 0,
+  "mq": 80,
+  "comune": "sansepolcro",
+  "title": "Locale commerciale con alta visibilità in zona commerciale",
+  "is_rent": 0
+ },
+ {
+  "site": "sicasa",
+  "url": "https://www.sicasaimmobiliare.info/immobile/locale-commerciale-in-ottima-zona-centrale-55394/",
+  "ref": "C012",
+  "price": 45000,
+  "price_withheld": 0,
+  "mq": 40,
+  "comune": "sansepolcro",
+  "title": "Locale commerciale in ottima zona centrale",
+  "is_rent": 0
+ },
+ {
+  "site": "sicasa",
+  "url": "https://www.sicasaimmobiliare.info/immobile/luminoso-appartamento-a-piano-rialzato-di-quadrifamiliare-68696/",
+  "ref": "0857",
+  "price": 129000,
+  "price_withheld": 0,
+  "mq": 85,
+  "comune": "sansepolcro",
+  "title": "Luminoso appartamento a piano rialzato di quadrifamiliare",
+  "is_rent": 0
+ },
+ {
+  "site": "sicasa",
+  "url": "https://www.sicasaimmobiliare.info/immobile/porzione-di-casolare-in-pietra/",
+  "ref": "0314",
+  "price": 350000,
+  "price_withheld": 0,
+  "mq": 110,
+  "comune": "pievesantostefano",
+  "title": "Porzione di casolare in pietra",
+  "is_rent": 0
+ },
+ {
+  "site": "sicasa",
+  "url": "https://www.sicasaimmobiliare.info/immobile/trilocale-completamente-ristrutturato-con-box-e-giardino-69121/",
+  "ref": "036A",
+  "price": null,
+  "price_withheld": 0,
+  "mq": 80,
+  "comune": "sansepolcro",
+  "title": "Trilocale completamente ristrutturato con box e giardino",
+  "is_rent": 0
+ },
+ {
+  "site": "sicasa",
+  "url": "https://www.sicasaimmobiliare.info/immobile/trilocale-ristrutturato-in-centro-storico-63014/",
+  "ref": "0800",
+  "price": 90000,
+  "price_withheld": 0,
+  "mq": 60,
+  "comune": "sansepolcro",
+  "title": "Trilocale completamente ristrutturato in centro storico",
   "is_rent": 0
  }
 ]

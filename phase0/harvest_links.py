@@ -89,6 +89,8 @@ def store_harvest(db, site, rows):
 
 def portal_rows(db, site):
     names = agency_sites.PORTAL_AGENCIES[site]
+    if not names:
+        return []          # Lancisi: zero portal rows, by measurement
     q = ",".join("?" * len(names))
     return db.execute(
         f"SELECT source, source_id, url, comune, price, mq, agency_ref, "
@@ -292,7 +294,7 @@ def main():
              "comune", "comune_raw", "title", "is_rent"], r))
             for r in stored]
         matches, rep = match_site(db, site, site_rows,
-                                  allow_detail=(site == "cortesi"))
+                                  allow_detail=(site in ("cortesi", "now")))
         store_matches(db, site, matches)
 
         by_route = defaultdict(int)
