@@ -292,6 +292,106 @@ def cross_listing_block(r, finding, lang):
     return f'<p class="note">{txt}</p>'
 
 
+def own_site_block(r, m, lang):
+    """S008 dossier item (b): the same agency's own-site listing of this
+    property, labelled by match route (SOT §15). The match table is data,
+    not a verdict — the label says how the join was made, and a
+    candidate-grade route gets the §16d unconfirmed discipline."""
+    it = lang == "it"
+    strong = m["match_route"].startswith("price+surface+comune")
+    who = e(r["agency_name"] or r["source"])
+    ref = f" (rif. {e(m['site_ref'])})" if m["site_ref"] else ""
+    pr = T.eur(m["site_price"]) if m["site_price"] else (
+        "prezzo non pubblicato" if it else "price not published")
+    mq = f"{m['site_mq']} m²" if m["site_mq"] else "—"
+    link = (f'<a href="{e(m["url_alt"])}" rel="nofollow noopener" '
+            f'target="_blank">'
+            + ("l'annuncio sul sito dell'agenzia ↷" if it else
+               "the listing on the agency's site ↷") + "</a>")
+    route = {
+        "price+surface+comune":
+            ("collegato per prezzo, superficie e comune coincidenti" if it
+             else "linked by matching price, surface and comune"),
+        "price+surface+comune (detail)":
+            ("collegato per prezzo e comune; superficie confermata sulla "
+             "scheda dell'agenzia" if it else
+             "linked by price and comune; surface confirmed on the "
+             "agency's detail page"),
+        "price+comune":
+            ("collegato solo per prezzo e comune" if it else
+             "linked by price and comune only"),
+        "ref": ("collegato dal riferimento dell'agenzia" if it else
+                "linked by the agency's own reference"),
+    }.get(m["match_route"], e(m["match_route"]))
+
+    body = (f'<p style="margin-top:0"><b>{who}</b> pubblica {link}{ref}: '
+            f"{pr}, {mq}.</p>" if it else
+            f'<p style="margin-top:0"><b>{who}</b> publishes {link}{ref}: '
+            f"{pr}, {mq}.</p>")
+    extra = ""
+    if m["site_mq"] and r["stated_m2"] and m["site_mq"] != r["stated_m2"]:
+        extra = (f"<p>Il portale indica {num(r['stated_m2'], lang, 0)} m²; "
+                 f"il sito dell'agenzia {m['site_mq']} m². Entrambe le "
+                 f"cifre sono pubblicate dalla stessa agenzia.</p>" if it
+                 else
+                 f"<p>The portal states {num(r['stated_m2'], lang, 0)} m²; "
+                 f"the agency's own site {m['site_mq']} m². Both figures "
+                 f"are published by the same agency.</p>")
+    if strong:
+        note = (f"Corrispondenza: {route}. Il collegamento è un dato, "
+                f"non un accertamento." if it else
+                f"Match: {route}. The link is data, not a determination.")
+    else:
+        note = (f"Corrispondenza: {route}. Potrebbe essere lo stesso "
+                f"immobile: lo pubblichiamo come pista, non come fatto "
+                f"accertato." if it else
+                f"Match: {route}. These may be the same property: we "
+                f"publish this as a lead, not as an established fact.")
+    head = ("Sul sito dell'agenzia" if it else "On the agency's own site")
+    return (f'<div class="block"><h2>{head}</h2>{body}{extra}'
+            f'<p class="note">{note}</p></div>')
+
+
+def candidate_block(r, cand, lang):
+    """S008 dossier item (c): candidate cluster matches, shown ONLY with
+    the unconfirmed labelling discipline. A named-agency same-property
+    claim above candidate level needs identity evidence or a human look
+    (§16d) — so this block never asserts sameness, and links no
+    confronti page (none exists for a candidate)."""
+    it = lang == "it"
+    sid, group = cand
+    others = [g for g in group
+              if not (g["source"] == r["source"]
+                      and str(g["source_id"]) == str(r["source_id"]))]
+    if not others:
+        return ""
+    lines = []
+    for g in sorted(others, key=lambda x: (str(x["agency_name"] or
+                                               x["source"]),
+                                           str(x["source_id"]))):
+        who = e(g["agency_name"] or g["source"])
+        pr = T.eur(g["price"]) if g["price"] else ("prezzo non pubblicato"
+                                                   if it else
+                                                   "price not published")
+        mq = f"{g['mq']} m²" if g["mq"] else "—"
+        src = (f' — <a href="{e(g["url"])}" rel="nofollow noopener" '
+               f'target="_blank">annuncio ↷</a>' if it and g["url"] else
+               (f' — <a href="{e(g["url"])}" rel="nofollow noopener" '
+                f'target="_blank">listing ↷</a>' if g["url"] else ""))
+        lines.append(f"<li><b>{who}</b>: {pr}, {mq}{src}</li>")
+    head = ("Possibile stesso immobile — non confermato" if it else
+            "Possibly the same property — unconfirmed")
+    disc = ("Questi annunci potrebbero riferirsi allo stesso immobile: "
+            "lo pubblichiamo come pista, non come fatto accertato." if it
+            else
+            "These listings may refer to the same property: we publish "
+            "this as a lead, not as an established fact.")
+    return (f'<div class="block"><h2>{e(head)}</h2>'
+            f'<p style="margin-top:0">{e(disc)}</p>'
+            f'<ul style="margin:0;padding-left:18px">{"".join(lines)}</ul>'
+            f'</div>')
+
+
 def index_table(r, lang):
     it = lang == "it"
     L = {
@@ -373,7 +473,7 @@ def dom_block(r, lang):
     return f'<p class="note">{txt}</p>'
 
 
-def listing_page(r, band, finding, lang):
+def listing_page(r, band, finding, lang, alt=None, cand=None):
     it = lang == "it"
     typ = TYPOLOGY_NAME.get(r["typology"], TYPOLOGY_NAME[""])[0 if it else 1]
     place = comune_title(r["comune"])
@@ -400,6 +500,9 @@ def listing_page(r, band, finding, lang):
                 + dom_block(r, lang) + "</div>"
                 + pos_html
                 + cross_listing_block(r, finding, lang)
+                + (own_site_block(r, alt, lang) if alt else "")
+                + (candidate_block(r, cand, lang)
+                   if cand and not finding else "")
                 + source_block(r, lang)
                 + f'<p class="noprint"><a href="{comune_url(r["comune"], lang)}">'
                   f"← Tutti gli immobili di {e(place)}</a> · "
@@ -921,6 +1024,30 @@ def build(db_path, out):
         for g in item["group"]:
             member_of[(g["source"], str(g["source_id"]))] = (sid, item["group"])
 
+    # S008 dossier (c): the clusters the publication gate holds back are
+    # rendered on listing pages as leads under the §16d unconfirmed
+    # discipline — never as facts, and with no confronti page to link.
+    candidate_of = {}
+    kept_ids = {id(it) for it in keep}
+    for item in items:
+        if id(item) in kept_ids:
+            continue
+        for g in item["group"]:
+            key = (g["source"], str(g["source_id"]))
+            if key not in member_of:
+                candidate_of[key] = (None, item["group"])
+
+    # S008 dossier (b): the agency-site link harvest (harvest_links.py),
+    # consumed from its tracked export so the build never needs the
+    # network. Absent file = no blocks, deliberately.
+    url_alt = {}
+    ua_path = os.path.join(os.path.dirname(os.path.abspath(db_path)),
+                           "data", "url_alt.json")
+    if os.path.exists(ua_path):
+        with open(ua_path, encoding="utf-8") as fh:
+            for m in json.load(fh):
+                url_alt[(m["source"], str(m["source_id"]))] = m
+
     data_date = max((r["_fetched_at"] or "") for r in rows)
 
     by_comune = {}
@@ -947,10 +1074,13 @@ def build(db_path, out):
                 continue
             if r["tier"] == "C":
                 n_c_published += 1
-            f = member_of.get((r["source"], str(r["source_id"])))
+            key = (r["source"], str(r["source_id"]))
+            f = member_of.get(key)
             for lang in LANGS:
                 p = f"{out}{listing_url(r, lang)}index.html"
-                write(p, listing_page(r, band, f, lang))
+                write(p, listing_page(r, band, f, lang,
+                                      alt=url_alt.get(key),
+                                      cand=candidate_of.get(key)))
                 pages.append(listing_url(r, lang))
                 n_listing[lang] += 1
         for lang in LANGS:
@@ -974,6 +1104,18 @@ def build(db_path, out):
             en = lookup_entry(r, has_page(r))
             if en:
                 entries.append(en)
+            # S008: an own-site URL pasted into the search field resolves
+            # to the same page as the portal URL it was matched to.
+            m = url_alt.get((r["source"], str(r["source_id"])))
+            if m:
+                u = re.sub(r"^https?://(www\.)?", "", m["url_alt"].lower())
+                u = u.split("?")[0].split("#")[0].rstrip("/")
+                typ = TYPOLOGY_NAME.get(r["typology"], TYPOLOGY_NAME[""])[0]
+                label = f"{typ} — {comune_title(r['comune'])}"
+                if r["agency_name"]:
+                    label += f" ({r['agency_name']}, sito proprio)"
+                entries.append(
+                    [u, listing_url(r, "it") if has_page(r) else "", label])
     entries.sort()
     with open(f"{out}/cerca.json", "w", encoding="utf-8") as fh:
         json.dump(entries, fh, ensure_ascii=False, separators=(",", ":"))

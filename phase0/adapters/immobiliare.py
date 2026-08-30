@@ -223,12 +223,25 @@ TYPOLOGY_MAP = {
 
 
 def map_typology(name, caption=""):
-    blob = f"{name or ''} {caption or ''}".lower()
-    for key, ours in TYPOLOGY_MAP.items():
-        if key in blob:
-            return ours
-    if re.search(r"terra[- ]tetto|cielo[- ]terra|indipendent", blob):
-        return "cielo_terra"
+    """Portal's structured field FIRST; caption only as a fallback.
+
+    S008: the old version scanned field+caption as one blob in dict
+    order, so an agency headline ("APPARTAMENTO INGRESSO INDIPENDENTE")
+    overrode Immobiliare's own field ("Terratetto unifamiliare") on 45
+    of 844 rows — and one of them was about to be published as a
+    cross-channel typology contradiction that was really our artifact.
+    The field is the portal's claim; the caption is the agency's prose.
+    When they disagree, that is self_contradictions.py's axis, not a
+    reason to silently prefer whichever word sorts first in the map.
+    """
+    for blob in (f"{name or ''}".lower(), f"{caption or ''}".lower()):
+        if not blob.strip():
+            continue
+        for key, ours in TYPOLOGY_MAP.items():
+            if key in blob:
+                return ours
+        if re.search(r"terra[- ]tetto|cielo[- ]terra|indipendent", blob):
+            return "cielo_terra"
     return "unknown"
 
 
