@@ -737,6 +737,103 @@ def comune_page(comune, rows, b, findings, data_date, lang):
                    comune_url(comune, other), desc, schema)
 
 
+SEARCH_TXT = {
+    "it": {
+        "h": "Cerca un annuncio",
+        "ph": "Incolla il link di un annuncio — Immobiliare o il sito "
+              "dell'agenzia — o una sua parte",
+        "btn": "Cerca",
+        "help": "Troviamo la pagina CasaZebra dello stesso annuncio. "
+                "La ricerca avviene nel tuo browser: non inviamo nulla.",
+        "none": "Nessun annuncio corrispondente nel nostro archivio. "
+                "Copre gli otto comuni della Valtiberina; un annuncio "
+                "nuovo entra al primo aggiornamento dopo la pubblicazione.",
+        "nopage": "è in archivio ma senza pagina (livello C: nessun "
+                  "prezzo o superficie utilizzabile)",
+        "many": "annunci trovati:",
+    },
+    "en": {
+        "h": "Look up a listing",
+        "ph": "Paste a listing link — Immobiliare or an agency site — "
+              "or part of one",
+        "btn": "Search",
+        "help": "We find the CasaZebra page for the same listing. The "
+                "search runs in your browser: nothing is sent anywhere.",
+        "none": "No matching listing in our archive. It covers the eight "
+                "Valtiberina comuni; a new listing enters at the first "
+                "update after it is published.",
+        "nopage": "is in the archive but has no page (Tier C: no usable "
+                  "price or surface)",
+        "many": "listings found:",
+    },
+}
+
+# Plain string, not an f-string: this is JavaScript, and every brace in
+# it would otherwise need doubling. %s slots are filled below.
+SEARCH_JS = """
+<script>
+(function(){
+var f=document.getElementById("cerca-f"),q=document.getElementById("cerca-q"),
+    out=document.getElementById("cerca-out"),DB=null;
+function norm(s){return s.toLowerCase().replace(/^https?:\\/\\//,"")
+  .replace(/^www\\./,"").split("?")[0].split("#")[0].replace(/\\/+$/,"");}
+function digits(s){var m=s.match(/\\d{6,}/);return m?m[0]:null;}
+function render(hits){
+  if(!hits.length){out.innerHTML='<p class="note">%NONE%</p>';return;}
+  var h='<p class="note">'+hits.length+' %MANY%</p><ul style="padding-left:18px">';
+  hits.slice(0,10).forEach(function(e){
+    h+= e[1] ? '<li><a href="'+e[1]+'">'+e[2]+'</a></li>'
+             : '<li>'+e[2]+' — %NOPAGE%</li>';});
+  out.innerHTML=h+'</ul>';}
+function search(){
+  var v=norm(q.value.trim());if(!v)return;
+  var id=digits(v);
+  var hits=DB.filter(function(e){
+    return e[0].indexOf(v)>-1||v.indexOf(e[0])>-1||(id&&e[0].indexOf(id)>-1);});
+  render(hits);}
+f.addEventListener("submit",function(ev){ev.preventDefault();
+  if(DB){search();return;}
+  out.innerHTML='<p class="note">…</p>';
+  fetch("/cerca.json").then(function(r){return r.json()})
+    .then(function(d){DB=d;search();})
+    .catch(function(){out.innerHTML='<p class="note">%NONE%</p>';});});
+})();
+</script>
+"""
+
+
+def search_block(lang):
+    t = SEARCH_TXT[lang]
+    js = (SEARCH_JS.replace("%NONE%", e(t["none"]))
+                   .replace("%NOPAGE%", e(t["nopage"]))
+                   .replace("%MANY%", e(t["many"])))
+    return (f'<div class="block"><h2>{e(t["h"])}</h2>'
+            f'<form id="cerca-f" class="noprint" '
+            f'style="display:flex;gap:10px;flex-wrap:wrap">'
+            f'<input type="text" id="cerca-q" placeholder="{e(t["ph"])}" '
+            f'style="flex:1;min-width:240px">'
+            f'<button type="submit">{e(t["btn"])}</button></form>'
+            f'<div id="cerca-out"></div>'
+            f'<p class="note">{e(t["help"])}</p></div>' + js)
+
+
+def lookup_entry(r, has_page):
+    """One /cerca.json row: [normalized source url, our path or "", label].
+
+    The source URL is pre-normalized at build time so the browser does
+    string containment and nothing else.
+    """
+    if not r["url"]:
+        return None
+    u = re.sub(r"^https?://(www\.)?", "", str(r["url"]).lower())
+    u = u.split("?")[0].split("#")[0].rstrip("/")
+    typ = TYPOLOGY_NAME.get(r["typology"], TYPOLOGY_NAME[""])[0]
+    label = f"{typ} — {comune_title(r['comune'])}"
+    if r["agency_name"]:
+        label += f" ({r['agency_name']})"
+    return [u, listing_url(r, "it") if has_page else "", label]
+
+
 def comuni_index(bands, by_comune, data_date, lang):
     """/{lang}/comuni/ — the eight reports, one tile each. Lives under
     the /comuni/ path, so lint's band check applies: every € on this page
@@ -781,7 +878,8 @@ def comuni_index(bands, by_comune, data_date, lang):
            "the comparisons, one per property →")
         + "</a></p></div>")
     body = (f"<h1>{e(h1)}</h1><p class=\"sub\">{e(sub)}</p>"
-            f'<div class="grid">{"".join(tiles)}</div>' + evidence)
+            + search_block(lang)
+            + f'<div class="grid">{"".join(tiles)}</div>' + evidence)
     other = "en" if it else "it"
     return T.shell(f"{h1} | CasaZebra", body, lang, f"/{other}/comuni/",
                    sub)
@@ -865,6 +963,21 @@ def build(db_path, out):
         write(f"{out}/{lang}/comuni/index.html",
               comuni_index(bands, by_comune, data_date, lang))
         pages.append(f"/{lang}/comuni/")
+
+    # The paste-a-URL lookup index. Every in-scope listing, page or not:
+    # a listing without a page answers with the reason, which is §3.3's
+    # honesty applied to search results. Sorted for determinism.
+    entries = []
+    for comune in sorted(by_comune):
+        for r in sorted(by_comune[comune],
+                        key=lambda r: (r["source"], str(r["source_id"]))):
+            en = lookup_entry(r, has_page(r))
+            if en:
+                entries.append(en)
+    entries.sort()
+    with open(f"{out}/cerca.json", "w", encoding="utf-8") as fh:
+        json.dump(entries, fh, ensure_ascii=False, separators=(",", ":"))
+        fh.write("\n")
 
     # Sitemap fragment only. This build merges into the same web root as
     # dist-contradictions at deploy; robots.txt and the root redirect
