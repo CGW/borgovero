@@ -127,8 +127,23 @@ def build_once(db, out, base_url=""):
     conn.row_factory = sqlite3.Row
     data_date = max(r[0] or "" for r in
                     conn.execute("SELECT fetched_at FROM listings"))
+    fetched = {(r["source"], str(r["source_id"])): r["fetched_at"]
+               for r in conn.execute(
+                   "SELECT source, source_id, fetched_at FROM listings")}
     items = C.build(conn)
     conn.close()
+
+    # Per-URL lastmod for the sitemap: a listing page's date is its own
+    # retrieval date; everything else carries the corpus date. From the
+    # database, not the clock — a lastmod that changed on every rebuild
+    # would claim 1,600 fresh pages weekly and teach Google to ignore
+    # exactly the field this exists for (§10.2 applies to sitemaps too).
+    import index_site as IS
+    lastmod = {}
+    for r in rows:
+        d = (fetched.get((r["source"], str(r["source_id"]))) or data_date)
+        for lang in ("it", "en"):
+            lastmod[IS.listing_url(r, lang)] = str(d)[:10]
 
     keep = [it for it in items
             if it.get("verified") or (set(it["evidence"]) & CS.IDENTITY)]
@@ -156,10 +171,13 @@ def build_once(db, out, base_url=""):
 
     # Step 4: one sitemap over everything, sorted, no duplicates.
     urls = sorted(set(urls))
+    default_mod = str(data_date)[:10]
     with open(os.path.join(out, "sitemap.xml"), "w", encoding="utf-8") as f:
         f.write('<?xml version="1.0" encoding="UTF-8"?>\n'
                 '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-                + "".join(f"  <url><loc>{base_url}{u}</loc></url>\n"
+                + "".join(f"  <url><loc>{base_url}{u}</loc>"
+                          f"<lastmod>{lastmod.get(u, default_mod)}</lastmod>"
+                          f"</url>\n"
                           for u in urls)
                 + "</urlset>\n")
     with open(os.path.join(out, "robots.txt"), "w", encoding="utf-8") as f:
