@@ -8,13 +8,18 @@ identifiers (`bv-site/`, `bvc_m2`, `borgo_vero_price`) keep the old name
 — they are plumbing, not brand. Historical entries below keep the old
 name because they record what was true when they were written.
 
-**Last updated:** 2026-08-30 (S005 — the §17.1 band deadlock resolved as
-**(b)**, measured not argued: interval arithmetic over Tier A+B, the
-Tier-A-only gate retired, **all eight comuni publishing** at n = 27–290.
-`phase0/normalize.py` shipped; `metodologia.html` grown into the standard;
-`bv-site/lint.py` added, which caught the site describing itself as *una
-valutazione* on all 36 live pages. **Read §17 first — its S005 block
-overrides §4.3 of `docs/seo-spec.md` and item 2 of §17.1 itself.**)
+**Last updated:** 2026-08-30 (S006–S007 — **the site is LIVE at
+https://casazebra.it**: 777 listing pages + 8 comune reports built and
+deployed via the unified `bv-site/build.py` (builds twice, diffs, lints,
+then installs); Phase 1 pages shipped (llms.txt, /dati/ CC BY 4.0,
+correzioni, diritto di replica, the per-agency price-publication guide
+with Marcellini at 26/202); sitemap (1.658 URLs, with lastmod) submitted
+to Search Console, Dataset schema valid; paste-a-URL lookup on the
+landing page. OMI loaded for all eight comuni incl. Citerna and the
+§17.2 cross-check ran for the first time — Badia Tedalda sits below the
+OMI floor and that is a finding, not a bug. The §4.3 width gate is
+DERIVED, 28,0%, not the 25% earlier copies of this file claimed.
+**Next: §15's S008 brief — the agency-site link harvester.**)
 
 This file is the authority. Where it disagrees with a README, a results
 document, a code comment or a memory, this file wins — and the disagreement
@@ -931,10 +936,76 @@ building before writing a page of it.
 | S005 | 2026-08-30 | **The band deadlock resolved on a measurement, and the index pipeline shipped.** §17.1's choice taken as **(b)**: bands are computed over Tier A+B with interval arithmetic, a Tier A listing entering as a zero-width interval, and the unfireable Tier-A-only n ≥ 8 gate is retired. The decision was measured rather than argued — **deflator uncertainty widens the p50 by 14–18%, while the market's own p25–p75 spread is 55–104%**, so hand-seeding Tier A would have spent 64+ browser reads removing a fifth of the uncertainty and left the rest standing. (c) is correspondingly weaker than it looked and should not be revisited on index-quality grounds. **All eight comuni now clear the gate at n = 27–290 and 9–29 agencies**, so Phase 2's "three comune reports" is exceeded on day one. New `phase0/normalize.py` (deterministic, byte-identical across runs); spec §2 corrected to the eight real comuni, §4.3 rewritten, §10.3 lint extended, counts fixed to 36/30/36. **Fifth correction to §17: ~676 listing pages, not ~931** — §17 applied only the price+surface gate and omitted §4.2's tier condition; say ~700. Typology recovered for 244 listings from `typology_raw` and titles already held (no detail pages, no 403), and 123 shops and land parcels removed from a residential index entirely. Three self-inflicted defects caught before shipping and commented in place: a **band-width gate invented at 25%** that would have silently suppressed every farmhouse-dominated comune (rustico's own deflator is 26,7% wide — it killed Monterchi), now derived from the deflator table; **`sia` and `eur_sia` rounded independently**, so a reader dividing our published surface into our published price got a different answer from our published €/m² — fatal on a site whose product is checkable arithmetic; and a **lint that fired on all 35 contradiction pages** because "Fasce OMI" contains the word band. |
 | S005 | 2026-08-30 | **The site was calling itself a *valutazione* on all 36 published pages.** Found by the new `bv-site/lint.py`: the footer declaration read *"Borgo Vero è una valutazione indipendente"* — §3.5's regulated word, affirmative, about ourselves — while the method page two blocks below said *"non è una perizia"*. The site contradicted itself about its own nature on every page it published, which is the exact class of thing it publishes other people for. Three separate hardcoded copies existed (footer, IT about, EN about); the EN one said *"third-party assessment"* and survived the first fix because §3.5 never names that word. All now read *indice* / *index*, and **`assessment` is added to the forbidden list — §3.5 should gain it.** The lint deliberately is **not** a substring ban: it excuses negated and attributed uses, because a checker that forces *"It is not an appraisal"* off the page deletes the disclaimer and leaves the claim. It also matches on word boundaries, after the first version reported the English *"days on market are e-stima-ted"* as an Italian regulated-term violation. `metodologia.html` grown into the standard per §3 — surface definition, the land rule, the weighting table, tiers, deflators and the band method — rendered **from `normalize.py`'s own tables** so the published method cannot drift from the applied one. Build verified: 78 pages, two builds byte-identical, lint clean, zero broken internal links. |
 | S005 | 2026-08-30 | **The OMI data was never missing — three path strings were stale.** This document, `omi.py`'s error text and the S006 prompt all recorded `phase0/data/` as lost since the 2026-08-29 deletion. All three AdE orders were on disk and intact the whole time: **Arezzo 2025-2 (`QIP1422173`), Arezzo 2021-1 (`QIP1422174`), both with 36 KML perimeter files, and Perugia 2025-2 (`QI1422048`)**. What broke is that **the AdE order number changes on every download** — the re-order came back as 1422173 where `config.OMI_CSV_PATHS` and `zones.KML_ZIP` still named 1421390 — so `omi.py` exited 1 on a missing file and the absence was read as absent data. Paths corrected in both files. **`omi.py` now loads 133 band rows across all eight comuni, including 25 for Citerna, which had none for three sessions** (S002 recorded Citerna as bandless and it stayed that way); `zones.py` re-runs cleanly off the recovered KML zip, 775/1.295 listings zoned. This is the `id_anchors.json` lesson a second time, in the other direction: the first was a caution nobody re-tested, this was an absence nobody looked for. **`ls phase0/data/` before concluding a file is gone.** Remaining gap, known and bounded: the Perugia order is `QI_`, not `QIP_` — no zone perimeters — so Citerna's 69 listings have bands but no point-in-polygon zone and fall back to the fascia guess. Re-ordering Perugia with perimeters closes it. |
+| S006 | 2026-08-30 | **The pages built, and the first external cross-check ever run.** `bv-site/index_site.py`: 777 listing pages (745 Tier B + 32 Tier C that carry a finding — each stating why it has no number) and 8 comune reports per §4.2/§4.3, IT full / EN per §9, extraction paragraphs enforced at ≤ 40 words at build time and in the lint (which gained the §10.3 listing checks, each negative-tested to prove it fires). The dormant band check woke up and passes for the right reason. Doc drift fixed in three places: the width gate is **derived — `normalize.GATE_MAX_WIDTH_PCT`, 28,0%** — and spec §4.3, §10.3 and this file's own §17.1 all still said the invented 25%; spec §13 Phase 2 rewritten for eight comuni (the Tier-A audit criterion could never run); `seo-strategy.html` corrected to 36/8/~750. Typology recovery extended to `source_id` (Centogambe's ids are slugs): +10 Tier B, +14 non-homes out (garages join shops and land). **OMI loaded — 133 rows 2025-2 incl. Citerna's 25, 98 rows 2021-1 (`omi.py --semester`) — and §17.2's cross-check ran for the first time:** 4 comuni overlap, 3 sit above (expected: netta-side denominator, asking > transaction), **Badia Tedalda sits below the OMI floor (493–599 vs 600) even with land-swallowed rusticos excluded — a thin mountain market asking below the official band; a finding to develop, not a bug.** Known open: 41 Tier B listings with stated surface > 600 m² (land swallowed into the figure — a cap would be a chosen standard; undecided on purpose). |
+| S007 | 2026-08-30 | **Renamed CasaZebra, and LAUNCHED.** borgovero.it is foreign-held, so the name went; casazebra.it bought (registry-verified available when GoDaddy's UI said otherwise; casazebra.com is a dormant Wix shell renewed to 2027). Full sweep of user-facing strings, emails (correzioni@/replica@casazebra.it), docs — identifiers and history keep the old name. `bv-site/build.py`: ONE build — contradictions + index + Phase 1 pages merged into one root, one sitemap (1.658 URLs, per-listing `lastmod` from the database, never the clock), robots, §10.2 enforced inline (builds twice, diffs, lints, only then installs; the DB is gitignored so CI has nothing to build from). Phase 1 shipped: llms.txt, `/dati/` CSV+JSON under CC BY 4.0, `/it/correzioni/` (first entry: the *valutazione* footer), `/it/diritto-di-replica/`, ClaimReview-shaped schema + listing backlinks on findings, per-agency price-publication columns on comune reports and the `/it/guide/prezzi-non-pubblicati/` page — **Marcellini: 26 of 202 with a published price, said as fact with every listing linked, never as verdict.** Deployed to Vercel, apex canonical (www 308s in), GSC verified, sitemap Success, Dataset schema valid on live test. The front door now lands on `/it/comuni/` — a launch-day visitor landing on the findings index concluded the site held 36 properties. Paste-a-URL lookup added (`/cerca.json`, 1.158 entries, 381 of them answering honestly why there is no page). **First minutes of live traffic produced S008's brief: Leonardi's own site vs its portal listing disagree on typology (appartamento / cielo terra) for the same house — see §15.** |
 
 ---
 
 ## 15. Next
+
+### S008 brief — the agency-site link harvester (queued 2026-08-30, S007)
+
+**The site is LIVE at casazebra.it as of 2026-08-30** — 1.658 URLs in
+Google's sitemap queue, all eight comune bands published, paste-a-URL
+lookup on the landing page. S008 starts here the way S006 started with
+the pages: the decision is made, this is a build brief.
+
+**What.** For each portal agency's own website, harvest the listing
+*index only* — own-site URL, price, stated surface, ref where shown —
+and match against the portal rows already held. Store the match as an
+alternate URL on the existing listing (`url_alt`, plus provenance and
+match route). **This is NOT a new listing source**: no new pages, no new
+typologies, nothing enters a band. It is a mapping table.
+
+**Why, measured on the first URL ever checked.** Leonardi's
+`/immobile/appartamento-ingresso-indipendente-3-camere/` matched
+immobiliare 105891071 exactly (Sansepolcro, €125.000, 110 m², 5 vani,
+3 bagni) — and the two channels disagree about what the property IS:
+the portal says *appartamento*, the agency's own description says
+*cielo terra*. Different §3.4 deflator class, same agency, same house,
+both published by them. Same-agency cross-channel contradiction needs no
+photo matching and no second agency — it is the cheapest strong finding
+class the site can add, and the harvester's match table is its
+prerequisite either way.
+
+**Order of work.**
+1. Sites, by corpus weight: Leonardi (159), House (127), Romolini (93),
+   Cortesi (78+9). itcasa/NOW/SICASA only if the first four go fast.
+   Lancisi has ZERO rows in the corpus — establish why before adding it
+   anywhere.
+2. Match routes, labelled like §16's: `ref` where the agency prints its
+   own reference on both channels (Leonardi shows *Rif.*
+   on-site but the portal rows carry `agency_ref` NULL — check per
+   agency, do not assume), else `price+surface+comune` with the S004
+   ambiguity rule: two candidate rows at the same price and surface is
+   NO match, never a coin flip.
+3. Consumers, in order: `cerca.json` gains the own-site URLs (the search
+   field then accepts agency-site pastes); listing pages cite both
+   channels; the match table is kept (tracked or exported) as the input
+   the full-adapter decision would need.
+4. Only then, and as a separate decision: whether any same-agency
+   cross-channel disagreement publishes as a finding. Publication needs
+   the §16d gate (identity evidence, human look) exactly as for
+   cross-agency findings — the Leonardi appartamento/cielo-terra case is
+   candidate #1, not finding #1.
+
+**Cautions carried in.** Detail pages on agency sites are fetched only
+where the index page cannot carry the match — the harvest is index-first
+by design. Each site is one more parser in the weekly maintenance
+surface; that cost recurs, say so at the wrap. Fetch politely (these are
+four small businesses, not portals) and re-check `robots.txt` per site
+before the first request. And the standing rule is unchanged: publish
+the discrepancy, never the accusation — a mapping table is data, not a
+verdict.
+
+**Also open after S007, smaller:** the archive layer (§6 — delisted
+pages currently 404, and every ingest without it deletes history), the
+weekly ingest heartbeat with §10.4 alerts, per-listing interval graphic
+(own-made, zebra-striped; agency photos stay banned per §2), and the
+zone-matched OMI cross-check (Badia Tedalda R1 stock vs R1 band) now
+that `zones.py` runs.
+
+---
 
 **Rewritten at the S003 wrap.** The old list was ordered by "how much
 each moves the unresolved answer in §5" — a question the project no
