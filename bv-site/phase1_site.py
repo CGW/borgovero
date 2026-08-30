@@ -178,6 +178,16 @@ use it for anything, credit CasaZebra with a link.</p>
     schema = {
         "@context": "https://schema.org", "@type": "Dataset",
         "name": "CasaZebra — Valtiberina asking-price index",
+        # "description" is REQUIRED for Dataset rich results — GSC flags
+        # its absence as a critical issue (found on the first crawl,
+        # 2026-08-30). Counts come from the build, like everything else.
+        "description": (
+            f"Normalized asking prices for the Valtiberina (upper Tiber "
+            f"valley, Italy): {n_ab} listings brought onto one written "
+            f"surface standard, {n_findings} documented cross-agency "
+            f"contradictions, and interval price bands for {n_pub} comuni. "
+            f"Every normalized figure is an interval, never a point "
+            f"estimate. Data as of {d}. CC BY 4.0."),
         "license": "https://creativecommons.org/licenses/by/4.0/",
         "temporalCoverage": d,
         "creator": {"@type": "Organization", "name": "CasaZebra"},

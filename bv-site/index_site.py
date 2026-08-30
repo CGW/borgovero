@@ -760,8 +760,28 @@ def comuni_index(bands, by_comune, data_date, lang):
             "numero singolo. Dati al " if it else
             "One band per comune, always an interval, never a single "
             "number. Data as of ") + ddate(data_date, lang) + ".")
+    n_b = sum(len([r for r in rs if r["tier"] == "B"])
+              for rs in by_comune.values())
+    # This page is also the site's landing page (build.py points the root
+    # redirect here): the index is the product, so the front door shows
+    # the eight comuni — with the evidence one click away, not hidden and
+    # not in front.
+    evidence = (
+        f'<div class="hero" style="margin-top:26px"><h1 style="font-size:20px">'
+        + ("Le agenzie non concordano" if it else "The agencies do not agree")
+        + f'</h1><p style="margin:6px 0 0">'
+        + ((f"{n_b} annunci normalizzati con un solo metro. Dove più "
+            f"agenzie pubblicano numeri diversi per lo stesso immobile, "
+            f"lo documentiamo: ") if it else
+           (f"{n_b} listings normalized to one measure. Where several "
+            f"agencies publish different figures for the same property, "
+            f"we document it: "))
+        + f'<a href="/{lang}/confronti/">'
+        + ("i confronti, uno per immobile →" if it else
+           "the comparisons, one per property →")
+        + "</a></p></div>")
     body = (f"<h1>{e(h1)}</h1><p class=\"sub\">{e(sub)}</p>"
-            f'<div class="grid">{"".join(tiles)}</div>')
+            f'<div class="grid">{"".join(tiles)}</div>' + evidence)
     other = "en" if it else "it"
     return T.shell(f"{h1} | CasaZebra", body, lang, f"/{other}/comuni/",
                    sub)

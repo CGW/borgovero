@@ -102,6 +102,23 @@ def build_once(db, out, base_url=""):
         urls += locs(os.path.join(out, "sitemap-immobili.xml"))
         os.unlink(os.path.join(out, "sitemap-immobili.xml"))
 
+        # The front door. The contradictions build points the root at
+        # /it/confronti/ — right when those 36 pages were the whole site,
+        # wrong now: a visitor landing on the findings index concludes
+        # the site has 36 properties (it happened on launch day). The
+        # index is the product; the root lands on the comuni overview,
+        # which links the evidence one click away.
+        for lang in ("it", "en"):
+            with open(os.path.join(out, lang, "index.html"), "w",
+                      encoding="utf-8") as f:
+                f.write('<!doctype html><meta charset="utf-8">'
+                        f'<meta http-equiv="refresh" content="0;url=/{lang}/comuni/">'
+                        f'<link rel="canonical" href="/{lang}/comuni/">')
+        with open(os.path.join(out, "index.html"), "w", encoding="utf-8") as f:
+            f.write('<!doctype html><meta charset="utf-8">'
+                    '<meta http-equiv="refresh" content="0;url=/it/comuni/">'
+                    '<link rel="canonical" href="/it/comuni/">')
+
     # Step 3: Phase 1 pages, computed from the same pipeline the page
     # generators used. Nothing here recomputes an index figure.
     rows, bands, _ = N.run(db_path=db,
