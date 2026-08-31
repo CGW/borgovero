@@ -115,7 +115,17 @@ _COMUNE_ALIASES = [
     ("pieve-santo-stefano", ("pievesantostefano", "pievesstefano",
                              "pievesantoste")),
     ("caprese-michelangelo", ("capresemichel", "caprese")),
-    ("badia-tedalda", ("badiatedalda", "badia")),
+    # 'badia' alone was a needle here until S009. startswith() then filed
+    # Cortesi's BADIA PETROIA — a frazione of Città di Castello, in Umbria,
+    # 60 km and one region away — as Badia Tedalda, on 4 listings against a
+    # comune that has only 24. Same shape as the `rif` regex that matched
+    # inside pe·rif·eria (§16c): an unanchored needle. It matters more here
+    # because §16d PUBLISHES comune conflicts as a finding, so the bug
+    # manufactures a contradiction out of our own error, in the one comune
+    # small enough for four rows to move the band.
+    ("badia-tedalda", ("badiatedalda",)),
+    ("badia-petroia", ("badiapetroia",)),   # NOT corpus — as Città di
+    # Castello below: resolves to a name that is visibly not one of ours.
     ("sansepolcro", ("sansepolcro", "sanseplocro")),
     ("citta-di-castello", ("cittadicastello",)),  # NOT corpus — kept so
     # a Città di Castello card resolves to a name that visibly is not
