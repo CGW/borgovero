@@ -62,6 +62,14 @@ button{padding:14px 22px;font-size:16px;font-weight:600;background:var(--ink);
   padding:14px;text-decoration:none;color:inherit;display:block}
 .tile b{display:block;font-size:17px;margin-bottom:3px}
 .tile small{color:var(--mute)}
+.rows th{padding:7px 10px 7px 0;border-bottom:2px solid var(--ink);
+  font-size:12px;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--mute);text-align:left;font-weight:700;white-space:nowrap}
+.rows th.r{text-align:right;padding-right:0}
+.rows td.r{padding-left:10px}
+/* A table of eight comuni is narrow on a laptop and tight on a phone;
+   let it scroll inside its own box rather than pushing the page wide. */
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
 .v-red{color:var(--hi);font-weight:700}
 .v-amber{color:var(--warn);font-weight:700}
 .v-green{color:var(--ok);font-weight:700}
@@ -79,6 +87,8 @@ button{padding:14px 22px;font-size:16px;font-weight:600;background:var(--ink);
   padding:8px 10px;border-radius:5px;visibility:hidden;opacity:0;
   transition:opacity .12s;z-index:20}
 .q:hover .q-pop,.q:focus .q-pop{visibility:visible;opacity:1}
+/* In a table header the popover has no room above it — open downward. */
+.q.down .q-pop{bottom:auto;top:20px}
 @media print{.q{display:none}}
 footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);
   font-size:13px;color:var(--mute)}

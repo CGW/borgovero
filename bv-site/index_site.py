@@ -948,14 +948,14 @@ OMI_RESIDENTIAL = ("Abitazioni civili", "Abitazioni di tipo economico",
                    "Ville e Villini")
 
 
-def hint(text):
+def hint(text, down=False):
     """A '?' carrying its explanation. The source and the semester used
     to be printed inline ('Venduto, OMI 2025-2:'), which spent the
     tile's most readable line on provenance; here the label stays short
     and the provenance is one hover away — still in the HTML, so it is
     indexable and readable without JavaScript."""
-    return (f'<span class="q" tabindex="0" role="note">?'
-            f'<span class="q-pop">{e(text)}</span></span>')
+    return (f'<span class="q{" down" if down else ""}" tabindex="0" '
+            f'role="note">?<span class="q-pop">{e(text)}</span></span>')
 
 
 def comuni_index(bands, by_comune, data_date, lang, asked=None, omi=None):
@@ -976,26 +976,45 @@ def comuni_index(bands, by_comune, data_date, lang, asked=None, omi=None):
     """
     it = lang == "it"
     asked, omi = asked or {}, omi or {}
-    tiles = []
+
+    # One row per comune, columns aligned, so the eight are read against
+    # each other rather than one card at a time. The unit lives in the
+    # column head — repeating "/m²" in sixteen cells is what stops a
+    # table reading as a table — and the two "?" notes move to the heads
+    # for the same reason: one per column, not one per cell.
+    ask_note = ("Mediana dei prezzi richiesti, divisa per la superficie "
+                "che l'agenzia stessa dichiara. È ciò che viene chiesto, "
+                "non una stima di valore." if it else
+                "Median asking price, divided by the surface the agency "
+                "itself states. It is what is being asked, not an "
+                "opinion of value.")
+    sold_note = ("Fascia OMI 2025-2 dell'Agenzia delle Entrate, ricavata "
+                 "dalle compravendite effettivamente registrate. È una "
+                 "fascia perché copre zone e tipologie diverse dello "
+                 "stesso comune, ed è quotata sulla stessa superficie "
+                 "del chiesto." if it else
+                 "OMI 2025-2 band from the Agenzia delle Entrate, built "
+                 "from registered sales. It is a band because it spans "
+                 "different zones and property types in the same comune, "
+                 "and it is quoted on the same surface basis as asking.")
+    head = (f'<tr><th>{"Comune" if it else "Comune"}</th>'
+            f'<th class="r">{"Annunci" if it else "Listings"}</th>'
+            f'<th class="r">{"Chiesto al m²" if it else "Asking per m²"}'
+            f'{hint(ask_note, down=True)}</th>'
+            f'<th class="r">{"Venduto al m²" if it else "Sold per m²"}'
+            f'{hint(sold_note, down=True)}</th>'
+            f'<th></th></tr>')
+
+    trs = []
     for comune in sorted(by_comune):
         b = bands.get(comune, {})
         place = comune_title(comune)
         n = b.get("n") or len([r for r in by_comune[comune]
                                if r["tier"] in ("A", "B")])
-        lines = [f'<span class="lbl">{n} '
-                 + ("annunci" if it else "listings") + "</span>"]
         c = asked.get(comune)
-        if c:
-            lines.append(
-                ("Chiesto al m²: " if it else "Asking per m²: ")
-                + f"<b>€{num(c, lang, 0)}/m²</b>"
-                + hint(("Mediana dei prezzi richiesti, divisa per la "
-                        "superficie che l'agenzia stessa dichiara. È ciò "
-                        "che viene chiesto, non una stima di valore."
-                        if it else
-                        "Median asking price, divided by the surface the "
-                        "agency itself states. It is what is being asked, "
-                        "not an opinion of value.")))
+        ask_cell = f"€{num(c, lang, 0)}" if c else "—"
+
+        sold_cell, cue = "—", ""
         if omi.get(comune):
             lo, hi = omi[comune]
             # Three states, on the plain reading of the two figures.
@@ -1012,28 +1031,22 @@ def comuni_index(bands, by_comune, data_date, lang, asked=None, omi=None):
             else:
                 cls, cue = "v-green", ("non sotto il chiesto"
                                        if it else "not below asking")
-            lines.append(
-                ("Venduto al m²: " if it else "Sold per m²: ")
-                + f'<b class="{cls}">€{interval(lo, hi, lang, 0)}/m²</b>'
-                + hint(("Fascia OMI 2025-2 dell'Agenzia delle Entrate, "
-                        "ricavata dalle compravendite effettivamente "
-                        "registrate. È una fascia perché copre zone e "
-                        "tipologie diverse dello stesso comune, ed è "
-                        "quotata sulla stessa superficie del chiesto."
-                        if it else
-                        "OMI 2025-2 band from the Agenzia delle Entrate, "
-                        "built from registered sales. It is a band "
-                        "because it spans different zones and property "
-                        "types in the same comune, and it is quoted on "
-                        "the same surface basis as the asking figure."))
-                + f'<br><span class="lbl">{cue}</span>')
-        if not b.get("published"):
-            lines.append("<span class=\"lbl\">"
-                         + ("nessuna fascia pubblicata" if it else
-                            "no band published") + "</span>")
-        tiles.append(f'<a class="tile" href="{comune_url(comune, lang)}">'
-                     f"<b>{e(place)}</b><small>"
-                     + "<br>".join(lines) + "</small></a>")
+            sold_cell = (f'<span class="{cls}">'
+                         f'€{interval(lo, hi, lang, 0)}</span>')
+        elif not b.get("published"):
+            cue = ("nessuna fascia pubblicata" if it else
+                   "no band published")
+
+        trs.append(
+            f'<tr><td><a href="{comune_url(comune, lang)}">{e(place)}</a>'
+            f'</td><td class="r">{n}</td>'
+            f'<td class="r">{ask_cell}</td>'
+            f'<td class="r">{sold_cell}</td>'
+            f'<td class="lbl">{e(cue)}</td></tr>')
+
+    table = (f'<div class="tablewrap"><table class="rows">'
+             f"<thead>{head}</thead><tbody>{''.join(trs)}</tbody>"
+             f"</table></div>")
     h1 = ("I comuni della Valtiberina" if it else "The Valtiberina comuni")
     sub = (("Una fascia per comune, sempre come intervallo, mai come "
             "numero singolo. Dati al " if it else
@@ -1061,7 +1074,7 @@ def comuni_index(bands, by_comune, data_date, lang, asked=None, omi=None):
         + "</a></p></div>")
     body = (f"<h1>{e(h1)}</h1><p class=\"sub\">{e(sub)}</p>"
             + search_block(lang)
-            + f'<div class="grid">{"".join(tiles)}</div>' + evidence)
+            + table + evidence)
     other = "en" if it else "it"
     return T.shell(f"{h1} | CasaZebra", body, lang, f"/{other}/comuni/",
                    sub)
