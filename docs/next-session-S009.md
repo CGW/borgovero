@@ -20,8 +20,10 @@ python3 apply_S008_typology.py
 sqlite3 phase0.sqlite < apply_S008_data.sql
 ```
 
-Then the build + deploy exactly as S007 did it (`bv-site/build.py`,
-twice-built, linted, then Vercel). Expect and accept: **45 listing
+Then the build + deploy — **the deploy commands are in CLAUDE.md now**
+(S008 recorded them; note that `build.py` rmtree's `dist-site/.vercel`
+on every build, so the `vercel link` line is mandatory or you deploy to
+a fresh project no domain points at). Expect and accept: **45 listing
 slugs churn** (the typology fix renames their URLs; the old ones 404
 until the archive layer exists — resubmit the sitemap in GSC), all
 eight comune bands shift a little, and 22 listings change tier. These

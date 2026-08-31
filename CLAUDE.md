@@ -48,6 +48,32 @@ A `git commit` that reports *"nothing to commit, working tree clean"* right
 after a successful one is a duplicate run, not a failure. Check `git log`
 before re-staging anything.
 
+## Deploying (recorded S008 — it had never been written down)
+
+Production is the Vercel project **`dist-site`**
+(`prj_kzhgio7otE8l2Ec75on36d6bWIrj`, team `cgw-2712s-projects`), served
+at casazebra.it. It is **not** git-connected: every deploy is the CLI run
+from the built tree, which is why the project is named after the folder.
+
+```bash
+cd ~/borgovero/bv-site/dist-site
+vercel link --yes --project dist-site
+vercel --prod
+```
+
+**The `vercel link` line is not optional, and this is the trap:**
+`build.py` installs by calling `shutil.rmtree()` on its output directory,
+so **every build deletes `dist-site/.vercel`**. A bare `vercel --prod`
+then finds no project link and offers to create one — accept the default
+and the site deploys to a NEW project that no domain points at, looking
+like a successful deploy that changed nothing. Re-linking explicitly
+costs a second and removes the guess.
+
+Deploy AFTER `build.py` reports both gates (twice byte-identical, lint
+clean) — it installs nothing if either fails, so a failed build leaves
+the previous tree in place and `vercel --prod` would silently redeploy
+the OLD site.
+
 ## Session hygiene
 
 Write or update `docs/SOT.md` **before** the session runs out of room, not
