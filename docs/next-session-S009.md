@@ -5,30 +5,24 @@ Paste this to open the next session.
 ---
 
 S009 — CasaZebra. Read `docs/SOT.md` §15's **S008 OUTCOME** block first,
-then the S008 changelog row. The dossier work is BUILT AND VERIFIED in
-the sandbox but **not yet applied to the real database or deployed** —
-that is where S009 starts.
+then the S008 changelog row.
 
-## Step zero — Christopher's machine, before anything else
+## S008 is fully landed — do not redo any of it
 
-Three things ran only against a sandbox copy and are waiting:
+Applied, deployed and indexed on 2026-08-31: the typology fix and the
+harvest data are in the real database, casazebra.it serves the S008
+build (dossier blocks live, 1.630 URLs), and Search Console reports the
+sitemap **Success, 1.630 pages discovered**. The 45 typology-renamed
+slugs are 404ing by design until the archive layer exists (§6).
 
-```bash
-cd ~/borgovero/phase0
-python3 apply_S008_typology.py --dry-run
-python3 apply_S008_typology.py
-sqlite3 phase0.sqlite < apply_S008_data.sql
-```
+Deploy commands live in CLAUDE.md. Two traps recorded there, both paid
+for once already: `build.py` rmtree's `dist-site/.vercel` every build
+(so the `vercel link` line is mandatory), and **the CDN serves stale
+content on clean URLs after a deploy** — verify with a cache-buster
+(`curl -s "https://casazebra.it/robots.txt?cb=$RANDOM"`), because the
+clean URL will happily show you the old file and look like proof.
 
-Then the build + deploy — **the deploy commands are in CLAUDE.md now**
-(S008 recorded them; note that `build.py` rmtree's `dist-site/.vercel`
-on every build, so the `vercel link` line is mandatory or you deploy to
-a fresh project no domain points at). Expect and accept: **45 listing
-slugs churn** (the typology fix renames their URLs; the old ones 404
-until the archive layer exists — resubmit the sitemap in GSC), all
-eight comune bands shift a little, and 22 listings change tier. These
-are corrections, not drift: the portal's structured field now beats the
-agency's caption.
+S009 therefore starts at the eyeball queue below, not at a deploy.
 
 ## The eyeball queue (§16d — only Christopher's eyes close these)
 

@@ -74,6 +74,21 @@ lint clean, **sitemap N absolute URLs under https://casazebra.it**) — it
 installs nothing if any fails, so a failed build leaves the previous tree
 in place and `vercel --prod` would silently redeploy the OLD site.
 
+**Verify a deploy with a cache-buster, never the clean URL.** Vercel's
+edge serves the previous file on the plain path for a while after a
+deploy, so `https://casazebra.it/robots.txt` can show the OLD content
+while the new deployment is live and correct. S008 read three clean URLs
+in a row, got stale answers that happened to look reassuring, and twice
+drew the wrong conclusion from them:
+
+```bash
+curl -s "https://casazebra.it/robots.txt?cb=$RANDOM"
+curl -s "https://casazebra.it/sitemap.xml?cb=$RANDOM" | head -4
+```
+
+A check that returns a comfortable answer without testing the thing is
+the same failure as a required argument that is silently optional.
+
 The sitemap gate exists because S008 built a deployable-looking tree
 whose `<loc>` entries were path-only and whose robots.txt read
 `Sitemap: /sitemap.xml`: `--base-url` was documented as required but
