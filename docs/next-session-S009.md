@@ -14,6 +14,16 @@ harvest data are in the real database, casazebra.it serves the S008
 build (dossier blocks live, 1.630 URLs), and Search Console reports the
 sitemap **Success, 1.630 pages discovered**. The 45 typology-renamed
 slugs are 404ing by design until the archive layer exists (§6).
+`/it/comuni/` — the front door — is now a table, one row per comune,
+`Chiesto al m²` against `Venduto al m²` (OMI 2025-2), both on the
+agencies' stated-surface basis, with the three-state colour.
+
+**One judgement is still open and belongs to Christopher, not to code:**
+whether Citerna's red row (€884 asked, €350–780 sold — the only comune
+where the whole registered-sale band sits below asking) reads as
+informative or as an accusation next to five ambers. It was more
+prominent as a table row than it had been as a card. If it reads wrong,
+the fix is wording or a legend, not deleting the state.
 
 Deploy commands live in CLAUDE.md. Two traps recorded there, both paid
 for once already: `build.py` rmtree's `dist-site/.vercel` every build
@@ -73,7 +83,27 @@ S009 therefore starts at the eyeball queue below, not at a deploy.
    "harvested N, matched M" alert: a theme change shows up as a site
    silently dropping to zero cards, which is exactly what NOW looked
    like before `_merge_windows` (50 cards, 0 prices — a parse failure
-   that reported success).
+   that reported success). **The heartbeat is also what makes the
+   ask-to-close ladder possible**: `price_history` currently holds 173
+   rows from two timestamps and ZERO observed changes, so every
+   negotiation figure the site could publish today would be
+   `DOM_DISCOUNT`'s unmeasured extrapolation. Agency sites usually show
+   a cut before the portal does, and there are now 1.165 own-site cards
+   with prices — roughly 20–30 observed cuts makes the first rung real.
+5. **Derived build inputs, so deploys can be git-connected** (raised by
+   Christopher, S008). Every build currently reads the 3,4 MB scraped
+   corpus, so even a CSS change needs the database and a local run —
+   which is why this project deploys by CLI while Skoolgrades deploys
+   on push. The site does not actually need the corpus: it needs
+   `normalized.csv` (262 KB), `comune_bands.json` (3 KB), the findings
+   export `build.py` already constructs, and the OMI subset. Track
+   those (~300 KB), build from them, and presentation changes become
+   push-to-deploy with CI running the real gates. **The cost is a new
+   invariant**: a derived export that silently drifts from the corpus
+   publishes stale numbers with nothing complaining, so it needs a
+   freshness gate (export data-date vs corpus) before it is trusted —
+   size the work as "make staleness impossible", not "write an export".
+   Pairs naturally with the heartbeat and the archive layer.
 
 ## Cautions carried forward
 
@@ -82,6 +112,11 @@ S009 therefore starts at the eyeball queue below, not at a deploy.
   fetch cache is what makes chunking cheap.
 * A stale `.git/index.lock` blocks commits: `rm -f ~/borgovero/.git/index.lock`
   if a commit fails on it. The sandbox cannot remove it.
+* **casazebra.com is not ours** — a dormant shell held by someone else
+  to 2027, serving nothing (no homepage, no robots, no sitemap). It is
+  not a deploy target and not a Search Console property; revisit
+  acquiring it in 2027. Small standing cost: anyone guessing the .com
+  lands on a blank page.
 * No inline comments in paste blocks (S007 lost a run to one).
 * The match table is data, not a verdict, until §16d says otherwise —
   S008 held that line even when its own exhibit failed the test; keep
