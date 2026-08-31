@@ -34,11 +34,13 @@ import json
 import os
 import re
 import sqlite3
+import statistics
 import sys
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                 "..", "phase0"))
 
+import config as CFG
 import normalize as N
 import templates as T
 from templates import e
@@ -937,24 +939,101 @@ def lookup_entry(r, has_page):
     return [u, listing_url(r, "it") if has_page else "", label]
 
 
-def comuni_index(bands, by_comune, data_date, lang):
-    """/{lang}/comuni/ — the eight reports, one tile each. Lives under
-    the /comuni/ path, so lint's band check applies: every € on this page
-    is an interval, same as the reports it links."""
+# The sold side of the /comuni/ tiles: OMI's residential categories for
+# the current semester. Box/Magazzini/Negozi/Laboratori are excluded —
+# this is a residential index, and a garage band would drag the floor
+# down for a reason that has nothing to do with houses.
+OMI_SEMESTER = "2025-2"
+OMI_RESIDENTIAL = ("Abitazioni civili", "Abitazioni di tipo economico",
+                   "Ville e Villini")
+
+
+def hint(text):
+    """A '?' carrying its explanation. The source and the semester used
+    to be printed inline ('Venduto, OMI 2025-2:'), which spent the
+    tile's most readable line on provenance; here the label stays short
+    and the provenance is one hover away — still in the HTML, so it is
+    indexable and readable without JavaScript."""
+    return (f'<span class="q" tabindex="0" role="note">?'
+            f'<span class="q-pop">{e(text)}</span></span>')
+
+
+def comuni_index(bands, by_comune, data_date, lang, asked=None, omi=None):
+    """/{lang}/comuni/ — the eight reports, one tile each.
+
+    The tile answers the question a buyer actually arrives with: what is
+    being asked here, and what has been paid here. Both sides are quoted
+    on the SAME surface basis — the agencies' own stated surface against
+    OMI's lorda — because our normalized €/m² uses internal habitable
+    area, a smaller denominator, and comparing it to OMI would book a
+    definitional gap as a market one (Anghiari's tight end moves 19% to
+    -12% on that swap alone; SOT §7 is this mistake's whole history).
+
+    'Chiesto' is a median of published asking prices over a published
+    denominator — a description of what agencies advertise, not an index
+    figure and not a midpoint of any band. The normalized band, always
+    an interval, stays on the comune report one click away.
+    """
     it = lang == "it"
+    asked, omi = asked or {}, omi or {}
     tiles = []
     for comune in sorted(by_comune):
         b = bands.get(comune, {})
         place = comune_title(comune)
-        if b.get("published"):
-            line = (f"€{interval(b['p50_lo'], b['p50_hi'], lang)}/m² "
-                    + ("(mediana, intervallo)" if it else "(median, interval)")
-                    + f" · {b['n']} " + ("annunci" if it else "listings"))
-        else:
-            line = ("nessuna fascia pubblicata" if it else
-                    "no band published")
+        n = b.get("n") or len([r for r in by_comune[comune]
+                               if r["tier"] in ("A", "B")])
+        lines = [f'<span class="lbl">{n} '
+                 + ("annunci" if it else "listings") + "</span>"]
+        c = asked.get(comune)
+        if c:
+            lines.append(
+                ("Chiesto al m²: " if it else "Asking per m²: ")
+                + f"<b>€{num(c, lang, 0)}/m²</b>"
+                + hint(("Mediana dei prezzi richiesti, divisa per la "
+                        "superficie che l'agenzia stessa dichiara. È ciò "
+                        "che viene chiesto, non una stima di valore."
+                        if it else
+                        "Median asking price, divided by the surface the "
+                        "agency itself states. It is what is being asked, "
+                        "not an opinion of value.")))
+        if omi.get(comune):
+            lo, hi = omi[comune]
+            # Three states, on the plain reading of the two figures.
+            # Colour REINFORCES a worded cue, never carries the meaning
+            # alone: colour-blind and printed readers get the same
+            # information, and a red number with no sentence beside it
+            # reads as an accusation rather than a comparison.
+            if c and hi < c:
+                cls, cue = "v-red", ("interamente sotto il chiesto"
+                                     if it else "entirely below asking")
+            elif c and lo < c <= hi:
+                cls, cue = "v-amber", ("in parte sotto il chiesto"
+                                       if it else "partly below asking")
+            else:
+                cls, cue = "v-green", ("non sotto il chiesto"
+                                       if it else "not below asking")
+            lines.append(
+                ("Venduto al m²: " if it else "Sold per m²: ")
+                + f'<b class="{cls}">€{interval(lo, hi, lang, 0)}/m²</b>'
+                + hint(("Fascia OMI 2025-2 dell'Agenzia delle Entrate, "
+                        "ricavata dalle compravendite effettivamente "
+                        "registrate. È una fascia perché copre zone e "
+                        "tipologie diverse dello stesso comune, ed è "
+                        "quotata sulla stessa superficie del chiesto."
+                        if it else
+                        "OMI 2025-2 band from the Agenzia delle Entrate, "
+                        "built from registered sales. It is a band "
+                        "because it spans different zones and property "
+                        "types in the same comune, and it is quoted on "
+                        "the same surface basis as the asking figure."))
+                + f'<br><span class="lbl">{cue}</span>')
+        if not b.get("published"):
+            lines.append("<span class=\"lbl\">"
+                         + ("nessuna fascia pubblicata" if it else
+                            "no band published") + "</span>")
         tiles.append(f'<a class="tile" href="{comune_url(comune, lang)}">'
-                     f"<b>{e(place)}</b><small>{line}</small></a>")
+                     f"<b>{e(place)}</b><small>"
+                     + "<br>".join(lines) + "</small></a>")
     h1 = ("I comuni della Valtiberina" if it else "The Valtiberina comuni")
     sub = (("Una fascia per comune, sempre come intervallo, mai come "
             "numero singolo. Dati al " if it else
@@ -1089,9 +1168,32 @@ def build(db_path, out):
                                  findings, data_date, lang))
             pages.append(comune_url(comune, lang))
 
+    # The two figures the /comuni/ tiles carry, both on the SAME surface
+    # basis (see comuni_index's docstring for why that is not optional).
+    asked, omi_band = {}, {}
+    conn2 = sqlite3.connect(db_path)
+    for comune, rs in by_comune.items():
+        vals = sorted(r["eur_stated"] for r in rs
+                      if r["tier"] in ("A", "B") and r["eur_stated"])
+        if vals:
+            asked[comune] = statistics.median(vals)
+        # OMI keys comuni normalized (badiatedalda), listings use the
+        # hyphenated slug — matching on the raw slug silently returns
+        # nothing for three of the eight, which looks exactly like
+        # "OMI has no band here" and is not.
+        row = conn2.execute(
+            "SELECT min(min_eur_m2), max(max_eur_m2) FROM omi_bands "
+            "WHERE comune=? AND semester=? AND tipologia IN (?,?,?)",
+            (CFG.norm_comune(comune), OMI_SEMESTER) + OMI_RESIDENTIAL
+        ).fetchone()
+        if row and row[0]:
+            omi_band[comune] = (row[0], row[1])
+    conn2.close()
+
     for lang in LANGS:
         write(f"{out}/{lang}/comuni/index.html",
-              comuni_index(bands, by_comune, data_date, lang))
+              comuni_index(bands, by_comune, data_date, lang,
+                           asked=asked, omi=omi_band))
         pages.append(f"/{lang}/comuni/")
 
     # The paste-a-URL lookup index. Every in-scope listing, page or not:

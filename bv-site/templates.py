@@ -62,6 +62,24 @@ button{padding:14px 22px;font-size:16px;font-weight:600;background:var(--ink);
   padding:14px;text-decoration:none;color:inherit;display:block}
 .tile b{display:block;font-size:17px;margin-bottom:3px}
 .tile small{color:var(--mute)}
+.v-red{color:var(--hi);font-weight:700}
+.v-amber{color:var(--warn);font-weight:700}
+.v-green{color:var(--ok);font-weight:700}
+/* The "?" note. CSS-only: shown on hover AND on keyboard focus, so it
+   is reachable without a pointer, and it carries its own text in the
+   markup rather than a title= attribute, which screen readers and
+   touch devices treat inconsistently. */
+.q{position:relative;display:inline-block;width:15px;height:15px;
+  line-height:15px;text-align:center;border-radius:50%;font-size:11px;
+  font-weight:700;background:var(--line);color:var(--ink);cursor:help;
+  vertical-align:middle;margin-left:3px}
+.q .q-pop{position:absolute;left:50%;transform:translateX(-50%);
+  bottom:20px;width:230px;background:var(--ink);color:#fff;
+  font-size:12px;line-height:1.4;font-weight:400;text-align:left;
+  padding:8px 10px;border-radius:5px;visibility:hidden;opacity:0;
+  transition:opacity .12s;z-index:20}
+.q:hover .q-pop,.q:focus .q-pop{visibility:visible;opacity:1}
+@media print{.q{display:none}}
 footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);
   font-size:13px;color:var(--mute)}
 @media print{
