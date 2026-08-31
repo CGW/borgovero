@@ -69,6 +69,16 @@ def merge_tree(src, dst):
             shutil.copy2(s, d)
 
 
+# The one production origin. It is a DEFAULT, not a flag to remember:
+# S008 shipped a build whose sitemap carried path-only <loc> entries and
+# whose robots.txt said "Sitemap: /sitemap.xml", because the documented
+# deploy command omitted --base-url and the empty default looked like a
+# successful build. Search Console rejects path-only <loc>, so that tree
+# would have turned a green sitemap report red on deploy. A required
+# argument that is silently optional is not a safeguard.
+PROD_ORIGIN = "https://casazebra.it"
+
+
 def build_once(db, out, base_url=""):
     """One complete site into `out`. Returns the merged URL list.
 
@@ -193,13 +203,17 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--db", default="../phase0/phase0.sqlite")
     ap.add_argument("--out", default="dist-site")
-    ap.add_argument("--base-url", default="",
-                    help="absolute site origin for sitemap/robots, "
-                         "e.g. https://casazebra.it — REQUIRED "
-                         "for any build that will be deployed")
+    ap.add_argument("--base-url", default=PROD_ORIGIN,
+                    help=f"absolute site origin for sitemap/robots "
+                         f"(default {PROD_ORIGIN}). Pass --base-url '' "
+                         f"ONLY for a local preview that will never be "
+                         f"deployed.")
     a = ap.parse_args()
     db = os.path.abspath(a.db)
     base = a.base_url.rstrip("/")
+    if not base:
+        print("base-url empty: sitemap and robots will carry PATHS, not "
+              "URLs. Preview only — do not deploy this tree.")
 
     # §10.2: build twice into scratch, diff, and only then install.
     with tempfile.TemporaryDirectory() as tmp:
@@ -218,6 +232,20 @@ def main():
         print(lint.stdout.strip())
         if lint.returncode != 0:
             sys.exit("lint failed — nothing installed")
+
+        # Third gate: the sitemap must be deployable. <loc> has to be a
+        # fully-qualified URL — Search Console rejects path-only entries,
+        # and a rejected sitemap is invisible until someone opens GSC
+        # days later. Skipped only for an explicitly-empty base, which
+        # already announced itself as preview-only above.
+        if base:
+            bad = [u for u in locs(os.path.join(one, "sitemap.xml"))
+                   if not u.startswith("http")]
+            if bad:
+                sys.exit(f"sitemap has {len(bad)} path-only <loc> entries "
+                         f"(e.g. {bad[0]}) — nothing installed")
+            print(f"sitemap: {len(locs(os.path.join(one, 'sitemap.xml')))} "
+                  f"absolute URLs under {base}")
 
         # Install: tree into place only after both gates pass. rmtree can
         # fail on the sandbox mount (host-created files refuse unlink);

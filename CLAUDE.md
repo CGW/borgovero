@@ -69,10 +69,18 @@ and the site deploys to a NEW project that no domain points at, looking
 like a successful deploy that changed nothing. Re-linking explicitly
 costs a second and removes the guess.
 
-Deploy AFTER `build.py` reports both gates (twice byte-identical, lint
-clean) — it installs nothing if either fails, so a failed build leaves
-the previous tree in place and `vercel --prod` would silently redeploy
-the OLD site.
+Deploy AFTER `build.py` reports all three gates (twice byte-identical,
+lint clean, **sitemap N absolute URLs under https://casazebra.it**) — it
+installs nothing if any fails, so a failed build leaves the previous tree
+in place and `vercel --prod` would silently redeploy the OLD site.
+
+The sitemap gate exists because S008 built a deployable-looking tree
+whose `<loc>` entries were path-only and whose robots.txt read
+`Sitemap: /sitemap.xml`: `--base-url` was documented as required but
+defaulted to empty, so omitting it produced a clean-looking build that
+Search Console would have rejected. The origin is now the default and
+the gate refuses to install without it. **A required argument that is
+silently optional is not a safeguard.**
 
 ## Session hygiene
 
