@@ -113,6 +113,36 @@ THUMB = "https://pic.im-cdn.it/image/{pid}/thumb.jpg"
 PHOTOS_PER_LISTING = 8
 DELAY_S = 0.4      # a CDN thumbnail, not a page render; 2.7 KB each
 
+# S009: THE 0.4s ABOVE IS A STATEMENT ABOUT pic.im-cdn.it, NOT ABOUT IMAGES.
+#
+# It was chosen when every hashed image was a 2,7 KB thumbnail from
+# Immobiliare's CDN — infrastructure built to serve exactly that. The eight
+# agency sites promoted in S009 serve ORIGINALS from their own hosting, and
+# they were measured before this constant was reused on them:
+#
+#     leonardi 12 KB · house 114 · cortesi 130 · immobilinvest 200
+#     sicasa 284 · romolini 476 · lancisi 594        median ~259 KB
+#
+# That is ~96x the CDN thumbnail, and 3.773 of them is ~0,93 GB. At 0.4s
+# it is a sustained ~650 KB/s aimed at small-business WordPress hosts —
+# several of them shared hosting. agencies.py sets the doctrine for these
+# sites ("these are small businesses, not portals, where a hammering is far
+# more noticeable than on a portal") and this would have quietly broken it,
+# because the delay lives in a different file from the doctrine.
+#
+# A constant carries the assumptions of the thing it was measured against.
+# Reusing it on a different kind of host is a new decision, not an
+# inherited one.
+AGENCY_DELAY_S = 2.0
+
+CDN_HOSTS = ("pic.im-cdn.it",)
+
+
+def delay_for(url):
+    """Seconds to wait after fetching `url`. The CDN keeps its 0.4s; every
+    other host — meaning every agency's own server — gets the slower rate."""
+    return DELAY_S if any(h in url for h in CDN_HOSTS) else AGENCY_DELAY_S
+
 # Hash the densest market first. Sansepolcro has 365 of the 844 listings
 # and the most agencies competing over the same stock, so cross-agency
 # duplicates surface there long before a full harvest finishes.
@@ -212,6 +242,11 @@ def harvest(conn, limit=None):
         except Exception:
             continue
         for pid in ids:
+            # Bound before the try: the delay at the bottom of this loop is
+            # chosen from the host, and it must still be chosen when the
+            # fetch raised — a failing request is a request the host served
+            # an error for, and it earns the same politeness as a good one.
+            url = str(pid) if str(pid).startswith("http") else ""
             try:
                 # Sources store photos differently and BOTH must be
                 # hashed into the same space, or agency-site listings can
@@ -244,7 +279,7 @@ def harvest(conn, limit=None):
                 n_err += 1
                 errs[type(e).__name__ + str(getattr(e, "code", ""))] = \
                     errs.get(type(e).__name__ + str(getattr(e, "code", "")), 0) + 1
-            time.sleep(DELAY_S)
+            time.sleep(delay_for(url))
         # Commit often. A long harvest WILL be interrupted, and losing an
         # hour of thumbnails to an uncommitted transaction is the kind of
         # avoidable waste that makes people not re-run it.
