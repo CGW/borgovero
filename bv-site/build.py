@@ -108,6 +108,30 @@ def build_once(db, out, base_url=""):
         # index_site writes no root files by design — see its build().
         merge_tree(b_dir, out)
 
+        # Listing photographs (S009). Neither generator owns these — they
+        # are fetched by phase0/harvest_listing_images.py and live outside
+        # the generated trees, so they are copied in at the merge like
+        # robots.txt. Copied AFTER merge_tree so the collision check never
+        # sees them: two generators producing the same page is a bug, but
+        # a static asset directory has exactly one owner by construction.
+        #
+        # Absent directory is not an error. A build with no images produces
+        # pages with no <figure>, which is the correct output for a machine
+        # that has not run the harvester — and the credit gate below counts
+        # zero against zero and passes.
+        src_img = os.path.join(HERE, "assets", "listing")
+        if os.path.isdir(src_img):
+            dst_img = os.path.join(out, "assets", "listing")
+            os.makedirs(dst_img, exist_ok=True)
+            n = 0
+            for fn in sorted(os.listdir(src_img)):
+                if fn.endswith(".webp"):
+                    shutil.copy2(os.path.join(src_img, fn),
+                                 os.path.join(dst_img, fn))
+                    n += 1
+            if n:
+                print(f"  assets: {n} listing image(s)")
+
         urls = locs(os.path.join(out, "sitemap.xml"))
         urls += locs(os.path.join(out, "sitemap-immobili.xml"))
         os.unlink(os.path.join(out, "sitemap-immobili.xml"))
@@ -232,6 +256,54 @@ def main():
         print(lint.stdout.strip())
         if lint.returncode != 0:
             sys.exit("lint failed — nothing installed")
+
+        # Privacy gate (S009): no house number reaches a URL or a page.
+        #
+        # Street is the ceiling — Christopher's call, and the reasoning is in
+        # phase0/address_privacy.py. It is enforced here rather than trusted
+        # to the two call sites because those sites are independent, a third
+        # can be added without either being touched, and the failure is
+        # silent: a civico in a slug looks exactly like a slug. Two pages
+        # were live with one before this gate existed.
+        #
+        # A URL is the part that cannot be taken back. Page text can be
+        # corrected on the next deploy; a URL has already been shared,
+        # indexed and archived by then.
+        civ = re.compile(r"-(?:\d+[a-z]?)-[0-9a-f]{6}\.html$")
+        leaks = [p for p in sorted(os.listdir(os.path.join(one, "it",
+                                                           "confronti")))
+                 if civ.search(p)] if os.path.isdir(
+                     os.path.join(one, "it", "confronti")) else []
+        if leaks:
+            sys.exit(f"ADDRESS PRIVACY: {len(leaks)} confronti URL(s) end in "
+                     f"a number before the hash, which is a civico or a CAP "
+                     f"(e.g. {leaks[0]}) — nothing installed")
+        print(f"address privacy: no civico in any confronti URL")
+
+        # Credit gate (S009): every published listing photograph carries an
+        # attribution line naming the agency.
+        #
+        # These are third parties' photographs, published deliberately
+        # rather than abstracted. The caption is the entire difference
+        # between attribution and appropriation — and a page with the image
+        # and no caption looks completely fine, which is why this cannot be
+        # left to review. Counts <img src="/assets/listing/ against
+        # figcaption occurrences; any shortfall stops the install.
+        shot = cap = 0
+        for root, _, files in os.walk(one):
+            for fn in files:
+                if not fn.endswith(".html"):
+                    continue
+                doc = open(os.path.join(root, fn), encoding="utf-8").read()
+                n = doc.count('<img src="/assets/listing/')
+                shot += n
+                if n:
+                    cap += min(n, doc.count("<figcaption"))
+        if shot != cap:
+            sys.exit(f"IMAGE CREDIT: {shot} listing photo(s) but {cap} "
+                     f"caption(s) — {shot - cap} uncredited, nothing "
+                     f"installed")
+        print(f"image credit: {shot} listing photo(s), all attributed")
 
         # Third gate: the sitemap must be deployable. <loc> has to be a
         # fully-qualified URL — Search Console rejects path-only entries,

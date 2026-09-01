@@ -17,6 +17,9 @@ carry the same information to any reader; only one is a liability.
 import html
 import json
 
+# Street only, never a civico (S009). See phase0/address_privacy.py.
+from address_privacy import street_only
+
 CSS = """
 *{box-sizing:border-box}
 :root{
@@ -704,7 +707,8 @@ def listing_page(L, sources, comps, lang):
     for c in comps:
         cm2 = c["price"] / c["mq"] if c["mq"] else None
         href = f'/{lang}/immobile/{c["cluster_id"]}.html'
-        comp_rows += (f'<tr><td><a href="{e(href)}">{e(c["address_raw"])}</a>'
+        comp_rows += (f'<tr><td><a href="{e(href)}">'
+                      f'{e(street_only(c["address_raw"]) or c["comune"])}</a>'
                       f'<div class="src">{c["mq"]} m² · {e(c["typology"])}</div></td>'
                       f'<td class="r">{eur(c["price"])}<div class="src">'
                       f'{eur(cm2)}/m²</div></td>'

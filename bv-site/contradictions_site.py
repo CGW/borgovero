@@ -706,8 +706,20 @@ def property_page(item, sid, lang, listing_rows=None):
             vals=" / ".join(e(v.replace("-", " ").title())
                             for v in d["location"])))
     if "address" in d:
-        facts.append(t["d_address"].format(
-            vals=" / ".join(e(v) for v in d["address"])))
+        # Street only (S009). This is the "the agencies disagree about WHERE
+        # this is" fact, and it prints both sides verbatim — so it is the one
+        # place a civico reaches the page even when best_label() has already
+        # been cleaned for the title and the URL. Sanitising here as well is
+        # deliberate belt-and-braces: the two paths are independent, and the
+        # rule is 'no house numbers ever', not 'no house numbers in titles'.
+        from address_privacy import street_only
+        vals = [s for s in (street_only(v) for v in d["address"]) if s]
+        # A disagreement that only existed at civico level is not a location
+        # disagreement worth printing — it is two agencies naming the same
+        # street, which is agreement.
+        if len(set(vals)) > 1:
+            facts.append(t["d_address"].format(
+                vals=" / ".join(e(v) for v in vals)))
     if not [r for r in g if r.get("price") and not r.get("price_withheld")]:
         facts.append(e(t["no_price"]))
 

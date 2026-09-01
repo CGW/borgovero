@@ -398,11 +398,21 @@ def best_label(group):
     Five clusters printed 'address not given' purely because the first
     row happened to lack one while a sibling had it.
     """
+    # STREET ONLY — S009. max(key=len) picks the longest address, which is
+    # by construction the one carrying the civico and the CAP, so this rule
+    # actively preferred the most identifying string available. It put
+    # 'via-della-ginestra-4' and 'via-dei-tarlati-52037' into live URLs and
+    # page titles. Sanitising BEFORE the max means the length comparison
+    # now runs over street names, where longest genuinely does mean most
+    # informative. See address_privacy.py for why street is the ceiling.
+    from address_privacy import street_only
+
     # sorted() first so a length tie resolves alphabetically instead of
     # by whatever order the cluster's set happened to iterate in. The
     # label ends up in the published page's URL, and a URL that changes
     # between identical rebuilds is a dead link for anyone who saved it.
-    addrs = sorted(g["address_raw"] for g in group if g["address_raw"])
+    addrs = sorted({s for s in (street_only(g["address_raw"]) for g in group)
+                    if s})
     if addrs:
         return max(addrs, key=len)
     titles = sorted(g["title"] for g in group if g["title"])

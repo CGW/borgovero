@@ -463,6 +463,62 @@ def source_block(r, lang):
               f'<p class="note">{reply} · {corr}</p></div>')
 
 
+IMG_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                       "assets", "listing")
+_OPTOUT_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                            "..", "phase0", "data", "image_optout.json")
+
+
+def _optout():
+    try:
+        with open(_OPTOUT_PATH) as fh:
+            return json.load(fh)
+    except Exception:
+        return {"sites": [], "listings": []}
+
+
+def listing_image(r, lang):
+    """The agency's photograph, credited and linked.
+
+    THE CREDIT IS LOAD-BEARING. S009 decided to publish these rather than
+    abstract them, which means the caption is not decoration — it is the
+    difference between attribution and appropriation. If a future template
+    change drops the figcaption, it drops the only thing making this
+    defensible, and the page will look completely fine without it. That is
+    exactly why build.py gates on it.
+
+    Christopher asked for 8pt. That is small — deliberately unobtrusive —
+    and it is the floor, not a target to shrink further: a credit nobody
+    can read is not a credit, and it would read worse in a dispute than no
+    credit at all.
+    """
+    it = lang == "it"
+    opt = _optout()
+    if (r["source"] in opt.get("sites", [])
+            or f'{r["source"]}/{r["source_id"]}' in opt.get("listings", [])):
+        return ""
+
+    safe = "".join(c if c.isalnum() else "-" for c in str(r["source_id"]))
+    fn = f'{r["source"]}-{safe}.webp'
+    if not os.path.exists(os.path.join(IMG_DIR, fn)):
+        return ""
+
+    who = e(r["agency_name"] or r["source"])
+    credit = (f"Foto: {who}" if it else f"Photo: {who}")
+    if r["url"]:
+        credit = (f'<a href="{e(r["url"])}" rel="nofollow noopener" '
+                  f'target="_blank">{credit} ↷</a>')
+    tail = (" · usata per identificare l'immobile, rimossa su richiesta"
+            if it else
+            " · used to identify the property, removed on request")
+    return (f'<figure style="margin:0 0 18px">'
+            f'<img src="/assets/listing/{e(fn)}" alt="" loading="lazy" '
+            f'width="600" style="width:100%;height:auto;border-radius:6px">'
+            f'<figcaption style="font-size:8pt;line-height:1.5;'
+            f'margin-top:5px;color:var(--muted)">{credit}{tail}</figcaption>'
+            f'</figure>')
+
+
 def dom_block(r, lang):
     if not r["_dom_est"]:
         return ""
@@ -497,6 +553,7 @@ def listing_page(r, band, finding, lang, alt=None, cand=None):
     if it:
         body = (f"<h1>{e(title)}</h1>"
                 f'<p class="sub">' + e(STANDING["it"]) + "</p>"
+                + listing_image(r, lang)
                 + listing_extraction(r, lang)
                 + f'<div class="block">{index_table(r, lang)}'
                 + dom_block(r, lang) + "</div>"
@@ -516,6 +573,7 @@ def listing_page(r, band, finding, lang, alt=None, cand=None):
         # with it.
         body = (f"<h1>{e(title)}</h1>"
                 f'<p class="sub">' + e(STANDING["en"]) + "</p>"
+                + listing_image(r, lang)
                 + listing_extraction(r, lang)
                 + source_block(r, lang)
                 + f'<p class="noprint"><a href="{listing_url(r, "it")}">'
