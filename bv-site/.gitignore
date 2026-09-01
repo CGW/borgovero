@@ -1,0 +1,24 @@
+# Listing photographs fetched by phase0/harvest_listing_images.py.
+#
+# THESE MUST NOT BE COMMITTED, and the reason is not disk space.
+#
+# They are third parties' copyrighted photographs, published by us under a
+# stated promise: credited, linked, and REMOVED ON REQUEST. Git history is
+# permanent. Commit them and `--optout` deletes the working file while every
+# copy stays recoverable in the repo forever — which turns the promise on
+# every listing page into something we cannot actually keep, and makes the
+# removal we told an agency we performed a thing we did not perform.
+#
+# A takedown has to remove the file. That rules out version control.
+#
+# Regenerable in ~46 minutes:  python3 harvest_listing_images.py
+# They are disposable in the §3 sense — cache/, *.sqlite — not precious in
+# the id_anchors.json sense. Nothing here was measured by a human.
+assets/listing/
+
+# Build output. Rebuilt by build.py, which installs only after all gates
+# pass; dist-site/ carries its own .gitignore for the Vercel link.
+dist-index/
+dist-contradictions/
+__pycache__/
+*.pyc
