@@ -101,9 +101,33 @@ def main():
     ap.add_argument("--refetch", action="store_true")
     ap.add_argument("--optout", metavar="SITE_OR_SOURCE/ID",
                     help="add to the opt-out list, delete any asset, exit")
+    ap.add_argument("--allow", metavar="SITE_OR_SOURCE/ID",
+                    help="reverse an --optout. Images return on the next run")
     args = ap.parse_args()
 
     opt = load_optout()
+
+    # --allow exists because --optout shipped without it (S009). An agency
+    # that asks to be removed can also change its mind, and a colleague can
+    # fat-finger the wrong name — which is how this got written. A
+    # destructive command with no inverse is a trap, and the fact that the
+    # inverse here is cheap (the images are refetchable) is not a reason to
+    # omit it; it is the reason it was easy to forget.
+    if args.allow:
+        removed = False
+        for key in ("sites", "listings"):
+            if args.allow in opt.get(key, []):
+                opt[key].remove(args.allow)
+                removed = True
+        if removed:
+            save_optout(opt)
+            print(f"allowed again: {args.allow}\n"
+                  f"Images are NOT restored by this command — the assets "
+                  f"were deleted.\nRe-run the harvester to fetch them.")
+        else:
+            print(f"{args.allow} was not on the opt-out list; nothing "
+                  f"changed.")
+        return
 
     if args.optout:
         key = "listings" if "/" in args.optout else "sites"
