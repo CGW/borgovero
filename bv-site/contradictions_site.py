@@ -163,6 +163,12 @@ def slug(item):
     g = item["group"]
     base = comune_of(g).lower()
     addr = C.best_label(g)
+    # S010: the sentinel is prose, not a name. Spelled into a slug it gives
+    # comune-address-not-given-hash, which reads like a street called
+    # "Address Not Given". comune + hash is the honest form of "we do not
+    # know where this is".
+    if addr == "address not given":
+        addr = ""
     a = "".join(c if c.isalnum() or c.isspace() else " " for c in addr.lower())
     a = "-".join(a.split()[:4])
     h = hashlib.sha1("|".join(sorted(str(r["source_id"]) for r in g))

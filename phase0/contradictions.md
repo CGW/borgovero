@@ -1,49 +1,77 @@
 # What the agencies say about the same property
 
-## Pieve-Santo-Stefano — Via Tiberina
+## Sansepolcro — Via Alessandro Panerai
 
 | Agency | Ref | Asking | Surface | Type |
 |---|---|---|---|---|
-| Agenzia Romolini Immobiliare S.r.l. | — | € 275,000 | 525 m² | villa |
-| Leonardi Immobiliare | — | € 250,000 | 1065 m² | villa |
+| Agenzia Immobiliare Cortesi | — | € 320,000 | 100 m² | appartamento |
+| Immobiliare Cortesi | BA/272 | € 320,000 | 300 m² | unknown |
 
-**Surface differs by 103%** (525 vs 1065 m²).
+**Surface differs by 200%** (100 vs 300 m²).
 
-**Price differs by 10%** (€ 250,000 vs € 275,000).
-
-**Verified by hand, 2026-08-29** — Same stone tower house on Via Tiberina — three distinct photographs match (external staircase, pergola walk, house among trees). Leonardi says 1065 m², Romolini 525 m².
+**Disagree on property type**: appartamento vs unknown.
 
 <sub>Matched by photo.</sub>
 
 ---
 
-## Sansepolcro — Via Tiberina Nord
+## Anghiari — LOCALITà LA SCHEGGIA
 
 | Agency | Ref | Asking | Surface | Type |
 |---|---|---|---|---|
-| Leonardi Immobiliare | — | — | 400 m² | rustico |
-| Marcellini | 11014 | *withheld* | 200 m² | Coloniche |
+| Agenzia Immobiliare Cortesi | — | € 145,000 | 90 m² | appartamento |
+| Immobiliare Cortesi | BA/257 | € 145,000 | 250 m² | unknown |
 
-**Surface differs by 100%** (200 vs 400 m²).
+**Surface differs by 178%** (90 vs 250 m²).
 
-**Verified by hand, 2026-08-29** — Same interior — identical photograph of the beamed staircase and kitchen (Marcellini watermark). Leonardi says 400 m², Marcellini 200 m²; neither publishes a price.
+**Disagree on property type**: appartamento vs unknown.
 
-<sub>Matched by photo-weak.</sub>
+<sub>Matched by photo.</sub>
 
 ---
 
-## Sansepolcro — Frazione Montedoglio
+## Sansepolcro — Montelabreve
 
 | Agency | Ref | Asking | Surface | Type |
 |---|---|---|---|---|
-| immobiliare | — | € 490,000 | 800 m² | villa |
-| Leonardi Immobiliare | — | — | 420 m² | villa |
+| House Immobiliare | — | € 120,000 | 295 m² | rustico |
+| Leonardi Immobiliare | 5209 | — | 800 m² | terreno |
 
-**Surface differs by 90%** (420 vs 800 m²).
+**Surface differs by 171%** (295 vs 800 m²).
 
-**Different addresses for the same property**: Frazione Montedoglio vs SS3bis.
+**Disagree on property type**: rustico vs terreno.
 
-**Verified by hand, 2026-08-29** — Same villa above the Montedoglio lake — three identical photographs (hamming 0).
+**The agencies disagree on the comune**: Badiatedalda vs Sansepolcro.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Anghiari — LOCALITà LA SCHEGGIA
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 145,000 | 100 m² | appartamento |
+| Immobiliare Cortesi | BA/259 | € 145,000 | 250 m² | unknown |
+
+**Surface differs by 150%** (100 vs 250 m²).
+
+**Disagree on property type**: appartamento vs unknown.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Anghiari — LOCALITà LA SCHEGGIA
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 145,000 | 100 m² | appartamento |
+| Immobiliare Cortesi | BA/258 | € 145,000 | 250 m² | unknown |
+
+**Surface differs by 150%** (100 vs 250 m²).
+
+**Disagree on property type**: appartamento vs unknown.
 
 <sub>Matched by photo.</sub>
 
@@ -54,30 +82,26 @@
 | Agency | Ref | Asking | Surface | Type |
 |---|---|---|---|---|
 | Tai Tiferno Agenzia Immobiliare | — | € 700,000 | 435 m² | villa |
+| Leonardi Immobiliare | 3946 | — | 500 m² | villa |
 | Marcellini | 975 | *withheld* | 250 m² | Ville |
 
-**Surface differs by 74%** (250 vs 435 m²).
+**Surface differs by 100%** (250 vs 500 m²).
 
-**Verified by hand, 2026-08-29** — Same villa at Misciano — facade, side view and terracotta pots all match (Marcellini watermark).
-
-<sub>Matched by photo.</sub>
+<sub>Matched by photo-weak. Candidate — unverified.</sub>
 
 ---
 
-## Citerna — Via Guglielmo Marconi
+## Sansepolcro — Via Tiberina Nord
 
 | Agency | Ref | Asking | Surface | Type |
 |---|---|---|---|---|
-| Leonardi Immobiliare | — | € 270,000 | 400 m² | rustico |
-| Marcellini | 11118 | € 214,000 | 550 m² | Coloniche |
+| Leonardi Immobiliare | 3713 | — | 350 m² | rustico |
+| Leonardi Immobiliare | — | — | 400 m² | rustico |
+| Marcellini | 11014 | *withheld* | 200 m² | Coloniche |
 
-**Surface differs by 38%** (400 vs 550 m²).
+**Surface differs by 100%** (200 vs 400 m²).
 
-**Price differs by 26%** (€ 214,000 vs € 270,000).
-
-**Verified by hand, 2026-08-29** — Same ruined casale at Citerna (Marcellini watermark on its copies). Marcellini's own description prints the real price: € 214.000 against Leonardi's € 270.000.
-
-<sub>Matched by photo.</sub>
+<sub>Matched by photo-weak. Candidate — unverified.</sub>
 
 ---
 
@@ -121,14 +145,45 @@
 
 ---
 
+## Sansepolcro — Frazione Montedoglio
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| immobiliare | — | € 490,000 | 800 m² | villa |
+| Leonardi Immobiliare | 6270 | — | 500 m² | villa |
+| Leonardi Immobiliare | — | — | 420 m² | villa |
+
+**Surface differs by 90%** (420 vs 800 m²).
+
+**Different addresses for the same property**: Frazione Montedoglio vs SS3bis.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Sansepolcro — Casa singola con due appartamenti in zona centrale
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Centogambe | 0032 | € 380,000 | 90 m² | — |
+| Marcellini | 10444 | *withheld* | 170 m² | Appartamenti |
+
+**Surface differs by 89%** (90 vs 170 m²).
+
+<sub>Matched by photo-weak. Candidate — unverified.</sub>
+
+---
+
 ## Anghiari — Piazza Goffredo Mameli
 
 | Agency | Ref | Asking | Surface | Type |
 |---|---|---|---|---|
 | Dama RE | — | € 1,950,000 | 800 m² | villa |
-| T.V.I. Toscana Immobiliare | — | € 1,950,000 | 600 m² | villa |
+| T.V.I. Toscana Immobiliare | — | € 1,950,000 | 600 m² | rustico |
 
 **Surface differs by 33%** (600 vs 800 m²).
+
+**Disagree on property type**: rustico vs villa.
 
 **Different addresses for the same property**: Piazza Goffredo Mameli vs SP 47.
 
@@ -138,40 +193,22 @@
 
 ---
 
-## Caprese-Michelangelo — via Pian D'Arno
+## Monterchi — strada provinciale
 
 | Agency | Ref | Asking | Surface | Type |
 |---|---|---|---|---|
-| Coldwell Banker Futura Group | — | € 179,000 | 154 m² | villa |
-| House Immobiliare | — | € 179,000 | 126 m² | villa |
+| Agenzia Immobiliare Cortesi | — | € 390,000 | 220 m² | appartamento |
+| Immobiliare Cortesi | B/913 | € 370,000 | — m² | unknown |
+| Leonardi Immobiliare | — | € 370,000 | 245 m² | terratetto |
+| Leonardi Immobiliare | 7029 | € 370,000 | 145 m² | cielo_terra |
 
-**Surface differs by 22%** (126 vs 154 m²).
+**Surface differs by 69%** (145 vs 245 m²).
 
-**Different addresses for the same property**: Via Pian d'Amo vs via Pian D'Arno.
+**Price differs by 5%** (€ 370,000 vs € 390,000).
 
-**Verified by hand, 2026-08-29** — Same wooden chalet — crocuses, porch and clearing match shot for shot.
+**Disagree on property type**: appartamento vs cielo_terra/terratetto vs unknown.
 
-<sub>Matched by photo.</sub>
-
----
-
-## Anghiari — Via della Bozzia
-
-| Agency | Ref | Asking | Surface | Type |
-|---|---|---|---|---|
-| Agenzia Immobiliare Cortesi | — | € 80,000 | 87 m² | rustico |
-| Agenzia Immobiliare Cortesi | — | € 80,000 | 105 m² | rustico |
-| Cortesi Luxury Real Estate | — | € 80,000 | 105 m² | villa |
-
-**Surface differs by 21%** (87 vs 105 m²).
-
-**Disagree on property type**: rustico vs villa.
-
-**Different addresses for the same property**: Via della Bozzia vs Via di Motina.
-
-**Verified by hand, 2026-08-29** — One property listed three times under the Cortesi brand — same stone room with blue floor, same aerial. € 80.000 throughout; 87 m² or 105 m²; rustico or villa.
-
-<sub>Matched by photo-weak.</sub>
+<sub>Matched by photo-weak. Candidate — unverified.</sub>
 
 ---
 
@@ -193,27 +230,6 @@
 
 ---
 
-## Monterchi — strada provinciale
-
-| Agency | Ref | Asking | Surface | Type |
-|---|---|---|---|---|
-| Agenzia Immobiliare Cortesi | — | € 390,000 | 220 m² | appartamento |
-| Leonardi Immobiliare | — | € 370,000 | 245 m² | terratetto |
-
-**Surface differs by 11%** (220 vs 245 m²).
-
-**Price differs by 5%** (€ 370,000 vs € 390,000).
-
-**Disagree on property type**: appartamento vs terratetto.
-
-**Different addresses for the same property**: Via della Reglia vs strada provinciale.
-
-**Verified by hand, 2026-08-29** — Same newly built villa on a lawn, three matching shots. Photos show a detached house — neither 'appartamento' nor 'terratetto' fits it.
-
-<sub>Matched by photo.</sub>
-
----
-
 ## Monterchi — Strada Vicinale del Colcello
 
 | Agency | Ref | Asking | Surface | Type |
@@ -231,52 +247,21 @@
 
 ---
 
-## Sansepolcro — via aldo capitini
+## Citerna — Via Guglielmo Marconi
 
 | Agency | Ref | Asking | Surface | Type |
 |---|---|---|---|---|
-| Agenzia Immobiliare Cortesi | — | € 590,000 | 230 m² | appartamento |
-| Cortesi Luxury Real Estate | — | € 590,000 | 262 m² | appartamento |
+| Leonardi Immobiliare | — | € 270,000 | 400 m² | rustico |
+| Leonardi Immobiliare | 7028 | € 215,000 | 400 m² | terreno |
+| Marcellini | 11118 | € 214,000 | 550 m² | Coloniche |
 
-**Surface differs by 14%** (230 vs 262 m²).
+**Surface differs by 38%** (400 vs 550 m²).
 
-**Different addresses for the same property**: Via San Giuseppe vs via aldo capitini.
+**Price differs by 26%** (€ 214,000 vs € 270,000).
 
-**Verified by hand, 2026-08-29** — Same beamed dining room — Cortesi and Cortesi Luxury, the same brand, 230 vs 262 m² at the same € 590.000.
+**Disagree on property type**: coloniche/rustico vs terreno.
 
 <sub>Matched by photo.</sub>
-
----
-
-## Anghiari — Via delle Mura di Sotto
-
-| Agency | Ref | Asking | Surface | Type |
-|---|---|---|---|---|
-| Agenzia Romolini Immobiliare S.r.l. | — | € 325,000 | 170 m² | terratetto |
-| Tiberimmobiliare | — | € 325,000 | 150 m² | appartamento |
-
-**Surface differs by 13%** (150 vs 170 m²).
-
-**Disagree on property type**: appartamento vs terratetto.
-
-**Verified by hand, 2026-08-29** — The same house on the old walls of Anghiari's centro storico, at € 325.000 with 5+ rooms and 3+ bathrooms on both. Tiberimmobiliare files it as an appartamento while its own description calls it a 'terra tetto'; Romolini files it as a cieloterra. 150 vs 170 m².
-
-<sub>Matched by price+surface.</sub>
-
----
-
-## Monterchi — Strada comunale della Padonchia
-
-| Agency | Ref | Asking | Surface | Type |
-|---|---|---|---|---|
-| Agenzia Romolini Immobiliare S.r.l. | — | € 890,000 | 300 m² | villa |
-| Cortesi Luxury Real Estate | — | € 890,000 | 340 m² | villa |
-
-**Surface differs by 13%** (300 vs 340 m²).
-
-**Verified by hand, 2026-08-29** — The same restored villa with pool near Monterchi at € 890.000. Cortesi puts the main residence at 340 m² with 5 bedrooms and 3 bathrooms; Romolini gives the same 5-and-3 for a main villa of 205 m², a headline of 300 m², and a 14 × 7 m pool. The disagreement is over the building, not the property.
-
-<sub>Matched by price+surface.</sub>
 
 ---
 
@@ -310,7 +295,7 @@
 
 ---
 
-## Anghiari — Anghiari, Arezzo, Toscana,
+## Anghiari — Anghiari
 
 | Agency | Ref | Asking | Surface | Type |
 |---|---|---|---|---|
@@ -370,22 +355,6 @@
 
 ---
 
-## Badia-Tedalda — address not given
-
-| Agency | Ref | Asking | Surface | Type |
-|---|---|---|---|---|
-| Centogambe | 0585 | € 29,000 | 70 m² | — |
-| Leonardi Immobiliare | — | € 29,000 | 65 m² | appartamento |
-| Marcellini | 11063 | *meno di € 100.000* | 70 m² | Appartamenti |
-
-**Surface differs by 8%** (65 vs 70 m²).
-
-**Verified by hand, 2026-08-29** — Same flat in a quadrifamiliare at Fresciano: shared kitchen photograph (Marcellini↔Centogambe), 'quadrifamiliare' in both Leonardi's and Centogambe's own text, € 29.000 at both. Two agencies file it in Badia Tedalda, one in Sestino. Marcellini's price field is the bracket 'meno di € 100.000' — not a € 100.000 asking price.
-
-<sub>Matched by photo-weak+price+surface.</sub>
-
----
-
 ## Anghiari — via Infrantoio
 
 | Agency | Ref | Asking | Surface | Type |
@@ -398,21 +367,6 @@
 **Verified by hand, 2026-08-29** — Identical aerial of the same restored villa complex. T.V.I. asks € 2.300.000 at 1600 m²; Marcellini publishes no price and says 1500 m².
 
 <sub>Matched by photo-weak.</sub>
-
----
-
-## Sansepolcro — Via Martiri Della Resistenza 6
-
-| Agency | Ref | Asking | Surface | Type |
-|---|---|---|---|---|
-| Agenzia Immobiliare Cortesi | — | € 260,000 | 200 m² | terratetto |
-| Leonardi Immobiliare | — | € 260,000 | 211 m² | terratetto |
-
-**Surface differs by 6%** (200 vs 211 m²).
-
-**Verified by hand, 2026-08-29** — The same house near the centre of Sansepolcro at € 260.000, with matching floor-by-floor layouts, garden and garage. Cortesi calls it a casa SINGOLA of 200 m²; Leonardi calls it a casa BIFAMILIARE, free on three sides, of 211 m² — detached or semi-detached is not a matter of wording.
-
-<sub>Matched by price+surface.</sub>
 
 ---
 
@@ -482,7 +436,7 @@
 
 ---
 
-## Sestino — Via Sestinese
+## Badia-Tedalda — Via Sestinese
 
 | Agency | Ref | Asking | Surface | Type |
 |---|---|---|---|---|
@@ -497,7 +451,7 @@
 
 ---
 
-## Sansepolcro — Via della Ginestra, 4, 52037 Gragnano AR, Italia ; Via della Ginestra, 52037 Gragnano AR, Italia, Sansepolcro, AR,
+## Sansepolcro — Via della Ginestra
 
 | Agency | Ref | Asking | Surface | Type |
 |---|---|---|---|---|
@@ -513,7 +467,303 @@
 
 ---
 
-## Pieve-Santo-Stefano — Via delle Antiche Prigioni n., 7
+## Sansepolcro — Vendesi appartamento in centro storico a Sansepolcro di 180 mq - € 160.000
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| ImmobilInvest | 613 | € 160,000 | 180 m² | appartamento |
+| Immobilinvest Real Estate | — | € 150,000 | 130 m² | appartamento |
+
+**Surface differs by 38%** (130 vs 180 m²).
+
+**Price differs by 7%** (€ 150,000 vs € 160,000).
+
+<sub>Matched by photo-weak. Candidate — unverified.</sub>
+
+---
+
+## Sansepolcro — VIA SAN PIERINO
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 125,000 | 140 m² | appartamento |
+| Immobiliare Cortesi | B/207 | € 110,000 | 180 m² | unknown |
+
+**Surface differs by 29%** (140 vs 180 m²).
+
+**Price differs by 14%** (€ 110,000 vs € 125,000).
+
+**Disagree on property type**: appartamento vs unknown.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Pieve-Santo-Stefano — via Cartiera
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Immobilsolutions | — | € 350,000 | 720 m² | cielo_terra |
+| Leonardi Immobiliare | 6273 | € 300,000 | 900 m² | unknown |
+
+**Surface differs by 25%** (720 vs 900 m²).
+
+**Price differs by 17%** (€ 300,000 vs € 350,000).
+
+**Disagree on property type**: cielo_terra vs unknown.
+
+**The agencies disagree on the comune**: Pievesantostefano vs Sansepolcro.
+
+<sub>Matched by photo-weak. Candidate — unverified.</sub>
+
+---
+
+## Sansepolcro — Appartamento in zona di pregio
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Centogambe | 0762 | € 230,000 | 120 m² | — |
+| Immobiliare Lancisi | 4420 | € 230,000 | 95 m² | unknown |
+
+**Surface differs by 26%** (95 vs 120 m²).
+
+<sub>Matched by photo-weak. Candidate — unverified.</sub>
+
+---
+
+## Anghiari — Vendita
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Immobiliare Lancisi | 4244 | € 80,000 | 130 m² | unknown |
+| House Immobiliare | 5008 | € 65,000 | 130 m² | unknown |
+
+**Price differs by 23%** (€ 65,000 vs € 80,000).
+
+<sub>Matched by photo-weak. Candidate — unverified.</sub>
+
+---
+
+## Caprese-Michelangelo — via Pian D'Arno
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Coldwell Banker Futura Group | — | € 179,000 | 154 m² | villa |
+| House Immobiliare | — | € 179,000 | 126 m² | rustico |
+| House Immobiliare | 5530 | € 179,000 | 127 m² | unknown |
+
+**Surface differs by 22%** (126 vs 154 m²).
+
+**Disagree on property type**: rustico vs unknown vs villa.
+
+**Different addresses for the same property**: Via Pian d'Amo vs via Pian D'Arno.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Anghiari — Via della Bozzia
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 80,000 | 87 m² | rustico |
+| Agenzia Immobiliare Cortesi | — | € 80,000 | 105 m² | rustico |
+| Cortesi Luxury Real Estate | — | € 80,000 | 105 m² | villa |
+| Immobiliare Cortesi | B/093 | € 80,000 | 100 m² | unknown |
+| Immobiliare Cortesi | B/131 | € 80,000 | — m² | unknown |
+
+**Surface differs by 21%** (87 vs 105 m²).
+
+**Disagree on property type**: rustico vs unknown vs villa.
+
+<sub>Matched by photo-weak. Candidate — unverified.</sub>
+
+---
+
+## Anghiari — via martiri della libbia
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 52,000 | 94 m² | appartamento |
+| Immobiliare Cortesi | B/177 | € 45,000 | — m² | unknown |
+
+**Price differs by 16%** (€ 45,000 vs € 52,000).
+
+**Disagree on property type**: appartamento vs unknown.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Caprese-Michelangelo — address not given
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Immobiliare Lancisi | 3890 | € 40,000 | 90 m² | unknown |
+| Marcellini | 11210 | *bracket (unresolved)* | 78 m² | Coloniche |
+| Marcellini | 9158 | *bracket (unresolved)* | 78 m² | Appartamenti |
+
+**Surface differs by 15%** (78 vs 90 m²).
+
+**Disagree on property type**: appartamenti vs coloniche vs unknown.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Citerna — Via Camillo Benso di Cavour
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Immobiliare Lancisi | 3480 | € 60,000 | 105 m² | unknown |
+| Leonardi Immobiliare | — | € 60,000 | 120 m² | rustico |
+
+**Surface differs by 14%** (105 vs 120 m²).
+
+**Disagree on property type**: rustico vs unknown.
+
+<sub>Matched by price+surface.</sub>
+
+---
+
+## Sansepolcro — via aldo capitini
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 590,000 | 230 m² | appartamento |
+| Cortesi Luxury Real Estate | — | € 590,000 | 262 m² | appartamento |
+| Immobiliare Cortesi | B/161 | € 590,000 | — m² | unknown |
+
+**Surface differs by 14%** (230 vs 262 m²).
+
+**Disagree on property type**: appartamento vs unknown.
+
+<sub>Matched by photo-weak. Candidate — unverified.</sub>
+
+---
+
+## Sansepolcro — via del pentolo
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Immobiliare Cortesi | B/181 | € 78,000 | — m² | unknown |
+| Agenzia Immobiliare Cortesi | — | € 70,000 | 120 m² | appartamento |
+
+**Price differs by 11%** (€ 70,000 vs € 78,000).
+
+**Disagree on property type**: appartamento vs unknown.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Badia-Tedalda — APPARTAMENTO IN ZONA MONTANA PANORAMICA
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Immobiliare Lancisi | 4228 | € 30,000 | 70 m² | unknown |
+| Leonardi Immobiliare | — | € 29,000 | 65 m² | rustico |
+| Leonardi Immobiliare | 4388 | € 29,000 | 65 m² | appartamento |
+| Marcellini | 11063 | *meno di € 100.000* | 70 m² | Appartamenti |
+
+**Surface differs by 8%** (65 vs 70 m²).
+
+**Price differs by 3%** (€ 29,000 vs € 30,000).
+
+**Disagree on property type**: appartamenti/appartamento vs rustico vs unknown.
+
+<sub>Matched by photo-weak. Candidate — unverified.</sub>
+
+---
+
+## Sansepolcro — Porta Fiorentina
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| ImmobilInvest | 369 | € 180,000 | 160 m² | appartamento |
+| Immobilinvest Real Estate | — | € 180,000 | 175 m² | appartamento |
+
+**Surface differs by 9%** (160 vs 175 m²).
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Anghiari — VIA FRANCESCO NENCI
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 120,000 | 84 m² | appartamento |
+| Immobiliare Cortesi | B/192 | € 110,000 | — m² | unknown |
+
+**Price differs by 9%** (€ 110,000 vs € 120,000).
+
+**Disagree on property type**: appartamento vs unknown.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Sansepolcro — Strada StataleMarecchia
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 107,000 | 70 m² | terratetto |
+| Immobiliare Cortesi | BCS/265 | € 100,000 | — m² | unknown |
+
+**Price differs by 7%** (€ 100,000 vs € 107,000).
+
+**Disagree on property type**: terratetto vs unknown.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Monterchi — Vendesi casale su due livelli, con terreno e annesso, nelle campagne di Monterch
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Immobilinvest Real Estate | — | € 350,000 | 240 m² | villa |
+| ImmobilInvest | 386 | € 330,000 | 240 m² | rustico |
+
+**Price differs by 6%** (€ 330,000 vs € 350,000).
+
+**Disagree on property type**: rustico vs villa.
+
+<sub>Matched by photo-weak. Candidate — unverified.</sub>
+
+---
+
+## Pieve-Santo-Stefano — Via Roma
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Immobilinvest Real Estate | — | € 85,000 | 90 m² | appartamento |
+| ImmobilInvest | 910 | — | 85 m² | appartamento |
+
+**Surface differs by 6%** (85 vs 90 m²).
+
+<sub>Matched by photo-weak. Candidate — unverified.</sub>
+
+---
+
+## Sansepolcro — Via Martiri Della Resistenza
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 260,000 | 200 m² | terratetto |
+| Immobiliare Cortesi | BCS/281 | € 260,000 | 200 m² | unknown |
+| Leonardi Immobiliare | — | € 260,000 | 211 m² | terratetto |
+
+**Surface differs by 6%** (200 vs 211 m²).
+
+**Disagree on property type**: terratetto vs unknown.
+
+<sub>Matched by photo+price+surface.</sub>
+
+---
+
+## Pieve-Santo-Stefano — Via delle Antiche Prigioni n.
 
 | Agency | Ref | Asking | Surface | Type |
 |---|---|---|---|---|
@@ -524,6 +774,68 @@
 **Surface differs by 5%** (93 vs 98 m²).
 
 <sub>Matched by price.</sub>
+
+---
+
+## Anghiari — corso matteotti
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 79,000 | 65 m² | appartamento |
+| Immobiliare Cortesi | B/228 | € 75,000 | — m² | unknown |
+
+**Price differs by 5%** (€ 75,000 vs € 79,000).
+
+**Disagree on property type**: appartamento vs unknown.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Sansepolcro — FRAZIONE ABOCA
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 62,500 | 65 m² | appartamento |
+| Immobiliare Cortesi | B/244 | € 60,000 | — m² | unknown |
+
+**Price differs by 4%** (€ 60,000 vs € 62,500).
+
+**Disagree on property type**: appartamento vs unknown.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Caprese-Michelangelo — Villetta in frazione di Caprese Michelangelo (AR) - € 200.000
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| ImmobilInvest | 244 | € 200,000 | 85 m² | villa |
+| Leonardi Immobiliare | 2107 | € 200,000 | 88 m² | terreno |
+
+**Surface differs by 4%** (85 vs 88 m²).
+
+**Disagree on property type**: terreno vs villa.
+
+<sub>Matched by price+surface.</sub>
+
+---
+
+## Anghiari — Via Martiri della Libia
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Immobiliare Lancisi | 4441 | € 150,000 | 206 m² | unknown |
+| Panoramica Immobiliare Srl | — | € 149,000 | 210 m² | rustico |
+
+**Surface differs by 2%** (206 vs 210 m²).
+
+**Price differs by 1%** (€ 149,000 vs € 150,000).
+
+**Disagree on property type**: rustico vs unknown.
+
+<sub>Matched by photo.</sub>
 
 ---
 
@@ -540,7 +852,22 @@
 
 ---
 
-## Sansepolcro — Via dei Tarlati, 52037 Sansepolcro AR, Italia
+## Anghiari — LOCALITà TAVERNELLE
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 110,000 | 100 m² | appartamento |
+| Immobiliare Cortesi | B/234 | € 109,000 | — m² | unknown |
+
+**Price differs by 1%** (€ 109,000 vs € 110,000).
+
+**Disagree on property type**: appartamento vs unknown.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Sansepolcro — Via dei Tarlati n.
 
 | Agency | Ref | Asking | Surface | Type |
 |---|---|---|---|---|
@@ -557,24 +884,46 @@
 
 ---
 
-## Badia-Tedalda — Vocabolo Cà Federico , Loc. Santa Sofia, snc
+## Sansepolcro — Via Luca Pacioli
 
 | Agency | Ref | Asking | Surface | Type |
 |---|---|---|---|---|
-| Centro Aste Arezzo | — | € 165,375 | 509 m² | appartamento |
-| Simplex Domus S.R.L. | — | € 165,375 | 509 m² | villa |
-| Valerio Pisano - Aste&Investimenti | — | € 165,375 | 509 m² | appartamento |
-| Aste Florio | — | € 165,370 | 509 m² | cielo_terra |
+| Agenzia Immobiliare Cortesi | — | € 99,000 | 200 m² | appartamento |
+| Immobiliare Cortesi | B/0051 | € 99,000 | 200 m² | unknown |
 
-**Price differs by 0%** (€ 165,370 vs € 165,375).
+**Disagree on property type**: appartamento vs unknown.
 
-**Disagree on property type**: appartamento vs cielo_terra vs villa.
-
-<sub>Matched by photo-weak+price. Candidate — unverified.</sub>
+<sub>Matched by price+surface.</sub>
 
 ---
 
-## Sansepolcro — via di Montevicchi Snc - Frazione Farneto/ Paradiso/Basilica, snc
+## Sansepolcro — via dei servi
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 89,000 | 60 m² | appartamento |
+| Immobiliare Cortesi | B/243 | € 89,000 | 60 m² | unknown |
+
+**Disagree on property type**: appartamento vs unknown.
+
+<sub>Matched by photo+price+surface.</sub>
+
+---
+
+## Sansepolcro — VIALE ARMANDO DIAZ
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 225,000 | 140 m² | appartamento |
+| Immobiliare Cortesi | B/232 | € 225,000 | 140 m² | unknown |
+
+**Disagree on property type**: appartamento vs unknown.
+
+<sub>Matched by photo+price+surface.</sub>
+
+---
+
+## Sansepolcro — via di Montevicchi - Frazione Farneto/ Paradiso/Basilica
 
 | Agency | Ref | Asking | Surface | Type |
 |---|---|---|---|---|
@@ -584,6 +933,592 @@
 **Disagree on property type**: appartamento vs rustico.
 
 <sub>Matched by price.</sub>
+
+---
+
+## Badia-Tedalda — 52032 Santa Sofia AR
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Centro Aste Arezzo | — | € 165,375 | 509 m² | villa |
+| Simplex Domus S.R.L. | — | € 165,375 | 509 m² | villa |
+| Valerio Pisano - Aste&Investimenti | — | € 165,375 | 509 m² | appartamento |
+
+**Disagree on property type**: appartamento vs villa.
+
+<sub>Matched by price.</sub>
+
+---
+
+## Pieve-Santo-Stefano — Loc. Borgo nuovo
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| SI CASA Immobiliare | 0758 | € 38,000 | 70 m² | unknown |
+| SICASA Immobiliare | — | € 38,000 | 70 m² | appartamento |
+
+**Disagree on property type**: appartamento vs unknown.
+
+<sub>Matched by photo+price+surface.</sub>
+
+---
+
+## Monterchi — VIALE RAFFAELLO SANZIO
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 84,000 | 90 m² | appartamento |
+| Immobiliare Cortesi | BA/266 | € 84,000 | 90 m² | unknown |
+
+**Disagree on property type**: appartamento vs unknown.
+
+<sub>Matched by photo+price+surface.</sub>
+
+---
+
+## Sansepolcro — via della castellina
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 120,000 | 100 m² | terratetto |
+| Immobiliare Cortesi | B/216 | € 120,000 | — m² | unknown |
+
+**Disagree on property type**: terratetto vs unknown.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Sansepolcro — via dei motefeltro
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 250,000 | 130 m² | appartamento |
+| Immobiliare Cortesi | B/165 | € 250,000 | — m² | unknown |
+
+**Disagree on property type**: appartamento vs unknown.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Sansepolcro — VIA GIORDANO BRUNO
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 68,000 | 55 m² | appartamento |
+| Immobiliare Cortesi | B/238 | € 68,000 | — m² | unknown |
+
+**Disagree on property type**: appartamento vs unknown.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Sansepolcro — via senese aretina
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 250,000 | 85 m² | appartamento |
+| Immobiliare Cortesi | B/248 | € 250,000 | — m² | unknown |
+
+**Disagree on property type**: appartamento vs unknown.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Sansepolcro — via del prucino
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 83,000 | 75 m² | appartamento |
+| Immobiliare Cortesi | B/246 | € 83,000 | — m² | unknown |
+
+**Disagree on property type**: appartamento vs unknown.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Sansepolcro — via del trebbio
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 189,000 | 150 m² | rustico |
+| Immobiliare Cortesi | B/226 | € 189,000 | — m² | unknown |
+
+**Disagree on property type**: rustico vs unknown.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Sansepolcro — PIAZZA SANTA CHIARA
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 70,000 | 99 m² | appartamento |
+| Immobiliare Cortesi | B/179 | € 70,000 | — m² | unknown |
+
+**Disagree on property type**: appartamento vs unknown.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Sansepolcro — via palmiro togliatti
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 145,000 | 110 m² | appartamento |
+| Immobiliare Cortesi | B/239 | € 145,000 | — m² | unknown |
+
+**Disagree on property type**: appartamento vs unknown.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Sansepolcro — frazione santa fiora
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 39,000 | 80 m² | rustico |
+| Immobiliare Cortesi | B/223 | € 39,000 | 80 m² | unknown |
+
+**Disagree on property type**: rustico vs unknown.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Sansepolcro — Via Cimabue
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 240,000 | 150 m² | appartamento |
+| Immobiliare Cortesi | BA/254 | € 240,000 | — m² | unknown |
+
+**Disagree on property type**: appartamento vs unknown.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Sansepolcro — via agio vecchio
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 130,000 | 75 m² | appartamento |
+| Immobiliare Cortesi | B/208 | € 130,000 | 75 m² | unknown |
+
+**Disagree on property type**: appartamento vs unknown.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Sansepolcro — via giordano bruno
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 110,000 | 100 m² | appartamento |
+| Immobiliare Cortesi | B/186 | € 110,000 | 100 m² | unknown |
+
+**Disagree on property type**: appartamento vs unknown.
+
+<sub>Matched by photo-weak. Candidate — unverified.</sub>
+
+---
+
+## Sansepolcro — VIA PIERO DELLA FRANCESCA
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 90,000 | 65 m² | appartamento |
+| Immobiliare Cortesi | B/241 | € 90,000 | — m² | unknown |
+
+**Disagree on property type**: appartamento vs unknown.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Sansepolcro — Via Santa Caterina
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 80,000 | 120 m² | terratetto |
+| Immobiliare Cortesi | BCS/268 | € 80,000 | — m² | unknown |
+
+**Disagree on property type**: terratetto vs unknown.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Sansepolcro — Via Piero della Francesca
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 270,000 | 150 m² | appartamento |
+| Immobiliare Cortesi | BA/280 | € 270,000 | 150 m² | unknown |
+
+**Disagree on property type**: appartamento vs unknown.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Sansepolcro — Via di Mezza Torre
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 124,000 | 120 m² | appartamento |
+| Immobiliare Cortesi | BA/276 | € 124,000 | — m² | unknown |
+
+**Disagree on property type**: appartamento vs unknown.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Sansepolcro — Via dei Cipolli
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| SI CASA Immobiliare | 0856 | € 85,000 | 66 m² | cielo_terra |
+| SICASA Immobiliare | — | € 85,000 | 66 m² | appartamento |
+
+**Disagree on property type**: appartamento vs cielo_terra.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Sansepolcro — località la montagna
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 57,000 | 100 m² | terratetto |
+| Immobiliare Cortesi | BCS/256 | € 57,000 | 100 m² | unknown |
+
+**Disagree on property type**: terratetto vs unknown.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Sansepolcro — Via Niccolò Aggiunti
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 156,000 | 100 m² | appartamento |
+| Immobiliare Cortesi | BA/278 | € 156,000 | — m² | unknown |
+
+**Disagree on property type**: appartamento vs unknown.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Sansepolcro — VIA SANTA CROCE
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 45,000 | 60 m² | appartamento |
+| Immobiliare Cortesi | B/221 | € 45,000 | — m² | unknown |
+
+**Disagree on property type**: appartamento vs unknown.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Sansepolcro — ViaMarzo
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 133,000 | 110 m² | appartamento |
+| Immobiliare Cortesi | BA/275 | € 133,000 | — m² | unknown |
+
+**Disagree on property type**: appartamento vs unknown.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Sansepolcro — Via Palazzetta
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 108,000 | 80 m² | appartamento |
+| Immobiliare Cortesi | B/149 | € 108,000 | — m² | unknown |
+
+**Disagree on property type**: appartamento vs unknown.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Sansepolcro — Via XX Settembre
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 44,000 | 46 m² | appartamento |
+| Immobiliare Cortesi | B/251 | € 44,000 | — m² | unknown |
+
+**Disagree on property type**: appartamento vs unknown.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Sansepolcro — Via Giovanni Cimabue
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 109,000 | 120 m² | appartamento |
+| Immobiliare Cortesi | B/145 | € 109,000 | — m² | unknown |
+
+**Disagree on property type**: appartamento vs unknown.
+
+<sub>Matched by photo-weak. Candidate — unverified.</sub>
+
+---
+
+## Sansepolcro — Viale Vittorio Veneto
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 165,000 | 140 m² | appartamento |
+| Immobiliare Cortesi | BA/277 | € 165,000 | 140 m² | unknown |
+
+**Disagree on property type**: appartamento vs unknown.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Sansepolcro — Via Angelo Poliziano
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 120,000 | 90 m² | appartamento |
+| Immobiliare Cortesi | BA/262 | € 120,000 | — m² | unknown |
+
+**Disagree on property type**: appartamento vs unknown.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Sansepolcro — Via dei Servi
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 57,000 | 70 m² | appartamento |
+| Immobiliare Cortesi | BA/264 | € 57,000 | 70 m² | unknown |
+
+**Disagree on property type**: appartamento vs unknown.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Sansepolcro — Via Dante Chiasserini
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 140,000 | 130 m² | appartamento |
+| Immobiliare Cortesi | BA/255 | € 140,000 | 130 m² | unknown |
+
+**Disagree on property type**: appartamento vs unknown.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Sansepolcro — frazione Cignano
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| SI CASA Immobiliare | 0684 | € 220,000 | 130 m² | terreno |
+| SICASA Immobiliare | — | € 220,000 | 130 m² | appartamento |
+
+**Disagree on property type**: appartamento vs terreno.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Sansepolcro — via san puccio
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| SI CASA Immobiliare | 0815 | € 110,000 | 180 m² | cielo_terra |
+| SICASA Immobiliare | — | € 110,000 | 180 m² | appartamento |
+
+**Disagree on property type**: appartamento vs cielo_terra.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Sansepolcro — del pentolo
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| SI CASA Immobiliare | 0773 | € 200,000 | 100 m² | appartamento |
+| SICASA Immobiliare | — | € 200,000 | 100 m² | terratetto |
+
+**Disagree on property type**: appartamento vs terratetto.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Sansepolcro — Via della Vannocchia
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| SI CASA Immobiliare | 0799 | € 190,000 | 85 m² | unknown |
+| SICASA Immobiliare | — | € 190,000 | 85 m² | terratetto |
+
+**Disagree on property type**: terratetto vs unknown.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Sansepolcro — Via Matteo di Giovanni
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| SI CASA Immobiliare | 0646 | *withheld* | 200 m² | cielo_terra |
+| SICASA Immobiliare | — | — | 200 m² | appartamento |
+
+**Disagree on property type**: appartamento vs cielo_terra.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Anghiari — via edison
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 330,000 | 140 m² | appartamento |
+| Immobiliare Cortesi | B/200 | € 330,000 | — m² | unknown |
+
+**Disagree on property type**: appartamento vs unknown.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Anghiari — VIA DELLA GIARDINELLA
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 550,000 | 260 m² | appartamento |
+| Immobiliare Cortesi | B/209 | € 550,000 | — m² | unknown |
+
+**Disagree on property type**: appartamento vs unknown.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Anghiari — via guglielmo marconi
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 300,000 | 160 m² | appartamento |
+| Immobiliare Cortesi | B/230 | € 300,000 | — m² | unknown |
+
+**Disagree on property type**: appartamento vs unknown.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Anghiari — STRADA PROVINCIALEDI CAPRESE MICHELANGELO
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 180,000 | 200 m² | appartamento |
+| Immobiliare Cortesi | BA/273 | € 180,000 | 200 m² | unknown |
+
+**Disagree on property type**: appartamento vs unknown.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Anghiari — via guglielmo marconi
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 230,000 | 350 m² | rustico |
+| Immobiliare Cortesi | B/220 | € 230,000 | 350 m² | unknown |
+
+**Disagree on property type**: rustico vs unknown.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Caprese-Michelangelo — Via Fragaiolo
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 67,000 | 70 m² | terratetto |
+| Immobiliare Cortesi | BCT/252 | € 67,000 | — m² | unknown |
+
+**Disagree on property type**: terratetto vs unknown.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Pieve-Santo-Stefano — LOCALITà CERCETOLE
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Agenzia Immobiliare Cortesi | — | € 20,000 | 124 m² | appartamento |
+| Immobiliare Cortesi | B/193 | € 20,000 | — m² | unknown |
+
+**Disagree on property type**: appartamento vs unknown.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Pieve-Santo-Stefano — Porzione di casolare in pietra
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| SI CASA Immobiliare | 0314 | € 350,000 | 110 m² | unknown |
+| SICASA Immobiliare | — | € 350,000 | 110 m² | appartamento |
+
+**Disagree on property type**: appartamento vs unknown.
+
+<sub>Matched by photo.</sub>
+
+---
+
+## Pieve-Santo-Stefano — ATTIVITA&#8217; RICETTIVA CON RISTORANTE
+
+| Agency | Ref | Asking | Surface | Type |
+|---|---|---|---|---|
+| Leonardi Immobiliare | 2065 | — | 740 m² | unknown |
+| Marcellini | 10440 | *bracket (unresolved)* | 740 m² | Poderi |
+
+**Disagree on property type**: poderi vs unknown.
+
+<sub>Matched by photo-weak. Candidate — unverified.</sub>
 
 ---
 

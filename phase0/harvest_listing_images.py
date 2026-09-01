@@ -187,7 +187,16 @@ def main():
         try:
             pid = json.loads(r["photo_ids"])[0]
             url = (str(pid) if str(pid).startswith("http")
-                   else f"https://pic.im-cdn.it/image/{pid}/large.jpg")
+                   # S010: 'large' is DEAD on im-cdn -- it returns 403 "Bad
+                   # Parameters" for every photo id, including ids that serve
+                   # fine at other size names. Not a rate limit, not our ids:
+                   # the size name was retired. Surviving names are xxl / xl /
+                   # l / xs-c (all 599x450) and xxs-c (320x240); 'thumb' also
+                   # still works, which is why photomatch never noticed.
+                   # xxl at 599px is one pixel under our own WIDTH=600, so the
+                   # resize below is now a no-op for immobiliare. Left in
+                   # place: the agency sources still need it.
+                   else f"https://pic.im-cdn.it/image/{pid}/xxl.jpg")
             p = urllib.parse.urlsplit(url)
             url = urllib.parse.urlunsplit((
                 p.scheme, p.netloc, urllib.parse.quote(p.path, safe="/%"),

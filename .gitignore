@@ -34,3 +34,4 @@ phase0/phase0_S004_restore.sql
 phase0/phase0_restore.sql
 phase0/*.sqlite.corrupt
 phase0/*.sqlite.pre-S004
+bv-site/assets/listing/

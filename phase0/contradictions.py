@@ -64,6 +64,7 @@ HONESTY CONSTRAINTS BAKED IN
 """
 
 import argparse
+import re
 import statistics as st
 import sys
 from collections import defaultdict
@@ -179,9 +180,28 @@ def cluster(rows, conn=None):
         if r["price"]:
             by_price[(c, r["price"])].append(r)
 
-    for grp in by_ref.values():
-        if len({g["agency_name"] or g["source"] for g in grp}) > 1:
-            found[frozenset(g["key"] for g in grp)].add("ref")
+    # S010: CROSS-AGENCY ref DOES NOT FORM A CLUSTER. It corroborates one.
+    #
+    # §16d settled this in S009 -- ref is decisive only WITHIN one agency;
+    # across agencies it produced 9 hits and all 9 were different properties.
+    # This function never got the memo, and the six ref-only rows it published
+    # are what that costs. Rif. 4478 paired a Lancisi 90 m2 flat with a
+    # Marcellini 7.000 m2 capannone and printed "7678% apart" as though the
+    # market disagreed with itself; it was us. Four of the twenty-five price
+    # disagreements came from this route, including the worst figure on the
+    # site (94%).
+    #
+    # The mechanism is mundane: several agencies number their stock as a
+    # zero-padded 4-digit sequence, lstrip("0") makes 0831 and 831 the same
+    # string, and two agencies reaching their 831st listing in the same comune
+    # is a collision, not a match.
+    #
+    # So ref is held back and applied at the end, only to a cluster some other
+    # route already formed. A shared reference number is then a fact ABOUT a
+    # match rather than the reason for one.
+    ref_groups = [frozenset(g["key"] for g in grp)
+                  for grp in by_ref.values()
+                  if len({g["agency_name"] or g["source"] for g in grp}) > 1]
     for (c, price), grp in by_price.items():
         if len({g["agency_name"] or g["source"] for g in grp}) < 2:
             continue
@@ -248,6 +268,13 @@ def cluster(rows, conn=None):
                 found[frozenset(keys)].add(tag)
     except Exception:
         pass
+
+    # ref, applied last and only where something else already matched.
+    # A ref group that matches nothing is dropped in silence: that is the
+    # whole point, and it is not an error to log.
+    for g in ref_groups:
+        if g in found:
+            found[g].add("ref")
 
     # MERGE ONLY IDENTITY-BASED EVIDENCE.
     #
@@ -415,7 +442,26 @@ def best_label(group):
                     if s})
     if addrs:
         return max(addrs, key=len)
-    titles = sorted(g["title"] for g in group if g["title"])
+    # S010: A REFERENCE NUMBER IS NOT A LABEL.
+    #
+    # The title fallback exists so a cluster with no street still reads as
+    # something. Lancisi publishes rows whose entire title is the reference
+    # ("Rif. 3890", address_raw NULL), so the fallback handed that to slug()
+    # and produced caprese-michelangelo-rif-3890-16affb.html — which the
+    # S009 address gate then refused, correctly by its own rule and for the
+    # wrong reason. It reads a trailing number as a civico; it cannot tell
+    # a house number from a filing number.
+    #
+    # Loosening the gate to allow "rif" was the tempting fix and the wrong
+    # one: the gate's value is that it does not negotiate about trailing
+    # digits, and a gate that learns to ignore a shape is how the civico
+    # got live the first time. So the label is fixed instead. A cluster
+    # with no street and no real title has no label, and slug() falls back
+    # to comune + hash.
+    ref_only = re.compile(r"^\s*(?:rif|ref)[\.\s:]*[a-z]{0,3}[\s/\-]*\d+\s*$",
+                          re.I)
+    titles = sorted(g["title"] for g in group
+                    if g["title"] and not ref_only.match(g["title"]))
     return max(titles, key=len) if titles else "address not given"
 
 
