@@ -49,7 +49,32 @@ from templates import e, eur
 LANGS = ["it", "en"]
 
 # Evidence that earns publication without a human having looked.
-IDENTITY = {"ref", "photo", "price"}
+#
+# S011: `price` REMOVED. It was admitted on the reasoning that an odd,
+# non-round figure is a computed one nobody lands on twice by chance.
+# That reasoning was calibrated against the whole corpus, where it is
+# true — and never against the listings it actually fires on. Measured:
+#
+#     auction resellers   38 of 43 prices are NOT round (88%)
+#     every other agency  10 of 1410                    (0.7%)
+#
+# So `price % 1000 != 0` is not a uniqueness test. It is an
+# auction-reseller detector, and all five clusters it has ever published
+# are the same six aggregators — Valerio Pisano, Simplex Domus, Aste
+# Preaste, Centro Aste Arezzo, Professione Aste, Astissima — republishing
+# one court auction each. Inside that sub-corpus an odd price is the
+# NORM, so "nobody lands on it twice" is exactly backwards: they all land
+# on it, because they are all copying the same base d'asta.
+#
+# It also breaks the claim the page makes. Two aggregators quoting one
+# perizia are not two agencies valuing a property differently; a surface
+# gap between them is a transcription difference. Four of the five
+# clusters published on this route had spreads of 0.6%, 5%, 0% and 0%
+# — printed as contradictions on a typology label.
+#
+# The route still runs and still matches. It now needs a human in
+# verified_clusters.json first, like photo-weak and price+surface.
+IDENTITY = {"ref", "photo"}
 
 TXT = {
     "it": {
@@ -687,6 +712,34 @@ def property_page(item, sid, lang, listing_rows=None):
             f'<td class="r">{e(r["typology"] or r["typology_raw"] or "—")}</td>'
             f'</tr>')
 
+    # S010: ONE photograph, above the table.
+    #
+    # A confronti page is the claim that these listings are the same
+    # property, and until now it asked the reader to take that on trust
+    # while the evidence sat on the member pages. Showing the property is
+    # the cheapest possible version of "here is what we mean".
+    #
+    # One, not a gallery. Several agencies photograph the same house from
+    # the same angle, so a row of near-identical shots would read as an
+    # argument being over-made, and the honest evidential claim ("they
+    # share images") is already stated in COME SONO STATI COLLEGATI
+    # underneath.
+    #
+    # Chosen from the members in the SAME sorted order the table uses, so
+    # the picture belongs to the first row the reader sees, and so two
+    # builds pick the same one — `build.py` diffs two trees and any
+    # arbitrary choice here would churn every page. `listing_image()`
+    # carries the credit and consults the opt-out itself, which is why it
+    # is reused rather than reimplemented: a second <img> path is a second
+    # place for the figcaption to go missing, and the build gate counts
+    # captions, not intentions.
+    photo = ""
+    for r in sorted(g, key=lambda x: (str(x["agency_name"] or x["source"]),
+                                      str(x["source_id"]))):
+        photo = IS.listing_image(r, lang)
+        if photo:
+            break
+
     table = (f'<table class="rows"><tr>'
              f'<td class="lbl">{e(t["agency"])}</td>'
              f'<td class="lbl r">{e(t["ref"])}</td>'
@@ -761,6 +814,7 @@ def property_page(item, sid, lang, listing_rows=None):
     body = f"""
 <h1>{e(comune)} — {e(label)}</h1>
 <p class="sub">{e(t["title"])}</p>
+{photo}
 <div class="block">{table}{badge}</div>
 <div class="block"><h2>{e(t["disagree"])}</h2>
   <ul style="margin:0;padding-left:18px">

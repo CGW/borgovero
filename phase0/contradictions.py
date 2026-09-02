@@ -350,8 +350,24 @@ def cluster(rows, conn=None):
         else:
             # Merge rejected — keep the pairs it was assembled from
             # rather than throwing the evidence away entirely.
+            #
+            # S011: ONLY STRICT SUBSETS. `price+surface` emits PAIRS, so
+            # this fallback genuinely rebuilds them and each is retested.
+            # The bare `price` route emits ONE N-member group in a single
+            # line, so `members[root]` held that same group and handed it
+            # straight back unchanged — the coherence check ran, returned
+            # False, and changed nothing. It was a no-op for every cluster
+            # the price route has ever built, all five of them, Via della
+            # Ginestra (90/97/132/133 m², rejected at med/min 1.47 against
+            # CLUSTER_TOL 1.35) included.
+            #
+            # A guard that fires and is then undone by its own fallback is
+            # worse than no guard: it reads as protection in the code and
+            # in the session notes, and there is no output anywhere that
+            # says it did nothing.
             for pair, evidence in members[root]:
-                out[frozenset(pair)] = evidence
+                if len(pair) < len(keys):
+                    out[frozenset(pair)] = evidence
 
     # Final coherence check. Even an identity-merged cluster can go wrong
     # (a shared facade merges a whole building), so every member must sit
