@@ -543,8 +543,66 @@ def harvest_now(max_pages=30):
     return list(rows.values())
 
 
+# S010: NOW PUBLISHES A LABELLED RECORD, AND IT PRINTS ITS OWN REF.
+#
+#   Codice Rif:|2026025|Città:|San Giustino|Provincia:|Perugia|
+#   Metri Quadri:|70|Vani:|5|Camere da letto:|2|Bagni:|1
+#
+# Structured fields, not prose. `_strip` turns tags into pipes, which is
+# why the label and its value are separated by one.
+_NOW_BLOCK = re.compile(
+    r"Codice Rif:\s*\|\s*(\d{4,9})\s*\|(.{0,400}?)"
+    r"(?:dettaglio immobile|Codice Rif)", re.S | re.I)
+_NOW_CITTA = re.compile(r"Citt[àa]:\s*\|\s*([^|]{2,40})\|", re.I)
+_NOW_MQ = re.compile(r"Metri Quadri:\s*\|\s*(\d{2,6})\s*\|", re.I)
+_NOW_SLUG_REF = re.compile(r"[-_](\d{6,9})$")
+
+
+def _now_blocks(txt):
+    """{ref: {comune, mq}} from NOW's card records. S010.
+
+    The route this replaces read the anchors' `title` attributes and
+    resolved 1 of 48 rows, so NOW contributed a single listing to a site
+    holding fifty of its cards. The attributes exist; they carry the
+    typology and sometimes a place, and `comune_in_text` on them almost
+    never matched. Surface came out of the card body and landed on 14.
+
+    The record sits BEFORE the card's links, and `_merge_windows` only
+    ever looks forward from an occurrence — so both fields read as absent
+    rather than as unparsed. THE FAILURE WAS A WINDOW DIRECTION, NOT A
+    MISSING FIELD, and it is the same shape as S009's regex that could
+    never match: nothing in the output distinguishes "the site does not
+    publish this" from "we never looked where it is".
+
+    Binding is by ref, not position. Pairing the Nth record with the Nth
+    link works on today's page and is an assumption about DOM order that
+    dies the day the theme reflows; matching the slug's trailing number
+    against the ref the record PRINTS is a claim the page confirms
+    itself. On this site §16d publishes a comune disagreement as a
+    finding, so a comune guessed from layout and got wrong is published
+    as an agency contradicting itself.
+
+    It costs two rows of fifty, where the slug says 23026001 and the
+    record says 2026002. Those stay None. The ~20 further Nones are not
+    misses at all: NOW sells across Tuscany, Umbria and Romagna — San
+    Giustino, Castrocaro Terme, Novafeltria, Gubbio, Rovereto — and out
+    of scope resolving to None is this working.
+    """
+    out = {}
+    for m in _NOW_BLOCK.finditer(txt):
+        body = m.group(2)
+        c = _NOW_CITTA.search(body)
+        q = _NOW_MQ.search(body)
+        out[m.group(1)] = {
+            "comune": comune_in_text(c.group(1).strip()) if c else None,
+            "mq": int(q.group(1)) if q else None,
+        }
+    return out
+
+
 def _parse_now_page(html):
     out = []
+    txt = _strip(html)
     urls = list(dict.fromkeys(re.findall(
         r'href="(' + re.escape(NOW) + r'/proprieta/[^"]+)"', html)))
     def parse(t):
@@ -558,21 +616,32 @@ def _parse_now_page(html):
             "title": mt.group(1) if mt else None,
         }
 
+    blocks = _now_blocks(txt)
+    n_comune = n_mq = 0
     for u in urls:
         fields = _merge_windows(html, urls, u, parse)
-        # The comune is in the anchors' title attributes
-        # (title="APPARTAMENTO SAN GIUSTINO") more reliably than in the
-        # card body — and the three anchors of one card do not all
-        # carry the same title, so read them all. Non-corpus places
-        # (San Giustino, Perugia) resolve to None, never a half-match.
-        comune = None
-        for m in re.finditer(re.escape(u) + r'"[^>]*?title="([^"]+)"', html):
-            comune = comune_in_text(m.group(1))
-            if comune:
-                break
+        m = _NOW_SLUG_REF.search(u.rstrip("/").split("/")[-1])
+        ref = m.group(1) if m else None
+        rec = blocks.get(ref) or {}
+        comune = rec.get("comune")
+        # The ref was hardcoded None, so NOW rows carried no identity at
+        # all — the one join key §16d calls decisive WITHIN an agency.
+        # Safe to populate now that S010 stopped cross-agency ref from
+        # forming clusters on its own.
+        if fields.get("ref") is None:
+            fields["ref"] = ref
+        # The record's surface beats the card body's: the body yielded 14
+        # of 50, the record 47. Only fill a gap — never overwrite a figure
+        # the card actually printed.
+        if fields.get("mq") is None and rec.get("mq"):
+            fields["mq"] = rec["mq"]
+        n_comune += bool(comune)
+        n_mq += bool(fields.get("mq"))
         rent = bool(re.search(re.escape(u) + r'[\s\S]{0,400}?Affitto', html))
         out.append(_row("now", u, comune=comune, **fields)
                    | ({"is_rent": 1} if rent else {}))
+    print(f"  now: {n_comune} of {len(urls)} cards in a corpus comune, "
+          f"{n_mq} with a surface (the rest sell outside the eight comuni)")
     return out
 
 

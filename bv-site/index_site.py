@@ -940,7 +940,40 @@ var f=document.getElementById("cerca-f"),q=document.getElementById("cerca-q"),
     out=document.getElementById("cerca-out"),DB=null;
 function norm(s){return s.toLowerCase().replace(/^https?:\\/\\//,"")
   .replace(/^www\\./,"").split("?")[0].split("#")[0].replace(/\\/+$/,"");}
-function digits(s){var m=s.match(/\\d{6,}/);return m?m[0]:null;}
+// S010: THIS USED TO BE /\\d{6,}/ AND COULD ONLY EVER MATCH IMMOBILIARE.
+//
+// Every agency ref in the corpus is 4 digits, so the ID fallback silently
+// never fired for an agency URL — the one input the placeholder text
+// explicitly invites ("il sito dell'agenzia"). Substring matching covered
+// the case where the pasted URL is byte-identical to the stored one, which
+// is why this looked like it worked.
+//
+// It does not work for the case that matters. Romolini publishes the same
+// flat at /it/, /en/ and /de/ with three different slugs; a reader pasting
+// the English page they were actually reading got "nessun annuncio".
+//
+// Widening to \\d{4,} anywhere in the string was the obvious fix and is
+// wrong: it matches prices (159000), surfaces, CAPs and years, and then
+// e[0].indexOf(id) hunts that run anywhere inside another listing's URL.
+// A 4-digit needle in a haystack of URLs collides.
+//
+// So the ref is taken from ONE position — the end of the last path segment
+// — on BOTH sides, and compared ref to ref. No substring roulette. Note
+// both separators: Romolini writes ...centro-storico-1594 on some slugs
+// and ..._toscana_1594 on others, and a hyphen-only rule reads the second
+// as no ref at all rather than as a miss.
+//
+// The whole-segment branch (^) is what keeps Immobiliare working:
+// /annunci/128803018 is a segment that is all digits.
+//
+// Two agencies can legitimately share a ref — S010 established that they
+// collide constantly — so this can return two hits. That is correct: the
+// reader is shown both and picks, which is exactly what the site is for.
+function tailref(s){
+  var seg=s.split("/").filter(Boolean).pop()||"";
+  seg=seg.replace(/\\.(html?|php|aspx)$/,"");
+  var m=seg.match(/(?:^|[-_])(\\d{3,9})$/);
+  return m?m[1]:null;}
 function render(hits){
   if(!hits.length){out.innerHTML='<p class="note">%NONE%</p>';return;}
   var h='<p class="note">'+hits.length+' %MANY%</p><ul style="padding-left:18px">';
@@ -950,9 +983,9 @@ function render(hits){
   out.innerHTML=h+'</ul>';}
 function search(){
   var v=norm(q.value.trim());if(!v)return;
-  var id=digits(v);
+  var id=tailref(v);
   var hits=DB.filter(function(e){
-    return e[0].indexOf(v)>-1||v.indexOf(e[0])>-1||(id&&e[0].indexOf(id)>-1);});
+    return e[0].indexOf(v)>-1||v.indexOf(e[0])>-1||(id&&tailref(e[0])===id);});
   render(hits);}
 f.addEventListener("submit",function(ev){ev.preventDefault();
   if(DB){search();return;}
@@ -1289,7 +1322,27 @@ def build(db_path, out):
                     label += f" ({r['agency_name']}, sito proprio)"
                 entries.append(
                     [u, listing_url(r, "it") if has_page(r) else "", label])
-    entries.sort()
+    # S010: ONE URL, ONE ANSWER — and prefer the answer that has a page.
+    #
+    # S009's promotion made the agency sites listings in their own right
+    # while they were ALSO still url_alt on the portal row they matched, so
+    # 217 URLs ended up in here twice: once as a promoted listing with no
+    # page of its own, once pointing at the portal row's page. The reader
+    # pasting such a URL was shown both — a line saying "is in the archive
+    # but has no page" directly above a link to the page.
+    #
+    # Telling someone we have nothing while linking what we have is worse
+    # than either answer alone, and it is worst on exactly the input the
+    # box invites. Sort so a page-bearing row wins, then keep the first
+    # per URL. Sorting before the dedupe rather than relying on insertion
+    # order keeps the file deterministic, which the build gate checks.
+    best = {}
+    for u, page, label in sorted(entries, key=lambda e: (e[0], e[1] == "",
+                                                         e[1], e[2])):
+        if u not in best:
+            best[u] = [u, page, label]
+    entries = sorted(best.values())
+
     with open(f"{out}/cerca.json", "w", encoding="utf-8") as fh:
         json.dump(entries, fh, ensure_ascii=False, separators=(",", ":"))
         fh.write("\n")
