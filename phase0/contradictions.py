@@ -579,6 +579,28 @@ def build(conn):
         if "surface" in d and d["surface"][2] / 100 > MAX_SURFACE_SPREAD \
                 and "ref" not in evidence:
             continue
+        # S011: AUCTION RESELLERS ARE NOT AGENCIES DISAGREEING.
+        #
+        # A cluster in which every member is an auction intermediary is
+        # several resellers of ONE court procedure, all quoting the same
+        # base d'asta from the same perizia. Whatever differs between
+        # them is a transcription difference, not a valuation
+        # disagreement, and the page's claim — that agencies publish
+        # different numbers for the same property — does not hold.
+        #
+        # Verified by hand on Via della Ginestra: all five listings carry
+        # procedura 71/2022, Tribunale di Arezzo, Via della Ginestra 4
+        # Gragnano, offerta minima EUR 110.625, sale 12/11/2026, and the
+        # same description word for word. They are one lot.
+        #
+        # So publish one of these only where the numbers differ enough to
+        # be a finding rather than a rounding. The four suppressed here
+        # were 178/178/178/177/177 (0.6%), 509/509/509 and 31/- (typology
+        # LABEL only) and 93/93/98 (5.4%) — printed as contradictions.
+        if all(config.is_auction_reseller(g["agency_name"]) for g in group):
+            spread = d.get("surface", (0, 0, 0))[2] / 100
+            if spread < config.AUCTION_MIN_SURFACE_SPREAD:
+                continue
         if "price" in d and d["price"][2] / 100 > MAX_PRICE_SPREAD:
             print(f"  !! dropped a cluster with a {d['price'][2]:.0f}% price "
                   f"gap — suspect a parse error, not a contradiction:")

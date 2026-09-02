@@ -219,6 +219,60 @@ AUCTION_AGENCY_RE = r"\b(aste|asta)\b"
 AUCTION_TEXT_RE = (r"asta (giudiziari|telematic)|vendita giudiziari|"
                    r"procedura esecutiva|\bR\.?G\.?E\.?\b|tribunale di")
 
+# S011: AUCTION_AGENCY_RE MISSES THE ONES WITHOUT 'ASTE' IN THE NAME.
+# 'Simplex Domus S.R.L.', 'Astissima' and 'Ipn Castello srl' are auction
+# intermediaries whose names the regex cannot see — 'Astissima' has no
+# word boundary after 'Ast', and the other two say nothing about auctions
+# at all. That was harmless while this list only filtered price
+# statistics. It is not harmless in the contradictions pipeline, where
+# missing one means publishing it as an ordinary estate agency
+# disagreeing with the market.
+AUCTION_RESELLER_NAMES = {
+    "aste florio",
+    "aste preaste investimenti srl",
+    "astissima",
+    "centro aste arezzo",
+    "ipn castello srl",
+    "professione aste",
+    "simplex domus s.r.l.",
+    "valerio pisano - aste&investimenti",
+}
+
+
+def is_auction_reseller(agency_name):
+    """True for an intermediary that republishes court auctions.
+
+    These are not estate agencies competing over the same stock. They are
+    resellers of one court procedure, all quoting the same base d'asta
+    from the same perizia, and several of them state outright that their
+    photographs are not of the property:
+
+        Valerio Pisano  'le immagini presenti nell'annuncio sono solo
+                         indicative e non rappresentano le foto reali'
+        Centro Aste     'le foto pubblicate potrebbero non corrispondere
+                         all'immobile specifico'
+
+    That kills photo matching in BOTH directions for this class — a
+    non-match is meaningless, and so is a match.
+    """
+    import re
+    n = (agency_name or "").strip().lower()
+    # bool() around the whole thing, not just the guard: re.search returns
+    # a match object or None, and `x and (a or re.search(...))` hands that
+    # None straight back. It is falsy, so every call site behaves — until
+    # one of them writes the value to JSON or compares it with `is False`.
+    return bool(n and (n in AUCTION_RESELLER_NAMES
+                       or re.search(AUCTION_AGENCY_RE, n)))
+
+
+# A surface disagreement between two resellers of ONE auction is a
+# transcription difference, not two agencies valuing a property
+# differently — they are copying one perizia and choosing different
+# bases. Below this spread it is noise and must not be published as a
+# contradiction. Measured on the five clusters the price route produced:
+# 0.6%, 0%, 0% and 5.4% were noise; Via della Ginestra's 47.8% was not.
+AUCTION_MIN_SURFACE_SPREAD = 0.15
+
 ZONA_TO_FASCIA = {
     "centro_storico": ("B",),
     "periferia":      ("C", "D", "E"),
