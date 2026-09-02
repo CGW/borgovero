@@ -39,6 +39,20 @@ sys.path.insert(0, os.path.join(HERE, "..", "phase0"))
 
 
 def run_generator(script, db, out):
+    # S010: SAY WHAT IS RUNNING BEFORE IT RUNS.
+    #
+    # capture_output means the generator prints nothing until it returns,
+    # and build_once calls two of them while main() calls build_once
+    # twice for the determinism diff. At ~66s each that is FOUR AND A HALF
+    # MINUTES OF SILENCE before the first line of output — which reads
+    # exactly like a hang, was reported as one, and cost a session more
+    # time than the build itself.
+    #
+    # The output still has to be captured (run_generator returns it, and
+    # the gates parse it), so the fix is not to stream it but to announce
+    # the step. flush=True because stdout is a pipe when anyone runs this
+    # under `time` or tee, and a buffered progress line is not one.
+    print(f"  running {script} …", flush=True)
     r = subprocess.run([sys.executable, os.path.join(HERE, script),
                         "--db", db, "--out", out],
                        capture_output=True, text=True, cwd=HERE)
@@ -131,6 +145,25 @@ def build_once(db, out, base_url=""):
                     n += 1
             if n:
                 print(f"  assets: {n} listing image(s)")
+
+        # S010: the comune photographs, kept in their own directory and
+        # copied separately. They are OURS — no credit, no opt-out, no
+        # takedown — so the image-credit gate below must never count
+        # them, and it cannot, because it counts /assets/listing/ only.
+        # Two directories is the enforcement; one directory with a naming
+        # convention would be an invitation to get it wrong later.
+        src_borgo = os.path.join(HERE, "assets", "comuni")
+        if os.path.isdir(src_borgo):
+            dst_borgo = os.path.join(out, "assets", "comuni")
+            os.makedirs(dst_borgo, exist_ok=True)
+            nb = 0
+            for fn in sorted(os.listdir(src_borgo)):
+                if fn.endswith(".webp"):
+                    shutil.copy2(os.path.join(src_borgo, fn),
+                                 os.path.join(dst_borgo, fn))
+                    nb += 1
+            if nb:
+                print(f"  assets: {nb} comune photograph(s)")
 
         urls = locs(os.path.join(out, "sitemap.xml"))
         urls += locs(os.path.join(out, "sitemap-immobili.xml"))

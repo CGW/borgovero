@@ -73,6 +73,20 @@ button{padding:14px 22px;font-size:16px;font-weight:600;background:var(--ink);
 /* A table of eight comuni is narrow on a laptop and tight on a phone;
    let it scroll inside its own box rather than pushing the page wide. */
 .tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+/* S010: the comune photograph in the name cell. A strip above the link,
+   not a thumbnail beside it — a square floated left turns eight aligned
+   rows back into eight cards, which is the layout the S008 table was
+   built to replace. Fixed height so the column edge stays straight
+   whatever each photograph's own proportions are; width:100% of a cell
+   the browser sizes to the longest comune name.
+   No border and no caption: these are ours, so there is nothing to
+   attribute, and a caption here would sit one column away from the
+   captions on listing photos that legally must be there. */
+.place{min-width:190px}
+.rows td.place img.borgo{display:block;width:100%;height:52px;
+  object-fit:cover;border-radius:3px;margin:0 0 6px}
+@media(max-width:520px){.rows td.place img.borgo{height:40px}}
+@media print{.rows td.place img.borgo{display:none}}
 .v-red{color:var(--hi);font-weight:700}
 .v-amber{color:var(--warn);font-weight:700}
 .v-green{color:var(--ok);font-weight:700}

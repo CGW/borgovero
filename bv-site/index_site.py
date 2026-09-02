@@ -465,16 +465,40 @@ def source_block(r, lang):
 
 IMG_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                        "assets", "listing")
+# S010: our own photographs of the eight comuni. A DIFFERENT DIRECTORY
+# FROM IMG_DIR ON PURPOSE — the credit gate and the opt-out both walk
+# assets/listing, and neither should ever see these. Written by
+# phase0/make_comune_images.py.
+BORGO_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                         "assets", "comuni")
 _OPTOUT_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                             "..", "phase0", "data", "image_optout.json")
 
 
+_OPTOUT_CACHE = None
+
+
 def _optout():
-    try:
-        with open(_OPTOUT_PATH) as fh:
-            return json.load(fh)
-    except Exception:
-        return {"sites": [], "listings": []}
+    """Read once per build, not once per image.
+
+    S010: this re-read and re-parsed the file on EVERY call. That was
+    invisible while only listing pages called it — once each — and stopped
+    being invisible when the confronti pages started calling it per
+    cluster member, per page, per language, twice over because build.py
+    builds the tree twice to diff it.
+
+    Cached for the life of the process, which is correct here and would
+    NOT be if anything wrote the file mid-build. Nothing does: --optout is
+    a separate invocation that exits before a build starts.
+    """
+    global _OPTOUT_CACHE
+    if _OPTOUT_CACHE is None:
+        try:
+            with open(_OPTOUT_PATH) as fh:
+                _OPTOUT_CACHE = json.load(fh)
+        except Exception:
+            _OPTOUT_CACHE = {"sites": [], "listings": []}
+    return _OPTOUT_CACHE
 
 
 def listing_image(r, lang):
@@ -1128,8 +1152,28 @@ def comuni_index(bands, by_comune, data_date, lang, asked=None, omi=None):
             cue = ("nessuna fascia pubblicata" if it else
                    "no band published")
 
+        # S010: the comune's own photograph, sepia, in the name cell.
+        #
+        # These are Christopher's photographs of the eight towns, NOT
+        # listing photographs — no agency to credit, no opt-out, no
+        # takedown, which is why there is no figcaption here and why the
+        # image-credit build gate deliberately does not look in this
+        # directory. The sepia is what keeps that distinction visible: a
+        # tinted townscape beside a price cannot be mistaken for the
+        # property being priced.
+        #
+        # Emitted only if the file exists, so a comune without a photo
+        # renders a normal row rather than a broken image. Decoration
+        # earns no alt text — the comune name is the link right beside
+        # it, and a screen reader announcing "Anghiari" twice is worse
+        # than silence.
+        img = ""
+        if os.path.exists(os.path.join(BORGO_DIR, f"{comune}.webp")):
+            img = (f'<img class="borgo" src="/assets/comuni/{comune}.webp" '
+                   f'alt="" loading="lazy" width="960" height="320">')
         trs.append(
-            f'<tr><td><a href="{comune_url(comune, lang)}">{e(place)}</a>'
+            f'<tr><td class="place">{img}'
+            f'<a href="{comune_url(comune, lang)}">{e(place)}</a>'
             f'</td><td class="r">{n}</td>'
             f'<td class="r">{ask_cell}</td>'
             f'<td class="r">{sold_cell}</td>'

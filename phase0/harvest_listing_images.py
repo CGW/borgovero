@@ -62,6 +62,7 @@ sys.path.insert(0, ".")
 
 import config   # noqa: E402
 import db       # noqa: E402
+from sepia import sepia   # noqa: E402
 
 OUT_DIR = os.path.join("..", "bv-site", "assets", "listing")
 OPTOUT = os.path.join("data", "image_optout.json")
@@ -99,6 +100,9 @@ def main():
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--limit", type=int)
     ap.add_argument("--refetch", action="store_true")
+    ap.add_argument("--resepia", action="store_true",
+                    help="re-tone the images already on disk; fetches "
+                         "nothing")
     ap.add_argument("--optout", metavar="SITE_OR_SOURCE/ID",
                     help="add to the opt-out list, delete any asset, exit")
     ap.add_argument("--allow", metavar="SITE_OR_SOURCE/ID",
@@ -106,6 +110,36 @@ def main():
     args = ap.parse_args()
 
     opt = load_optout()
+
+    # --resepia RE-TONES WHAT IS ON DISK AND FETCHES NOTHING.
+    #
+    # S010 turned sepia on after 1.386 images had already been harvested.
+    # The obvious route is --refetch, and it is the wrong one: it would
+    # pull ~0,93 GB of originals off eight small-business hosts, several
+    # on shared hosting, to change a colour we can change locally. S009
+    # wrote a whole delay constant around not doing that.
+    #
+    # The cost is one extra lossy generation — these files are already
+    # WebP q70, and re-encoding them adds a little more loss. On a tinted
+    # image at this size that is invisible, and it is a real trade taken
+    # deliberately, not an oversight: a visual change is not worth a
+    # gigabyte of someone else's bandwidth.
+    if args.resepia:
+        from PIL import Image
+        if not os.path.isdir(OUT_DIR):
+            sys.exit(f"no {OUT_DIR} — nothing to re-tone")
+        n = 0
+        for fn in sorted(os.listdir(OUT_DIR)):
+            if not fn.endswith(".webp"):
+                continue
+            p = os.path.join(OUT_DIR, fn)
+            sepia(Image.open(p).convert("RGB")).save(
+                p, "WEBP", quality=QUALITY, method=6)
+            n += 1
+        print(f"re-toned {n} image(s) in {OUT_DIR}, nothing fetched.\n"
+              f"The credit line and the link are unchanged and still "
+              f"required — the tint is not a mitigation.")
+        return
 
     # --allow exists because --optout shipped without it (S009). An agency
     # that asks to be removed can also change its mind, and a colleague can
@@ -208,6 +242,13 @@ def main():
             if w > WIDTH:
                 im = im.resize((WIDTH, max(1, round(h * WIDTH / w))),
                                Image.LANCZOS)
+            # S010: sepia, Christopher's call, reversing S009's rejection
+            # of it for listing photographs. See phase0/sepia.py — the
+            # short version is that it is a VISUAL decision and changes
+            # nothing about the protections. Credit, EXIF stripping, the
+            # 600px cap and the opt-out all still apply, and the tint must
+            # never be described as reducing exposure.
+            im = sepia(im)
             # No exif= argument: re-encoding without it is what drops GPS,
             # camera serial, and the original timestamp.
             im.save(dest, "WEBP", quality=QUALITY, method=6)
